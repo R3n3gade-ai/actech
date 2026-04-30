@@ -1,0 +1,25 @@
+{
+  "nav": 500000000.0,
+  "cash_pct": 0.08,
+  "defensive_sleeve": {
+    "SGOV": 0.03,
+    "SGOL": 0.02,
+    "DBMF": 0.05,
+    "STRC": 0.04
+  },
+  "ptrh_multiplier": 1.5,
+  "equities": {
+    "TSLA": {"weight": 0.088, "premkt": "+3.5%", "status": "OK", "flag": "Relief rally \u00b7 IRGC threat dissolves \u00b7 Autonomy thesis fully intact"},
+    "NVDA": {"weight": 0.078, "premkt": "+4.2%", "status": "OK", "flag": "AI capex confirmed by AVGO deals + ceasefire removes macro overhang"},
+    "AMD": {"weight": 0.072, "premkt": "+3.8%", "status": "OK", "flag": "Thesis intact \u00b7 Broad tech recovery"},
+    "PLTR": {"weight": 0.057, "premkt": "+2.1%", "status": "OK", "flag": "DOD AI thesis intact \u00b7 War winding down does not reduce DOD AI spend"},
+    "ALAB": {"weight": 0.0342, "premkt": "+3.1%", "status": "TRIMMED", "flag": "Trimmed correctly \u00b7 Thesis intact \u00b7 SENTINEL review before re-add"},
+    "MU": {"weight": 0.045, "premkt": "+4.6%", "status": "OK", "flag": "TDC closed \u00b7 TIS: INTACT (8.2) \u00b7 Strong recovery \u00b7 HBM demand confirmed"},
+    "ANET": {"weight": 0.043, "premkt": "+2.9%", "status": "OK", "flag": "Thesis intact \u00b7 Hyperscaler networking demand unaffected"},
+    "AVGO": {"weight": 0.037, "premkt": "+5.1%", "status": "THESIS+", "flag": "Google AI chip deal + Anthropic 3.5GW compute + ceasefire \u00b7 Three simultaneous positives"},
+    "MRVL": {"weight": 0.035, "premkt": "+3.7%", "status": "THESIS+", "flag": "NVDA $2B + AVGO custom silicon validation \u00b7 TIS INTACT \u00b7 Strong recovery"},
+    "ARM": {"weight": 0.025, "premkt": "+4.1%", "status": "OK", "flag": "Thesis intact \u00b7 AI chip design demand fully intact"},
+    "ETN": {"weight": 0.020, "premkt": "+1.8%", "status": "OK", "flag": "Power grid thesis intact \u00b7 AI infrastructure electrification long-cycle"},
+    "VRT": {"weight": 0.023, "premkt": "+2.4%", "status": "PERM?", "flag": "$15B backlog intact \u00b7 Queue size-up to 3.0% now in WATCH state"}
+  }
+}

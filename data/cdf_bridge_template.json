@@ -1,0 +1,12 @@
+[
+  {
+    "ticker": "TSLA",
+    "days_underperforming": 10,
+    "underperformance_pp": 2.0
+  },
+  {
+    "ticker": "NVDA",
+    "days_underperforming": 47,
+    "underperformance_pp": 11.5
+  }
+]

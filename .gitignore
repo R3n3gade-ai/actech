@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+.env
+
+# Runtime logs & state
+*.jsonl
+achelion_arms/logs/
+achelion_arms/monitor_examples/
+achelion_arms/achelion_arms/logs/
+achelion_arms/state/
+src/achelion_arms/
+state/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Binary / generated artifacts
+*.png
+*.parquet
+node_modules/
+dist/
+*.zip
+
+# Confidential / internal-only — never push to public-facing repos
+data/Original documents/
+data/backtest_cache/

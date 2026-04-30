@@ -1,0 +1,15 @@
+{
+  "_doc": "PM-editable consensus/asymmetry overrides. Updated without code changes. Reviewed in weekly TDC audit.",
+  "consensus_priced": {
+    "GEV": "Power Singularity enthusiasm is already reflected in price / narrative.",
+    "CEG": "Nuclear / AI power demand thesis is treated as consensus-priced.",
+    "VST": "Texas grid + AI demand thesis is widely recognized and no longer clearly pre-consensus.",
+    "VRT": "Business remains valid, but queue size-up asymmetry appears weaker than earlier cycle phase."
+  },
+  "preconsensus": {
+    "GOOGL": "Market may still be using the wrong identity to price the asset, preserving Gate 3 asymmetry."
+  },
+  "consensus_action_overrides": {
+    "VRT": "HOLD"
+  }
+}

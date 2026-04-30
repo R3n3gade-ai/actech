@@ -1,0 +1,58 @@
+{
+  "thesis_caps": {
+    "AI_POWER_INFRA":       0.30,
+    "AI_SILICON":           0.30,
+    "AI_PLATFORM":          0.30,
+    "AI_SOFTWARE":          0.30,
+    "HYPERSCALER":          0.25,
+    "NUCLEAR_BASELOAD":     0.15,
+    "GRID_MODERNIZATION":   0.20,
+    "DATA_CENTER_COOLING":  0.20,
+    "DISTRIBUTION_BOTTLENECK": 0.20,
+    "DEFENSE_TECH":         0.15,
+    "POWER_GENERATION":     0.20,
+    "AUTONOMY":             0.20,
+    "HBM_MEMORY":           0.15,
+    "CUSTOM_SILICON":       0.20,
+    "NETWORKING_INFRA":     0.20,
+    "DEFAULT":              0.30
+  },
+  "thesis_tag_registry": {
+    "TSLA":  ["AUTONOMY"],
+    "NVDA":  ["AI_SILICON", "HYPERSCALER"],
+    "AMD":   ["AI_SILICON"],
+    "PLTR":  ["AI_SOFTWARE", "DEFENSE_TECH"],
+    "ALAB":  ["AI_SILICON", "CUSTOM_SILICON"],
+    "MU":    ["AI_SILICON", "HBM_MEMORY"],
+    "ANET":  ["NETWORKING_INFRA", "HYPERSCALER"],
+    "AVGO":  ["AI_SILICON", "CUSTOM_SILICON", "HYPERSCALER"],
+    "MRVL":  ["AI_SILICON", "CUSTOM_SILICON"],
+    "ARM":   ["AI_SILICON"],
+    "ETN":   ["AI_POWER_INFRA", "DISTRIBUTION_BOTTLENECK", "GRID_MODERNIZATION"],
+    "VRT":   ["AI_POWER_INFRA", "DATA_CENTER_COOLING"],
+    "GEV":   ["AI_POWER_INFRA", "GRID_MODERNIZATION"],
+    "CEG":   ["AI_POWER_INFRA", "NUCLEAR_BASELOAD", "POWER_GENERATION"],
+    "VST":   ["AI_POWER_INFRA", "POWER_GENERATION"],
+    "GOOGL": ["AI_PLATFORM", "HYPERSCALER"],
+    "BE":    ["AI_POWER_INFRA", "POWER_GENERATION"]
+  },
+  "sizing_hierarchy": {
+    "AI_POWER_INFRA": {
+      "description": "When GEV and ETN share AI_POWER_INFRA and total exceeds cap, trim GEV first. ETN has higher near-term revenue certainty on distribution side.",
+      "trim_order": ["GEV", "ETN", "VRT", "CEG", "VST", "BE"],
+      "coherence_floor_ratio": 0.65
+    },
+    "AI_SILICON": {
+      "description": "NVDA is anchor. Trim smaller silicon positions first.",
+      "trim_order": ["ARM", "ALAB", "MU", "MRVL", "AMD", "AVGO", "NVDA"],
+      "coherence_floor_ratio": 0.65
+    },
+    "HYPERSCALER": {
+      "description": "GOOGL and NVDA are primary hyperscaler exposures.",
+      "trim_order": ["ANET", "AVGO", "NVDA", "GOOGL"],
+      "coherence_floor_ratio": 0.65
+    }
+  },
+  "conflict_resolution_protocol": "engineering_ticket",
+  "single_thesis_cap_default": 0.30
+}

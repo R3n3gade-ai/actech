@@ -1,0 +1,9 @@
+[
+  {"ticker": "GOOGL", "target_weight_pct": 0.035, "execution_instruction": "3.5% at NEUTRAL trigger via VWAP \u00b7 Leg 2: +1.5% on any positive April 28 earnings \u00b7 EVENT-triggered", "trigger_condition_type": "REGIME_SCORE", "trigger_threshold": 0.65, "status": "WATCH"},
+  {"ticker": "GEV", "target_weight_pct": 0.03, "execution_instruction": "60% at trigger VWAP \u00b7 Leg 2: 40% on flush to $820\u2013840 \u00b7 PRICE-triggered", "trigger_condition_type": "REGIME_SCORE", "trigger_threshold": 0.65, "status": "WATCH"},
+  {"ticker": "CEG", "target_weight_pct": 0.025, "execution_instruction": "Full size at trigger \u00b7 VWAP \u00b7 Single-leg", "trigger_condition_type": "REGIME_SCORE", "trigger_threshold": 0.65, "status": "WATCH"},
+  {"ticker": "VST", "target_weight_pct": 0.02, "execution_instruction": "Full size at trigger \u00b7 VWAP \u00b7 Single-leg", "trigger_condition_type": "REGIME_SCORE", "trigger_threshold": 0.65, "status": "WATCH"},
+  {"ticker": "VRT", "target_weight_pct": 0.007, "execution_instruction": "Size-up existing position \u00b7 Limit add", "trigger_condition_type": "REGIME_SCORE", "trigger_threshold": 0.65, "status": "WATCH"},
+  {"ticker": "BE", "target_weight_pct": 0.015, "execution_instruction": "Full size at trigger \u00b7 VWAP \u00b7 Outright equity \u00b7 No options", "trigger_condition_type": "REGIME_SCORE", "trigger_threshold": 0.45, "status": "DORMANT"},
+  {"ticker": "NVDA", "target_weight_pct": 0.012, "execution_instruction": "Evaluate 7.8%->9.0% \u00b7 Tier 1 PM review \u00b7 Not automatic", "trigger_condition_type": "REGIME_SCORE", "trigger_threshold": 0.45, "status": "DORMANT"}
+]

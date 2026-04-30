@@ -1,0 +1,8 @@
+{
+  "macro_stress_score": 0.0,
+  "oil_stress_score": 0.0,
+  "diplomacy_breakdown_score": 0.0,
+  "military_escalation_score": 0.0,
+  "override_floor": 0.0,
+  "notes": "Populate from real overnight event assessment until full automated event-scoring architecture is built."
+}

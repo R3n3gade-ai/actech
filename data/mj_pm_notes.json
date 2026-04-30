@@ -1,0 +1,59 @@
+{
+  "headline_event": "CEASEFIRE CONFIRMED \u00b7 Hormuz reopening \u00b7 Islamabad talks Friday",
+  "session_headline": "CEASEFIRE CONFIRMED \u2014 Less than two hours before the 8PM ET deadline, Trump announced a twoweek ceasefire. Iran's Foreign Minister confirmed: safe passage through the Strait of Hormuz will be possible via coordination with Iranian Armed Forces. Oil reacted instantly \u2014 Brent \u201314% to ~$94, WTI \u201316% to ~$95. S&P 500 futures +2.5\u20132.8%. Dow futures +1,200\u20131,300 pts. Nasdaq futures +3.0\u20133.2%. Asia: Nikkei +5%, Kospi +5.8%, briefly halted. 10Y yield \u201310bps to 4.24%. Dollar weakened. Gold +2.5% to $4,820. Islamabad talks Friday \u2014 VP Vance expected to lead US delegation. Score transitioning to ~0.72 \u2014 DEFENSIVE territory. Queue entering WATCH state. Five weeks of CRASH discipline is about to be rewarded.",
+  "macro_drivers": "Score drivers collapsing: Ceasefire confirmed \u2014 removes war premium structurally \u00b7 Hormuz reopening begins (1,000 ships backlogged, 10\u201315/day clearing) \u00b7 Brent \u201314% to ~$94 \u00b7 WTI \u201316% to ~$95 \u00b7 10Y yield \u201310bps to 4.24% \u00b7 VIX falling toward 20\u201322 \u00b7 Asia uniformly +4\u20136%.\n\nScore still in DEFENSIVE, not NEUTRAL: Ceasefire is 2 weeks only \u00b7 Hormuz coordination via Iranian military (not unconditionally open) \u00b7 Israel continuing Lebanon operations \u00b7 Terms disputed \u00b7 Islamabad Friday is the next major threshold.\n\nPath to queue activation: 3 ARES cycles confirming score \u22640.65 \u2192 NEUTRAL \u2192 queue fires automatically. GOOGL 3.5%, GEV 60% tranche, CEG full, VST full, VRT size-up execute simultaneously.",
+  "macro_cards": {
+    "sp500": {"value": "+2.5\u20132.8%", "sub": "~6,690 \u00b7 Largest single-day move since May \u00b7 Relief rally"},
+    "nasdaq": {"value": "+3.0\u20133.2%", "sub": "Tech leading \u00b7 AI capex thesis intact \u00b7 Chipmakers recovering"},
+    "brent": {"value": "~$94", "sub": "\u201314% overnight \u00b7 War premium collapsing \u00b7 Still +30% since Feb 28"},
+    "wti": {"value": "~$95", "sub": "\u201316% \u00b7 Largest single-session drop in years \u00b7 Pre-war ~$74"},
+    "vix": {"value": "~20\u201322 est.", "sub": "Falling from 28\u201330 \u00b7 LAEP transitioning NORMAL mode"},
+    "treasury": {"value": "4.24%", "sub": "\u201310bps \u00b7 Bond rally \u00b7 Rate cut bets returning"},
+    "talks": {"value": "Friday", "sub": "VP Vance leading US delegation \u00b7 Permanent deal framework"},
+    "hormuz": {"value": "OPENING", "sub": "~1,000 ships backlogged \u00b7 10\u201315/day pace \u00b7 Full clearance takes months"}
+  },
+  "alerts": [
+    {
+      "title": "CEASEFIRE CONFIRMED \u00b7 FIVE WEEKS OF DISCIPLINE VALIDATED \u00b7 THE QUEUE IS ABOUT TO FIRE",
+      "body": "This is what the architecture was built for. Five weeks in CRASH. Three false dawns. Two regime whipsaws. The portfolio held its configuration through every one of them without premature deployment. The PTRH provided structural insurance throughout. The defensive sleeve performed. Cash was preserved. Now, with the ceasefire confirmed and score dropping from 0.85 to approximately 0.72, the queue is entering a watch state. Score needs to reach 0.65 and hold for three ARES cycles. Islamabad talks Friday are the most likely catalyst. If a permanent deal framework emerges Friday, the score could reach NEUTRAL by end of next week. GOOGL, GEV, CEG, VST, VRT execute simultaneously on confirmation. This is the moment the system was designed for."
+    },
+    {
+      "title": "DBMF \u2014 OIL REVERSAL \u2014 MONITOR FOR MANAGED FUTURES POSITION UNWIND",
+      "body": "DBMF holds managed futures positions that were long the oil trend through the war. Brent fell 14% overnight \u2014 one of the largest single-session moves in years. A sharp trend reversal of this magnitude will trigger momentum signal reversals inside DBMF's underlying strategy. This does not necessarily mean DBMF falls \u2014 managed futures can benefit from the speed of a reversal \u2014 but it needs to be monitored this session. Under live DSHP, any appreciation threshold and reversal signal interaction would be surfaced automatically. Under current manual protocol: flag DBMF for intraday review. This is the one position in the defensive sleeve that carries directional risk in a ceasefire environment."
+    },
+    {
+      "title": "PTRH \u2014 POSITION VALIDATED \u00b7 FIVE WEEKS OF PREMIUM JUSTIFIED \u00b7 TRANSITION TO 1.5\u00d7",
+      "body": "The PTRH at 5\u20138% OTM with 60\u201390 day DTE provided exactly the convexity it was designed to provide during the worst oil shock since 1990 and a 12\u201315% QQQ drawdown from ATH. The canonical spec \u2014 corrected from ATM to 5\u20138% OTM in March \u2014 held through the deepest CRASH reading of the war. CAM will now transition to 1.5\u00d7 as DEFENSIVE is confirmed. The puts that are at or near intrinsic value either generate profit or expire with time remaining that can be rolled. Confirm DTE \u2265 30 on all existing contracts before close."
+    },
+    {
+      "title": "CEASEFIRE IS CONDITIONAL AND TEMPORARY \u00b7 SCORE DOES NOT CLEAR TO NEUTRAL AUTOMATICALLY",
+      "body": "Two weeks. Hormuz via Iranian military coordination \u2014 not unconditionally open. 1,000 ships backlogged at a pace of 10\u201315 per day clears 150\u2013210 ships maximum in the window. Full normalization takes months even with a permanent deal. Israel continuing Lebanon operations outside the ceasefire. The permanent deal framework is the prize \u2014 and it is not yet signed. ARES will not confirm NEUTRAL until the score reflects structural resolution, not a temporary pause. The queue fires when the data confirms it. Not before."
+    },
+    {
+      "title": "AVGO + MRVL \u2014 DUAL THESIS EVENTS + CEASEFIRE MACRO LIFT \u00b7 STRONGEST TWO POSITIONS IN BOOK TODAY",
+      "body": "AVGO carries three simultaneous positive signals \u2014 Google custom AI chip deal, Anthropic 3.5GW compute deal, and the macro relief from the ceasefire removing the war overhang. MRVL carries two \u2014 the NVDA $2B investment and the AVGO custom silicon thesis validation. Both up 3\u20135% pre-market on top of the broad market relief. Log both as THESIS+ with TIS at maximum INTACT. These two positions are performing exactly as the conviction-squared weighting model predicted they would when the macro environment cleared."
+    }
+  ],
+  "decisions": [
+    {
+      "title": "ARES watch \u2014 queue could fire this week.",
+      "body": "Score ~0.72. DEFENSIVE confirmation in progress. If Islamabad talks Friday produce a permanent deal framework: score could reach 0.65 by end of week. ARES executes the queue automatically. PM reads EOD Snapshot. No manual action required or permitted."
+    },
+    {
+      "title": "DBMF \u2014 intraday monitor.",
+      "body": "Oil \u201314%. Managed futures trend reversal risk. Flag for intraday review. If DBMF drops materially today on oil reversal signal, document as DSHP note. No action until threshold confirmed."
+    },
+    {
+      "title": "PTRH DTE check.",
+      "body": "CAM transitions to 1.5\u00d7. Verify all QQQ put contracts have DTE \u2265 30. Any contracts at or below 30 DTE need a roll execution. LAEP NORMAL parameters apply to executions today."
+    },
+    {
+      "title": "Log AVGO and MRVL thesis events.",
+      "body": "Both carry THESIS+ status. TIS at maximum INTACT. Document in session log before close. CDM architecture will automate this function once Josh builds it."
+    },
+    {
+      "title": "Watch Islamabad Friday.",
+      "body": "VP Vance leading US delegation. A signed permanent deal framework drops the score toward 0.60\u20130.65. NEUTRAL confirmation possible by end of next week. The queue is loaded and ready."
+    }
+  ]
+}

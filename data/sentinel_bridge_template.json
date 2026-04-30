@@ -1,0 +1,23 @@
+[
+  {
+    "ticker": "NVDA",
+    "gate3_raw_score": 24,
+    "source_category": "Cat B",
+    "fem_impact": "NORMAL->WATCH",
+    "regime_at_entry": "WATCH"
+  },
+  {
+    "ticker": "TSLA",
+    "gate3_raw_score": 22,
+    "source_category": "Cat B",
+    "fem_impact": "NORMAL->NORMAL",
+    "regime_at_entry": "WATCH"
+  },
+  {
+    "ticker": "MU",
+    "gate3_raw_score": 18,
+    "source_category": "Cat C",
+    "fem_impact": "NORMAL->WATCH",
+    "regime_at_entry": "NEUTRAL"
+  }
+]

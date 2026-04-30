@@ -1,0 +1,14 @@
+{
+  "TSLA": {"cik": "0001318605", "name": "Tesla, Inc."},
+  "NVDA": {"cik": "0001045810", "name": "NVIDIA CORP"},
+  "ALAB": {"cik": "0001737606", "name": "Astera Labs, Inc."},
+  "AMD": {"cik": "0000002488", "name": "Advanced Micro Devices, Inc."},
+  "PLTR": {"cik": "0001321655", "name": "Palantir Technologies Inc."},
+  "MU": {"cik": "0000723125", "name": "Micron Technology, Inc."},
+  "ANET": {"cik": "0001313169", "name": "Arista Networks, Inc."},
+  "AVGO": {"cik": "0001649338", "name": "Broadcom Inc."},
+  "MRVL": {"cik": "0001058057", "name": "Marvell Technology, Inc."},
+  "ARM": {"cik": "0001973239", "name": "Arm Holdings plc"},
+  "ETN": {"cik": "0001551182", "name": "Eaton Corporation plc"},
+  "VRT": {"cik": "0001674101", "name": "Vertiv Holdings Co"}
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "source": "SEC_EDGAR",
+    "headline": "Alphabet CEO Files Form 4",
+    "content": "Insider selling detected in latest filing.",
+    "timestamp": "2026-04-07T14:00:00Z",
+    "entities": ["Alphabet"],
+    "event_type": "INSIDER_SALE"
+  }
+]
