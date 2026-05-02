@@ -760,7 +760,7 @@ def run_backtest(
                 logger.info(f"TDC weekly audit disabled after {date.date()}: {last_intel_failure}")
 
         # ── Production module: PDS → drawdown ceiling ──
-        pds_signal = run_pds_check(nav, high_water_mark)
+        pds_signal = run_pds_check(nav, high_water_mark, last_status=last_pds_status or "NORMAL")
         if pds_signal.status in ("DELEVERAGE_1", "DELEVERAGE_2"):
             pds_was_triggered = True
 
@@ -1239,8 +1239,14 @@ def run_backtest(
                     ),
                     "Regime": aras_out.regime, "PDS_Status": pds_signal.status,
                 })
-            # Snapshot the targets we just rebalanced to — next-day comparison
-            last_target_weights = dict(target_equity_weights)
+        # Snapshot today's targets for tomorrow's cdf_target_changed comparison.
+        # Updated EVERY day (not just on rebalance) so the comparison is
+        # "did targets change today?" — a true CDF/ceiling event detector —
+        # rather than "has drift accumulated since some stale last-rebalance?"
+        # Per ARMS_Auto_Deployment_Execution_v1.1 §3: rebalancing is event-
+        # driven, not drift-monitoring. Stale-baseline accumulation was causing
+        # excess trades after the WARNING advisory fix.
+        last_target_weights = dict(target_equity_weights)
 
         # KEVLAR per-position 22% cap enforcement runs EVERY day (intra-month
         # safety guard, not a scheduled rebalance — per THB §6 KEVLAR is hard cap)
