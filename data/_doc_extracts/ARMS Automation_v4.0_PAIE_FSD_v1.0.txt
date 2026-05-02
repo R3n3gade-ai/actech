@@ -1,0 +1,105 @@
+ARMS v4.0 — FUNCTIONAL SPECIFICATION DOCUMENT
+PAIE FSD v1.0
+Portfolio Architecture Integrity Engine
+Version: 1.0   |   Effective: April 2, 2026   |   SEM Compliant: YES
+Status: CANONICAL
+Cross-references: ARMS FSD v1.1  |  PM Playbook v4.0  |  Addendum 5 (SEM)  |  Deployment Protocol v2.1  |  EOD Snapshot Spec v1.0
+1.  Purpose & Scope
+The Portfolio Architecture Integrity Engine (PAIE) is an autonomous ARMS module responsible for maintaining portfolio architecture integrity at the moment of deployment queue execution. It operates as a silent pre-execution layer — running every required check, resolving every resolvable condition per the governing rulebook, and executing or adjusting the queue without PM input.
+PAIE is the primary operational expression of the Sovereign Execution Mandate (Addendum 5). Its design is governed by one principle:
+PAIE does not replace or override CAM, CDF, PDS, or any existing ARMS module. It operates as a pre-execution integrity layer that ensures the aggregate portfolio architecture remains coherent at the moment of deployment — catching conditions that individual modules do not see because they operate on single positions, not on the book as a whole.
+2.  SEM Compliance Certification
+3.  Module Architecture
+PAIE is implemented as a single Python module:
+The module comprises four functional components:
+3.1  Thesis Tag Registry
+A structured data store mapping every position in the book to one or more thesis anchor tags. Tags are defined by the PM at position intake as a classification statement — not a mathematical decision — and implemented by engineering in rulebook.json.
+3.2  Thesis Concentration Calculator
+Calculates real-time thesis exposure weight as a percentage of total equity book NAV. Runs at pre-flight and compares calculated weights against single-thesis concentration caps defined in rulebook.json.
+3.3  Sizing Coherence Engine
+When two or more positions share a thesis tag and are subject to simultaneous deployment, validates that their relative sizing is consistent with hierarchy rules in rulebook.json. Inconsistencies are resolved automatically. The resolution is logged. The queue is adjusted. Execution proceeds.
+3.4  Deployment Pre-Flight
+The master orchestration function. Called by master_engine.py at NEUTRAL threshold detection. Runs all checks, applies all auto-resolvable adjustments, returns CLEARED / ADJUSTED / BLOCKED, and writes the complete pre-flight report to the execution log.
+4.  Execution States
+PAIE produces exactly three execution states. No other states exist.
+The BLOCKED state is the only condition that generates any PM notification — a single line in the EOD snapshot confirming that a rulebook amendment is being engineered. It is not a question. It is not a request for input.
+5.  EOD Snapshot Output
+PAIE appends a structured section to every EOD snapshot. The PM reads this as information. Format is fixed and non-negotiable:
+6.  Module Dependencies
+7.  Rulebook Structure
+All caps, hierarchy rules, and coherence logic are stored in rulebook.json — not hardcoded in paie.py. Rules are amended through the engineering process. The PM provides thesis conviction context at intake. Engineering implements it.
+8.  Explicit Scope Exclusions
+PAIE does not govern, override, or interfere with:
+CAM — PTRH sizing is fully autonomous and outside PAIE jurisdiction
+CDF — conviction decay triggers are CDF domain; PAIE reads CDF output as signal check only
+PDS — drawdown ceilings and sentiment triggers are PDS domain
+Intraday rebalancing — PAIE runs at deployment trigger events, not continuously
+Single-position sizing outside of deployment events — governed by existing module rules
+PAIE's jurisdiction is the aggregate portfolio architecture at the moment of queue execution. It sees the book as a whole. All other modules see individual positions or individual risk dimensions.
+9.  Build Specification — AT LLC
+Deliverables
+src/engine/paie.py — full module per §3 architecture
+src/data/rulebook.json — initial population per §7 structure
+src/engine/paie_test.py — unit tests covering all three execution states and all Resolution A/B/C paths
+EOD snapshot integration — PAIE log section appended per §5 format
+master_engine.py integration — preflight() called at NEUTRAL threshold
+Acceptance Criteria
+CLEARED: queue executes automatically with no human touchpoint
+ADJUSTED: queue executes with auto-resolved sizing; adjustment logged accurately
+BLOCKED: queue halts; engineering ticket auto-generated; PM receives EOD notification only — no decision prompt
+No function in paie.py accepts human input or generates a UI prompt of any kind
+All test cases pass before production deployment
+SEM Compliant: YES certification confirmed by Lead Engineer before delivery
+Estimated Build Time
+Phase 1 — core module, rulebook, unit tests: 3–4 business days
+Phase 2 — EOD and master_engine integration, end-to-end testing: 2–3 business days
+Total: 5–7 business days from kickoff.
+DOCUMENT CONTROL
+Supersedes: Nothing — originating PAIE specification.
+Cross-references: ARMS FSD v1.1, PM Playbook v4.0, Addendum 5 (SEM), Deployment Protocol v2.1, EOD Snapshot Spec v1.0.
+Next review: Upon any proposed expansion of PAIE jurisdiction or rulebook amendment.
+CONFIDENTIAL — ACHELION CAPITAL MANAGEMENT LLC — INTERNAL USE ONLY
+
+[TABLE 0]
+Core Principle | PAIE never asks the PM a question. | PAIE reports what it did. It does not request permission to do it. | Every output directed at the PM is informational, not decisional.
+
+[TABLE 1]
+SEM Compliant: YES | PAIE contains no PM interface. | PAIE contains no confirmation mechanism directed at the PM. | PAIE produces no decision prompts, approval requests, or questions directed at the PM. | PAIE output to the PM is read-only: EOD snapshot inclusion only. | All PM regulatory touchpoints generated by PAIE are administrative acknowledgments pre-populated with the action taken and the governing rule. They require no analysis.
+
+[TABLE 2]
+src/engine/paie.py
+
+[TABLE 3]
+thesis_tag_registry = { |     'GEV':   ['AI_POWER_INFRA', 'GRID_MODERNIZATION'], |     'ETN':   ['AI_POWER_INFRA', 'DISTRIBUTION_BOTTLENECK'], |     'CEG':   ['AI_POWER_INFRA', 'NUCLEAR_BASELOAD'], |     'VST':   ['AI_POWER_INFRA', 'POWER_GENERATION'], |     'VRT':   ['AI_POWER_INFRA', 'DATA_CENTER_COOLING'], |     'GOOGL': ['AI_PLATFORM',    'HYPERSCALER'], |     'NVDA':  ['AI_SILICON',     'HYPERSCALER'], |     'PLTR':  ['AI_SOFTWARE',    'DEFENSE_TECH'], |     # ... all positions tagged at intake | }
+
+[TABLE 4]
+def calculate_thesis_concentration(book, registry, nav): |     concentration = {} |     for ticker, tags in registry.items(): |         weight = book.get(ticker, {}).get('nav_weight', 0) |         for tag in tags: |             concentration[tag] = concentration.get(tag, 0) + weight |     return concentration   # { 'AI_POWER_INFRA': 0.312, ... } |  | # Example rulebook cap: | SINGLE_THESIS_CAP = 0.30   # 30% of equity book per thesis tag
+
+[TABLE 5]
+def check_sizing_coherence(queue, registry, rulebook): |     adjustments = [] |     pairs = find_shared_thesis_pairs(queue, registry) |     for pair in pairs: |         result = apply_hierarchy_rule(pair, rulebook) |         if result.adjusted: |             adjustments.append(result.log_entry) |     return adjusted_queue, adjustments
+
+[TABLE 6]
+def deployment_preflight(queue, book, nav, regime_score): |     log = PreflightLog(timestamp=now(), trigger_score=regime_score) |  |     # Step 1: Project post-deployment thesis concentration |     projected = simulate_post_deployment_concentration(queue, book, nav) |     breaches  = check_cap_breaches(projected, rulebook.caps) |  |     # Step 2: Auto-resolve cap breaches per rulebook |     if breaches: |         queue, adjustments = resolve_cap_breaches(queue, breaches, rulebook) |         log.record_adjustments(adjustments) |  |     # Step 3: Sizing coherence check and auto-resolution |     queue, coherence_adj = check_sizing_coherence(queue, registry, rulebook) |     log.record_adjustments(coherence_adj) |  |     # Step 4: CDF signal validation (read-only from cdf.py) |     cdf_alerts = validate_cdf_signals(queue) |     log.record_cdf_status(cdf_alerts) |  |     # Step 5: Detect unresolvable rule conflicts (Resolution C only) |     conflicts = detect_rule_conflicts(queue, rulebook) |     if conflicts: |         log.set_status('BLOCKED') |         engineering_ticket.create(conflicts) |         return log   # Execution halted. No PM prompt generated. |  |     log.set_status('CLEARED' if not adjustments else 'ADJUSTED') |     execution_engine.execute(queue) |     return log
+
+[TABLE 7]
+Status || Condition || System Response
+CLEARED || All checks pass. No cap breaches. No coherence conflicts. || Queue executes automatically. Entry written to execution log.
+ADJUSTED || Cap breach or coherence gap detected. Resolved by existing rulebook rule. || PAIE auto-adjusts sizing. Adjustment logged. Execution proceeds. PM reads outcome in EOD snapshot.
+BLOCKED || Conflicting rules with no defined hierarchy. Resolution C condition. || Queue halted. Engineering ticket auto-generated. PM receives single EOD notification that amendment is in progress. No PM decision required.
+
+[TABLE 8]
+══════════════════════════════════════════════════════ | PAIE — PRE-FLIGHT EXECUTION LOG | Trigger:        COMPOSITE = 0.63 → NEUTRAL | Status:         ADJUSTED | Executed:       2026-04-02  14:32:17 UTC | ══════════════════════════════════════════════════════ |  | THESIS CONCENTRATION (POST-DEPLOYMENT) |   AI_POWER_INFRA    27.4%   [cap: 30.0%]   OK |   AI_SILICON        18.3%   [cap: 30.0%]   OK |   AI_PLATFORM       12.1%   [cap: 30.0%]   OK |   HYPERSCALER       21.6%   [cap: 25.0%]   OK |  | SIZING ADJUSTMENTS |   GEV: 3.50% → 3.10%  [AI_POWER_INFRA cap resolution, rule 4.2] |   ETN: 2.00% → 2.40%  [coherence alignment, shared thesis GEV/ETN] |  | CDF SIGNAL STATUS |   GEV:   CLEAN    ETN:   CLEAN |   GOOGL: CLEAN    CEG:   CLEAN |  | DEPLOYMENT EXECUTED |   GOOGL  3.50%  ✓ |   GEV    3.10%  ✓  (adjusted from 3.50%) |   ETN    2.40%  ✓  (adjusted from 2.00%) |   CEG    2.20%  ✓ |   VST    1.80%  ✓ | ══════════════════════════════════════════════════════
+
+[TABLE 9]
+Module || Relationship || Data Flow
+master_engine.py || Calls paie.deployment_preflight() at NEUTRAL threshold detection || Receives CLEARED / ADJUSTED / BLOCKED status
+regime_composite.py || Provides live composite score and regime classification || Read-only
+cam.py || Provides PTRH sizing — excluded from PAIE jurisdiction || Read-only
+cdf.py || Provides conviction decay scores per position || Read-only
+pds.py || Provides drawdown ceiling state || Read-only
+eod_snapshot.py || Receives PAIE execution log for nightly report inclusion || Write — appends PAIE section
+deployment_queue.json || Source of record for pending deployment targets and sizes || Read — then modified if ADJUSTED
+rulebook.json || Canonical source for all cap rules and sizing hierarchy || Read-only — amendments via engineering process only
+
+[TABLE 10]
+{ |   "thesis_caps": { |     "AI_POWER_INFRA":   0.30, |     "AI_SILICON":       0.30, |     "AI_PLATFORM":      0.30, |     "HYPERSCALER":      0.25, |     "NUCLEAR_BASELOAD": 0.15, |     "DEFAULT":          0.30 |   }, |   "sizing_hierarchy": { |     "AI_POWER_INFRA": { |       "description": "When GEV and ETN share AI_POWER_INFRA and total |                       exceeds cap, trim GEV first. ETN has higher |                       near-term revenue certainty on distribution side.", |       "trim_order":           ["GEV", "ETN"], |       "coherence_floor_ratio": 0.65 |     } |   }, |   "conflict_resolution_protocol": "engineering_ticket" | }

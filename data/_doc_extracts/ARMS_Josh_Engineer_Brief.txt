@@ -1,0 +1,48 @@
+ACHELION CAPITAL MANAGEMENT 
+ARMS ENGINEER BRIEF 
+For Josh Paul | Before You Write a Single Line of Code 
+THE PRIMARY DIRECTIVE 
+ARMS automates the translation of regime state into portfolio action — so that when the market moves, the portfolio responds correctly, 
+immediately, and without the PM being in the room. 
+WHAT THIS MEANS IN PLAIN LANGUAGE 
+The PM makes one decision: which companies to own and why. 
+Everything after that decision is your system's job. 
+When the macro environment shifts — a war, a rate shock, a credit event — ARMS detects it, scores it, classifies it,  and executes every consequence of that classification. Automatically. Completely. Without a phone call. 
+THE LINE YOU MUST NEVER CROSS 
+Detect regime changes from live market data — every 5 minutes. 
+Set the equity allocation ceiling based on regime score. 
+Size and adjust SLOF (offensive leverage) when regime improves. 
+Size PTRH (QQQ put hedge) autonomously via CAM — always  
+THE SYSTEM DOES 
+THE SYSTEM DOES NOT 
+on. 
+Construct and submit orders through the broker API. Enforce drawdown ceilings via PDS without asking anyone. Trim positions that decay past CDF thresholds. 
+Block concentrated exposure above FEM limits. 
+Log everything. Report everything. Require nothing from the PM. 
+Select which companies to own. That is the PM's thesis work. Generate investment ideas. Gate 6 judgment is human-only. Override the PM's conviction on a position. 
+Make decisions that weren't pre-defined in the architecture.
+Require approval to execute what the rules already specify. 
+Ever touch a single-stock option. SLOF and PTRH only. 
+Put anything in the PM queue that the system should handle itself. 
+THREE RULES THAT GOVERN EVERYTHING YOU BUILD 
+Rule 1 — The PM queue must shrink over time, never grow. If something lands in the PM's queue that the system  should have handled, that is a bug. Fix it. 
+Rule 2 — Execution happens first. The PM receives confirmation of what the system did — not a request for  permission to do it. Design every module with this in mind. 
+Rule 3 — Defense before offense, always. When regime deteriorates, SLOF comes off before equity trims. PTRH is  never reduced during a downgrade. Survival is the first job. 
+THE ONLY TWO OPTIONS INSTRUMENTS IN ARMS 
+Synthetic long: buy ATM call + sell ATM put. Same strike. Delta  
++1.0. 
+SLOF 
+Offensive 
+PTRH 
+Defensive 
+WHAT 'DONE' LOOKS LIKE 
+Purpose: amplify upside in favorable regimes. Not a hedge. 
+Active in RISK_ON and WATCH. Reduced at NEUTRAL.  Removed entirely at DEFENSIVE and CRASH. 
+Automated by the Decision Engine on every regime transition. 
+QQQ outright puts only. No single-stock puts. No put spreads. No  exceptions. 
+Purpose: permanent portfolio tail hedge. Always on regardless of  regime. 
+CAM sizes it autonomously every 5 minutes using four multipliers. 
+Baseline floor: 1.2% NAV. CAM cannot go below this. Rolls at 30  DTE. 
+The system is complete when the PM can be unreachable for an entire trading session — and the portfolio behaves  exactly as the architecture specifies. No calls needed. No approvals pending. No manual orders required. 
+Until that is true, the build is not finished. 
+Achelion Technology LLC | ARMS v4.0 | March 2026 | Confidential

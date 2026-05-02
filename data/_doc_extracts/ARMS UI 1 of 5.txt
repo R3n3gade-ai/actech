@@ -1,0 +1,21 @@
+Achelion ARMS - Daily Monitor
+Wednesday, March 25, 2026 Architecture AB v4.0 58/20/14/8 LAEP: ELEVATED (VIX ~26)
+MACRO COMPASS REGIME SCORING
+A REGIME: DEFENSIVE - Ceiling 40%
+Current & previous regime. scored from live inputs. RISK_ON→ WATCH → NEUTRAL → DEFENSIVE → Ceiling = lower of ARAS or CRASH
+PDS
+PREVIOUS REGIME - MARCH 24, 2026 (YESTERDAY)
+DEFENSIVE
+Ceiling: 40%
+0.74
+Iran war week 4. Hormuz restricted Brent ~$101 10Y 4.42% VIX ~27. rate hike prob 21.7% S&P -0.37% Nasdaq -0.84% SLOF: removed
+40% ARAS ceiling
+SLOF X Removed
+✓ Transition driver: US sent Iran 15-point peace plan via Pakistan. Trump: "in negotiations right now". Brent fell ~5% overnight to ~$98 • S&P futures +0.8% 10Y yield easing -6bps to ~4.37% VIX softening to ~26 · Iran denies direct talks but Pakistan hosting negotiations Ceasefire not confirmed - Hormuz still restricted
+CURRENT REGIME - MARCH 25, 2026 DEFENSIVE Ceiling: 40% Score softening
+0.68
+40%
+ARAS ceiling
+SLOF X Removed
+Peace plan positive signal. Brent ~$98 (off $112 high) oil WTI -7.8% on day. S&P futures +0.8% · 10Y 4.37% (easing) · VIX ~26 (declining). Hormuz still restricted - deal not confirmed regime label unchanged: DEFENSIVE score tracking toward NEUTRAL boundary (0.65) · RPE: transition probability to NEUTRAL rising
+Score guide: RISK_ON <0.30 WATCH 0.31-0.50 NEUTRAL 0.51-0.65 DEFENSIVE 0.66-0.80 CRASH >0.80 | RPE alert: 38% probability of NEUTRAL within 72 hours if Hormuz shipping resumes. Watch oil below $92 and 10Y below 4.30% as transition triggers.

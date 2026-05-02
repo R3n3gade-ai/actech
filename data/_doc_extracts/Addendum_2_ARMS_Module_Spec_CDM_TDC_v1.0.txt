@@ -1,0 +1,286 @@
+ARMS Module Specification — CDM + TDC | Addendum 2 to FSD v1.1 | CONFIDENTIAL 
+ACHELION CAPITAL MANAGEMENT, LLC 
+ARMS Module Specification 
+Addendum 2 to FSD v1.1 
+Module C: Customer Dependency Map (CDM) 
+Module D: Thesis Dependency Checker (TDC) 
+For: Josh Paul — Lead Developer 
+Version: 1.0 — March 26, 2026 
+Classification: CONFIDENTIAL — GP and Development Use Only 
+These two modules close the cross-sector signal propagation gap. The gap was identified  when the daily monitor failed to surface MU's downstream exposure to the Google antitrust  ruling. That class of risk — legal or regulatory impairment of a named demand driver — is  now systematically detected. 
+"The system catches what the PM should not have to catch."
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 1 
+ARMS Module Specification — CDM + TDC | Addendum 2 to FSD v1.1 | CONFIDENTIAL 
+0. Why These Two Modules Exist — The Incident That  Created Them 
+On March 26, 2026, the daily ARMS monitor failed to surface a material risk to MU's thesis.  The PM caught it. The system did not. These modules ensure that class of failure does not  recur. 
+The Google antitrust case — specifically the DOJ pursuing structural remedies including potential  Chrome divestiture and restrictions on default search agreements — creates direct downstream risk to  Micron's conviction thesis. The connection runs three hops: Google faces legal constraints → Google's  AI infrastructure capex is impaired → HBM memory demand from Google weakens → MU's primary  bull case thesis takes a direct hit. 
+The daily monitor flagged MU as OK. It should have flagged WATCH with a cross-reference alert citing  the Google antitrust development as a named demand driver under material legal uncertainty. It did not  — because the architecture has no mechanism to connect a legal proceeding against a named entity to  the portfolio positions that depend on that entity for thesis validation. 
+This is not a price alert failure. MU's price was stable. This is a thesis integrity failure — the system was  not watching whether the reasons we own what we own are still intact. That is a more dangerous blind  spot than a price alert miss, because thesis deterioration precedes price deterioration. The PM who  catches it early preserves capital. The PM who catches it late is managing a loss. 
+The Google-MU connection also has broader FEM implications. NVDA, AVGO, ANET, and MRVL all  have material Google revenue exposure. A single legal proceeding against one hyperscaler propagates  risk across five positions simultaneously. The Customer Dependency Map makes that propagation  visible in real time. The Thesis Dependency Checker makes it actionable. 
+These two modules together form the thesis integrity layer of ARMS — the system that continuously  audits whether the reasons we own each position are still structurally intact, independent of price  performance.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 2 
+ARMS Module Specification — CDM + TDC | Addendum 2 to FSD v1.1 | CONFIDENTIAL 
+MODULE C — CUSTOMER DEPENDENCY MAP CDM — Cross-Sector Signal Propagation Layer 
+1. Module C Overview 
+1.1 The Dependency Map Structure 
+The dependency map is a configuration file that encodes, for each portfolio position, the named entities  whose health is material to the thesis. It is populated manually by the PM when a position enters the  book via SENTINEL and updated when the thesis evolves. It is the machine-readable version of the  Gate 2 SENTINEL answer: who are the non-optional customers, platforms, or infrastructure providers  this company depends on? 
+The map has three dependency categories. Primary demand drivers are the entities that directly  purchase this company's products or services at material scale. Thesis enablers are the entities whose  continued operation or investment is necessary for the thesis to hold — a hyperscaler that is not yet a  customer but whose capex trajectory the thesis depends on. Regulatory counterparties are the entities  whose legal or regulatory status directly affects the position — a government customer, a platform this  company distributes through, or a regulator with jurisdiction over this company's market. 
+Architecture AB — current dependency map
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 3 
+ARMS Module Specification — CDM + TDC | Addendum 2 to FSD v1.1 | CONFIDENTIAL 
+The following table is the initial population of the CDM for the current equity book. Josh populates this  as the config file on Day 1. The PM reviews and confirms accuracy. It is a living document — updated  every time a position is added, removed, or when the thesis evolves.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 4 
+ARMS Module Specification — CDM + TDC | Addendum 2 to FSD v1.1 | CONFIDENTIAL 
+1.2 Named Entity Alert Logic 
+CDM runs a continuous named entity recognition scan against the incoming news feed, SEC EDGAR  filings, and regulatory announcements. When a named entity in the dependency map appears in a new  filing or news item, CDM classifies the event type and propagates an alert to every position that lists  that entity as a dependency. 
+1.3 The Google-MU Case Study — How CDM Would Have Worked
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 5 
+ARMS Module Specification — CDM + TDC | Addendum 2 to FSD v1.1 | CONFIDENTIAL 
+This is the exact failure the CDM closes. Walk through it precisely so Josh understands the  design intent. 
+On the morning of March 26, 2026, the following events were present in public data: (1) Google  antitrust ruling — DOJ pursuing structural remedies including Chrome divestiture. (2) MU conviction  thesis depends on HBM demand from Google as a named primary demand driver. 
+With CDM live, the sequence would have been: 
+1. CDM ingests news feed. Named entity recognition identifies 'Google' and 'Alphabet' in antitrust  articles. 
+2. CDM looks up 'Google' in the dependency map. Finds: MU (primary demand driver), NVDA  (primary demand driver), AMD (primary demand driver), ALAB (primary demand driver), ANET  (primary demand driver), AVGO (thesis enabler), MRVL (primary demand driver). 3. CDM classifies event type: LEGAL_RULING. Severity: CRITICAL. 
+4. CDM propagates CRITICAL alert to all seven positions simultaneously. 
+5. Each alert reads: 'Named demand driver GOOG/Alphabet subject to antitrust remedy  proceedings. Structural remedies under consideration may impair AI infrastructure capex.  Thesis dependency review required.' 
+6. TDC (Module D) receives the propagation signal and queues a thesis integrity review for each  dependent position within the next 6 hours. 
+7. Daily monitor surfaces a DANGER alert in the alerts section: 'CDM: GOOG legal ruling affects 7  positions. TDC thesis review queued. See dependency cross-reference.' 
+Total time from event to PM alert: under 30 minutes from ingestion. The PM does not need to be  reading broadly. The system is reading broadly for them and routing the signal to exactly the positions it  affects. 
+1.4 Config File Specification 
+# src/config/position_dependency_map.py 
+# Updated by PM when positions enter or exit the book via SENTINEL 
+POSITION_DEPENDENCIES = { 
+ 'MU': { 
+ 'primary_demand_drivers': [ 
+ 'Microsoft', 'Google', 'Alphabet', 'Amazon', 'AWS', 
+ 'Meta', 'Oracle' 
+ ], 
+ 'thesis_enablers': [ 
+ 'TSMC', 'HBM demand cycle', 'AI training infrastructure' 
+ ], 
+ 'regulatory_counterparties': [ 
+ 'DOC', 'BIS', 'CHIPS Act', 'China export restrictions' 
+ ],
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 6 
+ARMS Module Specification — CDM + TDC | Addendum 2 to FSD v1.1 | CONFIDENTIAL 
+ 'alert_sensitivity': 'CRITICAL' 
+ }, 
+ 'NVDA': { 
+ 'primary_demand_drivers': [ 
+ 'Microsoft', 'Google', 'Alphabet', 'Amazon', 'AWS',  'Meta', 'Oracle', 'OpenAI' 
+ ], 
+ 'thesis_enablers': ['TSMC', 'AI inference demand', 'Blackwell adoption'],  'regulatory_counterparties': ['BIS', 'Senate Commerce', 'EU antitrust'],  'alert_sensitivity': 'CRITICAL' 
+ }, 
+ # ... remaining positions follow same pattern 
+} 
+# Alert sensitivity levels 
+ALERT_SENSITIVITY = { 
+ 'CRITICAL': ['LEGAL_RULING', 'REGULATORY_FILING', 
+ 'EARNINGS_WARNING', 'MA_ANNOUNCEMENT'], 
+ 'HIGH': ['LEADERSHIP_CHANGE', 'CREDIT_EVENT'], 
+ 'MEDIUM': ['PARTNERSHIP_CHANGE', 'PRODUCT_DELAY'] 
+}
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 7 
+ARMS Module Specification — CDM + TDC | Addendum 2 to FSD v1.1 | CONFIDENTIAL 
+1.5 Daily Monitor Integration 
+CDM adds two elements to the daily monitor. The first is a cross-reference panel in the equity book  section — each position shows its named dependency alert status alongside its price and flag badges.  The second is a dedicated CDM alert in the alerts section when a CRITICAL or HIGH event fires.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 8 
+ARMS Module Specification — CDM + TDC | Addendum 2 to FSD v1.1 | CONFIDENTIAL 
+MODULE D — THESIS DEPENDENCY CHECKER TDC — Continuous Thesis Integrity Auditing 
+2. Module D Overview 
+2.1 The Two TDC Triggers 
+Trigger 1 — CDM propagation (immediate) 
+When CDM fires a CRITICAL or HIGH alert, TDC receives the signal and immediately runs a thesis  integrity review for every affected position. This is the reactive layer — it responds to known events as  soon as they are detected. 
+The review asks a single structured question via the Claude API: given this specific development  affecting [NAMED ENTITY], does the original thesis for [POSITION] remain intact? The API call  includes the original SENTINEL gate records for the position, the current CDM event description, and  the three most relevant documents from the knowledge base. It returns a structured JSON response  with a thesis integrity score and a specific bear case articulation if the score falls below the threshold.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 9 
+ARMS Module Specification — CDM + TDC | Addendum 2 to FSD v1.1 | CONFIDENTIAL 
+Trigger 2 — Weekly scheduled audit (proactive) 
+Every Monday at 6AM CT, TDC runs a scheduled thesis integrity audit on every position in the book — regardless of whether CDM has fired. This is the proactive layer. It catches slow-moving thesis  deterioration that no single news event triggers but that accumulates over time: a named customer  quietly reducing AI capex in earnings calls, a regulatory posture shifting in a series of small rulings, a  technology platform trend moving against the thesis. 
+The weekly audit pulls the last 7 days of news and filings relevant to each position's named  dependencies and asks: has anything in the past 7 days provided evidence that weakens any of the  original SENTINEL gate assumptions for this position? This is the continuous SENTINEL adversarial  cross-examination that the manual system only runs episodically. 
+2.2 Thesis Integrity Score 
+TDC produces a Thesis Integrity Score (TIS) for each position on every review. The TIS is distinct from  the MICS conviction score. MICS measures entry quality. TIS measures ongoing thesis validity. 
+IMPORTANT: TIS IMPAIRED or BROKEN does not automatically trigger a sell order. It triggers a  mandatory human review because thesis assessment is a judgment call that requires the PM's pre consensus intelligence. What TIS cannot know is whether the PM has new Category A information — a  direct conversation with a company insider, a pattern recognition from prior cycles — that explains why  the thesis remains intact despite the surface-level evidence. TDC surfaces the question. The PM  answers it.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 10 
+ARMS Module Specification — CDM + TDC | Addendum 2 to FSD v1.1 | CONFIDENTIAL 
+2.3 Claude API Call Specification 
+Every TDC review routes through the existing Claude API wrapper  
+(src/intelligence/claude_wrapper.py). The prompt is structured to return parseable JSON. 
+def run_thesis_review(position: str, 
+ event_description: str, 
+sentinel_gates: Dict, 
+knowledge_context: List[str]) -> ThesisReviewResult: 
+ prompt = f''' 
+ You are running a thesis integrity review for position {position}. 
+ ORIGINAL SENTINEL GATE RECORDS: 
+ {json.dumps(sentinel_gates, indent=2)} 
+ CURRENT DEVELOPMENT: 
+ {event_description} 
+ RELEVANT CONTEXT FROM KNOWLEDGE BASE: 
+ {chr(10).join(knowledge_context)} 
+ Evaluate whether the original thesis remains intact. 
+ Return ONLY valid JSON with this exact structure: 
+ {{ 
+ 'tis_score': <float 0.0-10.0>, 
+ 'tis_label': <'INTACT'|'WATCH'|'IMPAIRED'|'BROKEN'>, 
+ 'gates_affected': [<list of gate numbers with weakened assumptions>],  'bear_case_evidence': <specific evidence string or null>, 
+ 'bull_case_rebuttal': <why thesis may still hold despite evidence>,  'recommended_action': <'MONITOR'|'WATCH_FLAG'|'PM_REVIEW'|'URGENT_REVIEW'>  }} 
+ ''' 
+ response = claude_wrapper.call( 
+ task_type='thesis_review', 
+ prompt=prompt, 
+ knowledge_base_query=f'{position} thesis SENTINEL gates' 
+ ) 
+ result = json.loads(response) 
+ return ThesisReviewResult(**result, position=position, 
+ reviewed_at=datetime.utcnow().isoformat()) 
+2.4 The Google-MU Case Study — How TDC Would Have Worked Continue the CDM case study through TDC to show the complete signal-to-action chain.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 11 
+ARMS Module Specification — CDM + TDC | Addendum 2 to FSD v1.1 | CONFIDENTIAL 
+Continuing from Section 1.3: CDM has propagated a CRITICAL alert to MU citing Google antitrust  proceedings. TDC receives the signal and runs immediately. 
+8. TDC retrieves MU's original SENTINEL gate records from the knowledge base. Key Gate 2  record: 'HBM memory is non-optional for AI training at scale. Primary buyers: Microsoft, Google,  Amazon, Meta. No substitution available at current HBM3E performance specifications.' 
+9. TDC retrieves the CDM event description: 'DOJ pursuing structural remedies against  Google/Alphabet including potential Chrome divestiture and default search agreement  restrictions. Legal proceedings ongoing with 12-24 month resolution timeline.' 
+10. TDC runs Claude API thesis review. The model assesses: does potential Google capex  impairment materially weaken the Gate 2 non-optional thesis for MU? 
+11. API response: TIS score 6.2 — WATCH. Gates affected: [Gate 2]. Bear case evidence: 'Google  represents approximately 15-20% of HBM demand. Legal proceedings creating capex  uncertainty. Other hyperscalers (Microsoft, Amazon) likely absorb partial slack but full demand  replacement not guaranteed.' Bull case rebuttal: 'AI training demand is supply-constrained, not  demand-constrained at current scale. Google impairment of 15-20% demand may be offset by  Amazon and Microsoft acceleration.' 
+12. TDC upgrades MU flag to WATCH. Logs TIS score 6.2 with full review record to session log. 13. Daily monitor surfaces: 'TDC WATCH: MU thesis integrity 6.2/10. Google antitrust proceedings  affect named demand driver. Gate 2 assumption partially weakened. Bear case: HBM demand  concentration risk elevated. Bull case: remaining hyperscaler absorption likely sufficient. PM  review recommended.' 
+The PM now has a specific, structured, evidence-based thesis integrity assessment rather than a price  alert or a generic flag. The decision they make — hold with conviction, reduce weight, or initiate a full  SENTINEL re-check — is informed by exactly the right analysis. 
+2.5 TDC Data Structures 
+@dataclass class ThesisReviewResult: 
+ position: str 
+ tis_score: float # 0.0 - 10.0 
+ tis_label: str # INTACT | WATCH | IMPAIRED | BROKEN 
+ gates_affected: List[int] # SENTINEL gate numbers 
+ bear_case_evidence: str # specific evidence text or None 
+ bull_case_rebuttal: str # why thesis may still hold 
+ recommended_action: str # MONITOR | WATCH_FLAG | PM_REVIEW | URGENT  trigger_type: str # 'CDM_PROPAGATION' | 'WEEKLY_AUDIT' 
+ trigger_entity: str # named entity that triggered review 
+ reviewed_at: str # ISO timestamp 
+ api_cost_usd: float # logged for monthly cost tracking 
+@dataclass class TDCStatus: 
+ last_weekly_audit: str # ISO date of last full audit 
+ positions_at_watch: List[str] # positions currently TIS WATCH 
+ positions_impaired: List[str] # positions currently TIS IMPAIRED
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 12 
+ARMS Module Specification — CDM + TDC | Addendum 2 to FSD v1.1 | CONFIDENTIAL 
+ positions_broken: List[str] # positions currently TIS BROKEN  pending_pm_reviews: int # Tier 1 actions awaiting PM response  last_cdm_propagation: str # ISO timestamp of last CDM alert
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 13 
+ARMS Module Specification — CDM + TDC | Addendum 2 to FSD v1.1 | CONFIDENTIAL 
+2.6 The Insider Selling Trigger — Closing the ALAB Gap 
+The ALAB situation identified a second related gap: CEO insider selling is Category A bear case  evidence in the SENTINEL framework but was not a named first-class signal in any ARMS module.  CDM and TDC together close this gap. 
+Josh should add SEC Form 4 filings to the CDM named entity event types. When a CEO or CFO of a  portfolio company files a Form 4 disclosing open-market sales above a defined threshold — proposed:  $50,000 for C-suite open-market sales, excluding pre-planned 10b5-1 sales — CDM fires a HIGH alert  and TDC runs an immediate thesis review for that position. 
+# Add to CDM event type classification: 
+'INSIDER_SALE': { 
+ 'severity': 'HIGH', 
+ 'threshold_usd': 50000, 
+ 'roles': ['CEO', 'CFO', 'President'], 
+ 'exclude_10b5_1': True, 
+ 'cdf_acceleration_days': 21, 
+ 'tdc_review_hours': 6 
+}
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 14 
+ARMS Module Specification — CDM + TDC | Addendum 2 to FSD v1.1 | CONFIDENTIAL 
+3. Combined Build Plan for Josh 
+Build Module C (CDM) first — it is the data layer. Module D (TDC) depends on it. Both are  buildable within one week total. 
+3.1 Testing Protocol — Module C (CDM) 
+14. Seed the news feed with the Google antitrust article from March 26, 2026. Verify CDM identifies  'Google' and 'Alphabet' as named entities. Verify it propagates alerts to NVDA, AMD, MU,  ALAB, ANET, AVGO, and MRVL. Verify TSLA, PLTR, ETN, and VRT do not receive alerts. 
+15. Simulate a Form 4 filing for ALAB CEO with an open-market sale of $75,000. Verify CDM fires a  HIGH alert for ALAB only. Verify 10b5-1 sale simulation does not trigger the alert. 
+16. Simulate a positive event for a named entity — Google announces expanded AI capex. Verify  CDM logs it as LOW severity and generates no alert. Verify no TDC review is queued. 17. Verify all CDM events are logged to the session log with entity name, event type, source,  affected positions, severity, and timestamp. 
+3.2 Testing Protocol — Module D (TDC) 
+18. Trigger a TDC review manually for MU using the Google antitrust event description. Verify the  Claude API call returns valid JSON. Verify the TIS score is in the WATCH range (6.0-7.9). Verify  the gates_affected field includes Gate 2. Verify the bear_case_evidence field is populated.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 15 
+ARMS Module Specification — CDM + TDC | Addendum 2 to FSD v1.1 | CONFIDENTIAL 
+19. Trigger a TDC weekly audit for all 12 positions. Verify all positions receive a TIS score. Verify  the audit completes within 30 minutes. Verify total API cost is below $6 for a full 12-position  audit. 
+20. Simulate a BROKEN thesis scenario (TIS < 4.0). Verify CDF accelerated review is triggered.  Verify PM review is queued as Tier 1 action with 24-hour window. Verify the session log  captures the full review record. 
+21. Allow a Tier 1 PM review window to expire with no response. Verify the session log records  'thesis confirmed by non-response' — not an execution action. TDC is advisory. It never  executes a trade. 
+3.3 Updated File Structure 
+3.4 What Disappears From Human Responsibility After These Modules Are  Built 
+This is the measure of the blade sharpening. After CDM and TDC are live, the following are no longer  the PM's responsibility to catch manually: 
+• Cross-sector signal propagation — a legal ruling against a named entity automatically reaches  every dependent position within 30 minutes. 
+• Thesis integrity monitoring — every position is audited weekly against its original SENTINEL  gate assumptions. Deterioration is flagged before it becomes price deterioration.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 16 
+ARMS Module Specification — CDM + TDC | Addendum 2 to FSD v1.1 | CONFIDENTIAL 
+• Insider selling detection — Form 4 filings trigger automatic CDM alerts and CDF acceleration.  The four-day ALAB delay becomes a same-day detection. 
+• Hyperscaler capex monitoring — earnings warnings from Microsoft, Google, Amazon, or Meta  automatically propagate to every position in the book with exposure to that entity. • Regulatory event monitoring — DOJ filings, BIS export control rulemakings, SEC investigations  — all monitored against named counterparties and propagated to dependent positions  automatically. 
+What remains the PM's responsibility: providing the pre-consensus intelligence — the Category A  knowledge from direct conversations, the 28-year pattern recognition — that the system cannot  generate. The PM's job is the insight that precedes the data. The system's job is everything that follows  it. 
+The gap that allowed the Google-MU connection to be missed is now closed. The system  catches what the PM should not have to catch. 
+"The system catches what the PM should not have to catch." 
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 17 
+
+[TABLE 0]
+File || src/config/position_dependency_map.py — new config file  src/engine/cdm.py — new module
+Tier classification || Tier 0 — monitoring and alerting only. No execution. Feeds TDC  (Module D) with cross-reference signals.
+Build time || 1 day — config population is manual; the monitoring logic is  simple pattern matching against named entities.
+Dependencies || News feed (free — NewsAPI or EDGAR RSS) ·   | position_dependency_map.py config · session log
+Ongoing cost || $0 — free news feeds sufficient for named entity monitoring
+Feeds into || Thesis Dependency Checker (Module D) · daily monitor WATCH  flags · FEM cross-reference layer
+Key insight || This module does not predict outcomes. It propagates known  facts — a legal ruling, a regulatory filing, an earnings warning  from a named demand driver — to every dependent position   | immediately. Speed and completeness of propagation is the  entire value.
+
+[TABLE 1]
+Ticker || Primary demand   | drivers || Thesis enablers || Regulatory   | counterparties || Alert sensitivity
+TSLA || None (direct   | consumer + fleet) || US EV tax credit   | policy, SpaceX/xAI  ecosystem || NHTSA (autonomy),  SEC (Musk   | disclosures), DOE  (energy storage) || HIGH —  | regulatory and   | Musk-related   | events
+NVDA || Microsoft, Google,  Amazon, Meta,   | Oracle || US-China export   | control policy, TSMC  capacity || BIS (export controls),  EU antitrust, Senate  Commerce   | Committee || CRITICAL —  | export controls   | and hyperscaler  capex events
+AMD || Microsoft, Google,  Amazon, Meta || TSMC capacity, x86  ecosystem health || BIS (export controls),  EU antitrust || HIGH — export  controls and   | hyperscaler   | events
+PLTR || US DOD, US DHS,  US intelligence   | community, NATO  allies || US defense budget,  AI executive orders || DOD contracting,   | ITAR, FedRAMP || HIGH — defense  budget and   | government AI   | policy events
+ALAB || Microsoft, Google,  Amazon, Meta   | (hyperscaler  | PCIe/CXL   | connectivity) || AI data center build  cycle, PCIe Gen 6  adoption || SEC (insider trading  — active flag) || CRITICAL —  | hyperscaler   | capex and   | insider activity
+MU || Microsoft, Google,  Amazon, Meta (HBM  buyers),   | Samsung/SK Hynix  competitive dynamic || AI training and   | inference demand,  HBM3E adoption   | cycle || DOC (China sales   | restrictions), CHIPS  Act compliance || CRITICAL —  | hyperscaler   | capex and export  control events
+ANET || Microsoft, Meta,   | Google, Amazon   | (hyperscaler   | networking) || AI data center   | networking upgrade  cycle || EU antitrust, FCC || HIGH —  | hyperscaler   | capex events
+AVGO || Google, Apple, Meta  (custom ASICs),   | OpenAI || TSMC capacity,   | custom silicon   | adoption vs NVDA || EU antitrust   | (Broadcom-VMware  remedies ongoing),  BIS || HIGH — TSMC  capacity and   | antitrust events
+MRVL || Microsoft, Google,  Amazon (custom   | silicon + networking) || 5G infrastructure   | build, cloud   | networking upgrade || BIS (export controls),  EU antitrust || HIGH —  | hyperscaler and  export control   | events
+ARM || Apple, NVDA,   | Qualcomm, || Mobile and AI chip  design adoption, || UK CMA, EU   | antitrust, SoftBank  relationship || MEDIUM —  | licensing dispute
+
+[TABLE 2]
+ || Samsung, Google   | (licensing) || RISC-V competitive  threat ||  || and antitrust   | events
+ETN || Data center   | operators, utilities,  hyperscalers (power  infrastructure) || US data center build  cycle, grid   | modernization policy || FERC, state utility   | regulators, EPA || MEDIUM —  | energy policy   | and grid   | regulation events
+VRT || Hyperscalers,   | colocation data   | centers, telecom   | operators (cooling +  power) || AI data center build  cycle, liquid cooling  adoption || None material at   | current scale || MEDIUM — data  center build   | cycle events
+
+[TABLE 3]
+Event type || Examples || Alert severity || Action triggered
+Legal ruling or   | judgment || Antitrust ruling, patent  judgment, regulatory  enforcement action || CRITICAL || Immediate TDC thesis review  queued for all dependent  positions
+Regulatory filing or  proceeding || DOJ remedy proposal,  SEC investigation,   | export control   | rulemaking || HIGH || TDC review queued within 24  hours for all dependent   | positions
+Earnings warning  or guidance cut   | from named driver || Hyperscaler reduces  capex guidance,   | announces data center  delay || HIGH || TDC review queued within 24  hours. FEM re-run triggered.
+Leadership   | change at named  driver || CEO departure, CFO  change at primary   | customer || MEDIUM || TDC flags for next weekly  review cycle
+M&A   | announcement   | involving named   | driver || Named driver acquired,  merged, or divested || HIGH || TDC review queued within 24  hours. Dependency map   | update required.
+Positive   | development for   | named driver || Named driver expands  capex, announces new  product cycle || LOW || No alert — positive   | dependency events do not  require thesis review. Noted  in session log.
+
+[TABLE 4]
+Equity book column added || Dependency status badge: CLEAR (green) / WATCH (amber) /  ALERT (red) based on most severe active CDM signal for that  position
+Alert format || 'CDM ALERT: [NAMED ENTITY] [EVENT TYPE] — affects [N]  positions: [TICKER LIST]. TDC thesis review queued.'
+Alert severity mapping || LEGAL_RULING → DANGER alert · REGULATORY_FILING →  WARNING alert · EARNINGS_WARNING → WARNING alert
+Session log || Every CDM propagation event logged with: entity name, event  type, source URL, positions affected, timestamp, severity  classification
+
+[TABLE 5]
+File || src/engine/tdc.py — new module
+Tier classification || Tier 1 — system queues SENTINEL adversarial review. PM has  24-hour response window. Silence = system logs as 'thesis  confirmed by non-response' and continues monitoring.
+Build time || 2-3 days — requires Claude API integration (already specified in  FSD v1.1 Section 11) and CDM as upstream input
+Dependencies || CDM (Module C) propagation signals · Claude API wrapper  (src/intelligence/claude_wrapper.py) ·   | position_dependency_map.py · session log · SENTINEL gate  records for each position
+Ongoing cost || ~$0.30-0.50 per thesis review call to Claude API. Estimated 5-10  reviews per week at steady state = ~$10-20/month incremental  API cost
+Runs on || Two triggers: (1) CDM propagation signal received (immediate),  (2) Weekly scheduled audit every Monday alongside Systematic  Scan Engine
+Key distinction || TDC does not evaluate price performance. It evaluates thesis  integrity — whether the original reasons for owning a position are  still structurally intact. A position can be performing well on price  while its thesis is quietly being undermined. TDC catches the  thesis deterioration before it becomes price deterioration.
+
+[TABLE 6]
+TIS range || Label || ARMS response || Meaning
+8.0 –  | 10.0 || INTACT || No action. Log result.  Continue monitoring. || All original thesis assumptions confirmed by  current data. No new bear case evidence.
+6.0 – 7.9 || WATCH || Position flag upgraded  to WATCH if not   | already. PM notified in  daily monitor. || One or more thesis assumptions have  weakened but not broken. Bear case  evidence present but not conclusive.
+4.0 – 5.9 || IMPAIRED || SENTINEL adversarial  review queued as Tier  1 action. PM has 24   | hours to respond. || Multiple thesis assumptions weakened. Bear  case evidence present and specific.   | Conviction reaffirmation or position review  required.
+0.0 – 3.9 || BROKEN || CDF accelerated   | review triggered.   | SENTINEL full re-run  queued. PM decision  required within 24   | hours. || Original thesis no longer supportable by  available evidence. Position requires  immediate review and probable exit planning.
+
+[TABLE 7]
+Form 4 data source || SEC EDGAR full-text search API — free. Specify Form 4 filings  for tickers in the book. File within 2 business days of transaction.
+Insider sale threshold || Open-market sales >$50,000 by CEO or CFO. 10b5-1 pre planned sales excluded — less informative signal.
+CDF acceleration || Insider sale above threshold triggers a 21-day accelerated CDF  review window. Not an automatic sell. An accelerated review  clock.
+TDC response || Insider sale classified as HIGH severity. TDC runs thesis review  within 6 hours. Bear case evidence field explicitly populated with  insider sale details.
+ALAB application || The CEO insider selling that was flagged manually in the daily  monitor for four consecutive days would have been caught and  reviewed automatically on day one under this specification.
+
+[TABLE 8]
+Module || Build   | time || Priority || Files || Milestone
+Module   | C CDM || 1 day || Build first || src/config/position_dependency_map.py  (new) src/engine/cdm.py (new) || Named entity alerts  propagating to all   | dependent positions.  GOOG antitrust event  would fire on NVDA,  AMD, MU, ALAB,   | ANET, AVGO, MRVL  simultaneously.
+Module   | D TDC || 2-3   | days || Build   | second || src/engine/tdc.py (new) || First automated thesis  integrity review runs.  MU Google scenario  produces TIS score  with specific bear   | case evidence.   | Insider sale Form 4  triggers ALAB CDF  acceleration.
+
+[TABLE 9]
+File || Status || Change
+src/config/position_dependency_map.py || NEW || Named entity dependency map for all 12  current positions. PM-maintained. Updated  on every SENTINEL entry or exit.
+src/engine/cdm.py || NEW || Customer Dependency Map module.  Named entity recognition, event   | classification, alert propagation to   | dependent positions.
+src/engine/tdc.py || NEW || Thesis Dependency Checker. Claude API  thesis integrity reviews on CDM   | propagation and weekly schedule. TIS  scoring and flag management.
+src/intelligence/claude_wrapper.py || UPDATED || Add 'thesis_review' as a new task_type.  Add TDC-specific prompt template.
+src/reporting/daily_monitor.py || UPDATED || CDM dependency status badge added to  equity book table. TDC TIS score added to  position status. CDM/TDC alerts added to  alerts section.
+src/execution/confirmation_queue.py || UPDATED || TDC PM review requests added as a new  Tier 1 action type with 24-hour window.

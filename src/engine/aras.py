@@ -109,6 +109,7 @@ class ARASAssessor:
         target_idx = _target_regime_idx(adjusted_score)
 
         if target_idx == 4:
+            # CRASH: instant transition (spec — single >=0.81 print)
             self._regime_idx = 4
             self._pending_target_idx = None
             self._pending_direction = None
@@ -118,18 +119,43 @@ class ARASAssessor:
             self._pending_direction = None
             self._pending_count = 0
         else:
-            direction = 'UP' if target_idx > self._regime_idx else 'DOWN'
-            needed = UPGRADE_CONFIRMATIONS if direction == 'UP' else DOWNGRADE_CONFIRMATIONS
+            # ── ADJACENT-BAND STEPPING (spec: each transition is its own gate) ──
+            # Source: ARMS_Auto_Deployment_Execution_v1.1 §6.1 lines 71-72:
+            #   "Upgrade (e.g. DEFENSIVE → NEUTRAL): score must hold below upper
+            #    boundary for 3 consecutive cycles"
+            #   "Downgrade (e.g. NEUTRAL → DEFENSIVE): score must breach boundary
+            #    for 2 consecutive cycles"
+            # The examples are between ADJACENT regimes. A multi-band jump (e.g.
+            # CRASH → WATCH) MUST traverse each intermediate band with its own
+            # confirmation hold, otherwise DEFENSIVE/NEUTRAL get skipped on
+            # rapid recoveries — observed in 2025 backtest where 4 CRASH days
+            # downgraded directly to WATCH, registering 0 DEFENSIVE days during
+            # a 22% drawdown.
+            #
+            # Semantic note: spec "upgrade" = becoming LESS defensive (lower
+            # idx, e.g. DEFENSIVE→NEUTRAL = 3→2). Spec "downgrade" = becoming
+            # MORE defensive (higher idx, e.g. NEUTRAL→DEFENSIVE = 2→3).
+            # Defense is FASTER than offense (2 confirms vs 3) — asymmetric
+            # by design per spec line 72.
+            going_more_defensive = target_idx > self._regime_idx  # idx increases
+            # Step exactly one band toward target.
+            step_idx = self._regime_idx + (1 if going_more_defensive else -1)
+            needed = (DOWNGRADE_CONFIRMATIONS if going_more_defensive
+                      else UPGRADE_CONFIRMATIONS)
+            direction = 'MORE_DEF' if going_more_defensive else 'LESS_DEF'
 
-            if self._pending_target_idx == target_idx and self._pending_direction == direction:
+            if self._pending_target_idx == step_idx and self._pending_direction == direction:
                 self._pending_count += 1
             else:
-                self._pending_target_idx = target_idx
+                self._pending_target_idx = step_idx
                 self._pending_direction = direction
                 self._pending_count = 1
 
             if self._pending_count >= needed:
-                self._regime_idx = target_idx
+                self._regime_idx = step_idx
+                # Reset pending; next assess() will re-evaluate against the new
+                # regime. If target is still further away, a new pending streak
+                # begins on the next call.
                 self._pending_target_idx = None
                 self._pending_direction = None
                 self._pending_count = 0

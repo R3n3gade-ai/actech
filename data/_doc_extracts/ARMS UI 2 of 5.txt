@@ -1,0 +1,132 @@
+MACRO INPUTS TODAY
+QQQ
+-$593
+Brent crude
+-$98
+10Y treasury
+~4.37%
++0.9% futures. prev close $588
+✓ -5% peace plan. off $112 high
+-5bps from yesterday. easing
+EQUITY BOOK - LIVE PRICES (ARCHITECTURE AB 58%)
+VIX
+~26
+-4% softening. still ELEVATED
+Position
+Conv. Wt.
+52W
+Price
+vs. Yesterday
+Range
+Status
+Flag
+TSLA Tesla
+$214-
+8.8% -$385
++3.5% 24h
+Terafab JV Q1 earnings Apr 28
+WATCH
+$499
+NVDA
++1.3%
+$87-
+7.8%
+~$177
+Nvidia
+premarket
+$212
+Groq 3 LPX inference chip unveiled peace bid rally
+OK
+AMD
+$76-
+Adv. Micro
+7.2%
+~$207
++0.7% est.
+$267
+Q1 earnings May 5. Bernstein cautious vs NVDA/AVGO
+OK
+Devices
+PLTR
+$66-
+5.7%
+~$157
++0.5% est.
+Palantir
+$208
+Maven "official" DOD program. Pentagon core Al system
+WATCH
+ALAB
+$47-
+5.7% ~$122
+Flat est.
+Astera Labs
+$263
+-54% off high. CEO insider sell. CDF clock running
+ALERT
+CDF
+MU Micron
+4.5% -$378
++2.1% on peace rally
+N/A
+HBM demand intact memory stocks outperforming 2026
+OK
+ANET
+Arista
+4.3%
+~$134
++1.0% est.
+N/A
+TAM raised $105B. Al networking thesis intact
+OK
+Networks
+AVGO Broadcom
+$138-
+3.7% ~$321
+-0.4% est.
+$415
+TSMC capacity maxed out warning supply constraint into
+WATCH
+2026
+MRVL
+3.5%
+~$91
+Marvell Tech
++3.2% yesterday
+$47-
+$103
+Custom biz 2x. Q1 rev guide $2.4B above consensus
+OK
+ARM
+$80-
+2.5%
+-$137
++2.1% est.
+Arm Holdings
+$183
+Arm Everywhere event held. HSBC double-upgrade +4% last week
+OK
+ETN
+2.0%
+~$344
++1.1% est.
+N/A
+Eaton Corp
+Data center power demand structural peace rally lift
+OK
+VRT
+2.3%
+~$256
++0.9% est.
+N/A
+Vertiv
+S&P 500 member $15B backlog. NVIDIA Vera Rubin design win
+PERM?
+GOOG
+Alphabet -
+~$302
++0.5% est.
+N/A
+SENTINEL approved C7 queued pending NEUTRAL regime
+QUEUED
+queued

@@ -31,7 +31,7 @@ PTRH_BASE_COVERAGE_PCT = 0.012
 # in CRASH if IV is prohibitive, but the regime sizing multiplier itself is 2.0×.
 PTRH_REGIME_TABLE = {
     "RISK_ON":    {"multiplier": 1.00, "coverage_pct": 0.012, "strc_reserve": 0.0},
-    "WATCH":      {"multiplier": 1.00, "coverage_pct": 0.012, "strc_reserve": 0.0},
+    "WATCH":      {"multiplier": 1.25, "coverage_pct": 0.015, "strc_reserve": 0.50},
     "NEUTRAL":    {"multiplier": 1.25, "coverage_pct": 0.015, "strc_reserve": 0.50},
     "DEFENSIVE":  {"multiplier": 1.50, "coverage_pct": 0.018, "strc_reserve": 1.00},
     "CRASH":      {"multiplier": 2.00, "coverage_pct": 0.024, "strc_reserve": 1.00},

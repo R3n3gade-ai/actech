@@ -1,0 +1,49 @@
+DEFENSIVE SLEEVE - 14% CASH - 8%
+SGOV
+PTRH-QQQ
+T-bill ETF
+Stable nav intact
+(3%)
+SGOL (2%)
+puts
+1.5x base (DEFENSIVE)
+Confirm DTE ⚫ roll if
+≤30
+STRC reserve
+Deploy-ready at
+Gold
+~$4,414. war bid persists
+2.0%
+(cash)
+NEUTRAL
+DBMF
+(5%)
+Managed futures
+Oil trend reversing. monitor
+Core hedge (cash)
+1.2%
+Money market
+STRC (4%)
+Structured credit
+11.5% yield. NAV intact
+Ops buffer (cash)
+4.8%
+Money market
+V4.0 MODULE STATUS
+PDS- drawdown sentinel
+NORMAL
+No HWM breach. Monitor NAV vs HWM daily. WARNING fires at -8%.
+PTRH-tail hedge
+1.5x base-confirm sizing DEFENSIVE requires 1.5x. STRC dynamic layer 100% deployed. Confirm DTE on existing puts. Roll if <30 DTE.
+FEM-factor exposure
+Al Capex: ALERT est. ~80%+ equity sleeve Al Capex correlated. Mandatory review. ALAB trim would reduce exposure.
+LAEP -execution mode
+ELEVATED (VIX ~26)
+VWAP orders. 60min window 20bps slippage budget. Standard priority P1⇒P4.
+CDF conviction decay
+ALAB: confirm day count
+Day 45 trigger: 0.80x weight decay. Day 90: 0.60x. Confirm days
+underperforming QQQ by 10pp+.
+RPE - regime probability
+NEUTRAL: 38% prob. 72h
+Peace plan signal driving score softening 0.74 0.68. Watch Hormuz + oil + 10Y for transition confirmation.

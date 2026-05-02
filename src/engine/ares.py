@@ -70,6 +70,7 @@ def run_ares_check(
     current_tranche_level: int = 0,
     vix_current: float = 20.0,
     vix_90d_avg: float = 20.0,
+    as_of: Optional[datetime.datetime] = None,
 ) -> AresStatus:
     """
     Evaluates the 4 re-entry gates (GP Briefing) and determines VARES sizing.
@@ -107,11 +108,17 @@ def run_ares_check(
     next_tranche = current_tranche_level
     next_date = None
     
+    now = as_of or datetime.datetime.now(datetime.timezone.utc)
+    if now.tzinfo is None:
+        now = now.replace(tzinfo=datetime.timezone.utc)
+
     if is_fully_cleared:
         # Check 48h cooldown (THB §3.2)
         can_deploy = True
         if last_tranche_deployed_at:
-            delta = datetime.datetime.now(datetime.timezone.utc) - last_tranche_deployed_at
+            if last_tranche_deployed_at.tzinfo is None:
+                last_tranche_deployed_at = last_tranche_deployed_at.replace(tzinfo=datetime.timezone.utc)
+            delta = now - last_tranche_deployed_at
             if delta.days < TRANCHE_COOLDOWN_DAYS:
                 can_deploy = False
                 next_date = (last_tranche_deployed_at + datetime.timedelta(days=TRANCHE_COOLDOWN_DAYS)).isoformat()
@@ -122,15 +129,14 @@ def run_ares_check(
                 vares_multiplier = adjusted_tranche  # T1/T2: vol-adjusted 33%
             else:
                 vares_multiplier = 1.0 - REENTRY_TRANCHES.get(current_tranche_level, 0.0)  # T3: remainder
-        else:
-            vares_multiplier = REENTRY_TRANCHES.get(current_tranche_level, 0.0)
             
     status = AresStatus(
         gates_cleared=gates_cleared,
         is_fully_cleared=is_fully_cleared,
         current_tranche_level=next_tranche,
         vares_multiplier=vares_multiplier,
-        next_tranche_available_at=next_date
+        next_tranche_available_at=next_date,
+        timestamp=now.isoformat(),
     )
     
     # Log re-entry signals

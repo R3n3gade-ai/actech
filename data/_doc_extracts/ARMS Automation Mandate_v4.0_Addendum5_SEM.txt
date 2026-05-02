@@ -1,0 +1,84 @@
+ARMS v4.0
+ADDENDUM 5
+SOVEREIGN EXECUTION MANDATE
+Document Class: Governing Architecture Directive
+Version: 1.0   |   Effective: April 2, 2026
+Status: CANONICAL — Binding across all ARMS modules, current and future
+1.  Purpose
+This Addendum establishes the Sovereign Execution Mandate (SEM) as the governing architecture directive of the Achelion Risk Management System (ARMS). It defines the precise and permanent boundary between Portfolio Manager (PM) function and system function.
+This directive is binding on all existing modules, all future module development, all third-party integrations, and all engineering decisions made by AT LLC personnel. No module, feature, workflow, or process may be designed, modified, or deployed in a manner inconsistent with this Mandate.
+2.  The Mandate
+ARMS is a sovereign execution system.
+The PM is not an execution resource.
+The Portfolio Manager's function within the Achelion operational structure is exclusively confined to three domains:
+Domain I — Thesis Generation
+Identifying civilizational infrastructure shifts, structural bottlenecks, and macro regime inflections before mainstream consensus. This is the PM's primary competitive edge and the source of Achelion's alpha. It cannot be systematized. It must not be diluted by operational or transactional demands on PM attention.
+Domain II — Narrative Architecture
+Translating thesis into investor-grade narrative for LP relationships, capital formation, and institutional positioning. This domain requires the PM's full cognitive presence and cannot coexist with real-time portfolio execution demands.
+Domain III — Relationship Capital & Category A Intelligence
+Surface-level human signal acquired through direct relationship channels — conversations, rooms, and intelligence that no data feed, model, or algorithm can replicate. This is Gate 6 intelligence. It flows into ARMS as thesis input. It does not flow back out as a PM execution prompt.
+The PM brings the kill.
+ARMS runs the slaughter.
+3.  Exclusive System Jurisdiction
+The following functions belong to ARMS — autonomously, permanently, and without PM input, confirmation, approval, or override:
+Regime composite scoring and threshold classification
+All position sizing — initial deployment, size-up, and trim
+Hedge budget calculation and PTRH sizing (CAM module)
+CDF conviction decay and position adjustment
+PDS drawdown sentinel triggers and ceiling enforcement
+Deployment queue sequencing and execution
+Thesis concentration calculation and cap enforcement
+Sizing coherence resolution across shared-thesis positions
+EOD snapshot generation and distribution
+SSL stress scenario monitoring and alert generation
+SLOF eligibility determination and options execution parameters
+Pre-flight integrity checks prior to any queue execution
+All rebalancing decisions
+No module may present any of the above as a question, prompt, confirmation request, or decision point directed at the PM.
+4.  The Only Legitimate PM Touchpoint
+PM interaction with the execution layer exists for one purpose only:
+REGULATORY COMPLIANCE WITH FINRA AND SEC AUDIT REQUIREMENTS
+Where applicable law or FINRA/SEC examination standards require a documented human touchpoint, that touchpoint is administrative in nature. The system has already determined the correct action. The PM's documented acknowledgment satisfies the regulatory record. It does not alter the outcome.
+All compliance touchpoints shall be:
+Clearly labeled as regulatory in nature — not decisional
+Pre-populated by ARMS with the action taken and the rule that governed it
+Requiring only acknowledgment, not analysis
+Batched where possible to minimize PM time expenditure
+Logged automatically in the compliance audit trail
+5.  The Architectural Flaw Test
+When a module fails the flaw test, the resolution is never to ask the PM. The resolution is one of the following:
+Resolution C is the only condition that may temporarily surface to PM awareness — and only as notification that a rulebook amendment is being drafted, never as a request for a data-dependent decision.
+6.  PAIE Governing Principle
+The Portfolio Architecture Integrity Engine (PAIE) is the primary expression of this Mandate within the ARMS codebase. Its design is non-negotiable:
+PAIE has no PM interface
+PAIE has no confirmation mechanism directed at the PM
+PAIE executes, adjusts, logs, and reports
+PAIE output to the PM is read-only: here is what I did and why
+PAIE never asks: here is what I found — what should I do?
+Full PAIE module specification is documented in the PAIE FSD v1.0, delivered concurrently with this Addendum.
+7.  Standing Engineering Directive — AT LLC
+Josh Paul, Lead Engineer, AT LLC, and all subsequent AT LLC engineering personnel are bound by the following standing directive:
+Modules that pass SEM evaluation shall include the following certification in their FSD header:
+SEM Compliant: YES — module may proceed to production
+SEM Compliant: PENDING [describe resolution in progress] — module is blocked from production until resolved
+8.  The North Star
+Document Control
+Supersedes: Nothing — this is an originating governance document.
+Cross-references: PM Playbook v4.0 §1, ARMS FSD v1.1, GP Briefing v1.0, Addenda 1–4, PAIE FSD v1.0.
+Next review: Upon any proposed exception to §3 or §5.
+CONFIDENTIAL — ACHELION CAPITAL MANAGEMENT LLC — INTERNAL USE ONLY
+
+[TABLE 0]
+THE ARCHITECTURAL FLAW TEST | Every module — existing and future — must pass this filter before deployment: | "Does this module ask the PM to think, score, calculate, rank, or decide anything data-dependent?" | If the answer is YES — the module is architecturally flawed and must be returned to design.
+
+[TABLE 1]
+Resolution || Condition || System Action
+A || Governing rule exists but was not implemented. || Implement the rule. Deploy.
+B || Governing rule does not exist. || Write the rule, codify in the module spec, implement. Gap goes into the rulebook — not into a PM prompt.
+C || Two rules conflict with no defined hierarchy. || Define hierarchy, document as rulebook amendment, implement. One-time engineering task. Never a PM decision.
+
+[TABLE 2]
+Every module built for ARMS shall be evaluated against the Sovereign Execution Mandate before delivery. If a module requires PM input for anything other than a documented compliance touchpoint, it is returned to design. This is not a preference or a style guideline. It is the governing architecture principle of the system.
+
+[TABLE 3]
+THE NORTH STAR | ARMS evolves toward one destination: | FULL AUTONOMOUS SOVEREIGNTY |  |  | Every build cycle, every module, every engineering decision moves the system closer to a state where the PM's presence is irrelevant to portfolio execution — and therefore completely available for the function no system can replicate. |  | The PM is not a portfolio operator. The PM is a thesis hunter. |  | The system exists to honor that distinction absolutely.

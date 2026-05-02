@@ -1,0 +1,144 @@
+ACHELION CAPITAL MANAGEMENT | ARMS ADDENDUM 1 — CONDITIONAL TRANCHE EXECUTION LOGIC | CONFIDENTIAL 
+ACHELION CAPITAL MANAGEMENT 
+CONFIDENTIAL — INTERNAL USE ONLY 
+ARMS TECHNICAL SPEC — ADDENDUM 1 CONDITIONAL TRANCHE EXECUTION LOGIC 
+Decision Engine Extension | v1.0 
+Supplements ARMS Auto Deployment & Execution Architecture v1.1 
+Why This Addendum Exists 
+The v1.1 spec covers regime-triggered execution completely. It does not cover a distinct execution  class where a position's second tranche is gated on a calendar event plus a PM confirmation signal — not a regime score. The GOOGL deployment (3.5% at NEUTRAL, complete to 5.0% post April 28  earnings) is the first instance of this pattern. This addendum specifies the logic so Josh can build it  correctly in Phase 2 alongside the Decision Engine.
+Achelion Technology LLC | ARMS v4.0 | March 2026 1 
+ACHELION CAPITAL MANAGEMENT | ARMS ADDENDUM 1 — CONDITIONAL TRANCHE EXECUTION LOGIC | CONFIDENTIAL SECTION A — CONDITIONAL TRANCHE: DEFINITION & TAXONOMY 
+A Conditional Tranche (CT) is a secondary position instruction that is held in a PENDING state after an initial  tranche executes. Unlike regime-triggered orders — which fire automatically when a score threshold is crossed — a CT fires only when two independent conditions are both satisfied: a named calendar event passes, and the PM  submits an explicit confirmation signal through the dashboard. 
+Formal Definition 
+A Conditional Tranche is a queue entry in PENDING state that becomes eligible for execution only  after: (1) a named Event Date passes, and (2) a PM Confirmation Signal is received within a defined  Confirmation Window. If confirmation is not received within the window, the tranche expires and  returns to the queue as UNEXECUTED for PM review. 
+A.1 How CT Differs From Standard Queue Entries
+Achelion Technology LLC | ARMS v4.0 | March 2026 2 
+ACHELION CAPITAL MANAGEMENT | ARMS ADDENDUM 1 — CONDITIONAL TRANCHE EXECUTION LOGIC | CONFIDENTIAL SECTION B — CT STATE MACHINE 
+Every Conditional Tranche moves through a defined set of states. The Decision Engine manages state  transitions. No tranche can skip a state or transition backwards. Josh must implement this as an explicit state  machine — not as a series of conditional if/else checks. 
+B.1 States 
+B.2 State Transition Rules
+Achelion Technology LLC | ARMS v4.0 | March 2026 3 
+ACHELION CAPITAL MANAGEMENT | ARMS ADDENDUM 1 — CONDITIONAL TRANCHE EXECUTION LOGIC | CONFIDENTIAL 
+SECTION C — CT RECORD SCHEMA 
+Each CT in the queue is stored as a structured record. The Decision Engine reads and writes this record to  manage state transitions. Josh must define this schema before building any CT logic — it is the contract between  the queue, the Decision Engine, and LAEP. 
+C.1 Required Fields 
+C.2 Example Record — GOOGL CT
+Achelion Technology LLC | ARMS v4.0 | March 2026 4 
+ACHELION CAPITAL MANAGEMENT | ARMS ADDENDUM 1 — CONDITIONAL TRANCHE EXECUTION LOGIC | CONFIDENTIAL 
+Achelion Technology LLC | ARMS v4.0 | March 2026 5
+ACHELION CAPITAL MANAGEMENT | ARMS ADDENDUM 1 — CONDITIONAL TRANCHE EXECUTION LOGIC | CONFIDENTIAL 
+SECTION D — DECISION ENGINE INTEGRATION 
+The Decision Engine (src/engine/decision.py) is responsible for managing CT state transitions. Josh must add a  CT manager module that runs alongside the existing regime transition logic. It does not replace any existing logic  — it is additive. 
+D.1 CT Manager Responsibilities 
+• On every Decision Engine cycle: check all CTs in QUEUED state. If parent tranche is FILLED, transition  CT to PENDING. 
+• On every Decision Engine cycle: check all CTs in PENDING state. If system date >= event_date,  transition CT to ELIGIBLE and push dashboard confirmation prompt to PM. 
+• On every Decision Engine cycle: check all CTs in ELIGIBLE state. If current time > expires_at, transition  CT to EXPIRED. Log and alert PM. 
+• On PM confirmation signal received: validate ct_id, check CT is in ELIGIBLE state, transition to  CONFIRMED, pass CT record to LAEP. 
+• On LAEP fill confirmation: transition CT from EXECUTING to FILLED. Update portfolio record. 
+D.2 Dashboard Confirmation Prompt 
+When a CT enters ELIGIBLE state, the dashboard must surface a confirmation prompt that contains all  information the PM needs to make the decision without opening any other system. The prompt must include: 
+• CT identifier and ticker. 
+• Event that triggered eligibility (event_description). 
+• Target allocation completion (current % → target %). 
+• Entry range and current market price at time of prompt. 
+• Execution notes from CT record. 
+• Confirmation window expiry timestamp. 
+• Two actions only: CONFIRM or CANCEL. No other options. 
+Critical Design Rule 
+The confirmation prompt must require one deliberate PM action — not an accidental click. Implement  a confirmation dialog with explicit intent: 'Confirm execution of CT-GOOGL-20260428: add 1.5%  GOOGL at market, completing to 5.0% total allocation.' PM types or clicks CONFIRM. System  executes. This is the only moment of human contact in the entire CT lifecycle. 
+D.3 What LAEP Receives 
+When a CT is CONFIRMED, the Decision Engine passes a standard LAEP order package. From LAEP's  perspective, a confirmed CT is indistinguishable from any other regime-triggered order. LAEP does not need to  know the order originated from a CT — it receives the same fields it always receives: ticker, target allocation,  entry range, order type, execution notes, and current VIX tier.
+Achelion Technology LLC | ARMS v4.0 | March 2026 6 
+ACHELION CAPITAL MANAGEMENT | ARMS ADDENDUM 1 — CONDITIONAL TRANCHE EXECUTION LOGIC | CONFIDENTIAL 
+SECTION E — FAILURE HANDLING & EDGE CASES 
+E.1 CT Expires Without Confirmation 
+If the PM does not confirm within the Confirmation Window, the CT transitions to EXPIRED automatically. The  portfolio remains at the parent tranche allocation. The CT record is archived with state EXPIRED. An EOD  snapshot entry is generated. The PM reviews and either re-queues manually or closes the position thesis. 
+E.2 Regime Deteriorates After Parent Tranche Fills 
+If ARMS regime downgrades to DEFENSIVE or CRASH after the parent tranche executes but before the CT is  confirmed, the CT must be suspended. Specifically: 
+• If regime reaches DEFENSIVE: CT stays in PENDING or ELIGIBLE state but is flagged SUSPENDED.  No execution until regime returns to NEUTRAL or better. 
+• If regime reaches CRASH: CT is automatically CANCELLED. The parent tranche position is subject to  normal DEFENSIVE/CRASH de-risk rules. PM is alerted. 
+• Rationale: adding to a position during a DEFENSIVE or CRASH regime violates the architecture's core  defense posture. The CT logic must respect the regime ceiling above all else. 
+E.3 Entry Range Breached at Confirmation 
+If the PM confirms a CT but the current market price is outside the entry range at the time LAEP attempts  execution, LAEP cancels the order and alerts the PM. The CT transitions to a PRICE_BREACH state — a sub state of CONFIRMED — and waits for PM instruction: re-confirm with updated range, or cancel. 
+E.4 Parent Tranche Partially Filled 
+If the parent tranche does not reach the 80% minimum fill threshold within the session, it carries as a resting limit.  The CT remains in QUEUED state until the parent tranche is fully resolved — either FILLED or explicitly closed by  the PM. The CT does not enter PENDING on a partial parent fill. 
+Build Priority Note for Josh 
+CT logic is a Phase 2 deliverable — Decision Engine extension. Do not build it in Phase 1. The  GOOGL CT (CT-GOOGL-20260428) will be PM-managed manually until the system is live. The spec  is written now so the logic is clean when you reach it — not so you build it before the foundation is  solid.
+Achelion Technology LLC | ARMS v4.0 | March 2026 7 
+ACHELION CAPITAL MANAGEMENT | ARMS ADDENDUM 1 — CONDITIONAL TRANCHE EXECUTION LOGIC | CONFIDENTIAL 
+SECTION F — CURRENT QUEUE STATE (March 29, 2026) 
+The following queue entries are confirmed by the PM as of March 29, 2026. All entries await NEUTRAL regime  trigger (composite score ≤ 0.65, held for 3 consecutive 5-minute cycles) unless otherwise noted. 
+F.1 NEUTRAL Trigger Queue 
+F.2 RISK_ON Trigger Queue (Score ≤ 0.45) 
+F.3 Confirmed Unchanged 
+TSLA 8.8% / NVDA 7.8% / PLTR 5.7% / AMD 7.2% / ANET 4.3% / AVGO 3.7% / MU 4.5% / MRVL 3.5% / ARM  2.5% / ETN 2.0% / VRT 2.3% (pre-add) / ALAB 3.42% 
+PLTR Thesis Note 
+Iran conflict classified as grey swan — identifiable in hindsight as probable but not a structural break  in the AI thesis. PLTR's defense and government intelligence demand curve is strengthened, not  disrupted, by active conflict. No queue action. Allocation unchanged. 
+Achelion Technology LLC | ARMS v4.0 Addendum 1 | March 2026 | Confidential
+Achelion Technology LLC | ARMS v4.0 | March 2026 8 
+
+[TABLE 0]
+Attribute || Comparison
+Trigger mechanism || Standard: regime score crosses threshold automatically. CT: calendar  event + PM confirmation required.
+PM involvement || Standard: none — system executes without PM. CT: PM must confirm  within the window after event date.
+Failure behavior || Standard: order attempts fill, alerts on slippage breach. CT: no execution  without PM confirmation — expires cleanly.
+Queue state || Standard: QUEUED → EXECUTING → FILLED. CT: QUEUED →  PENDING → CONFIRMED → EXECUTING → FILLED, or QUEUED →  PENDING → EXPIRED.
+Use case || Standard: regime deployment, rebalancing, risk ceiling enforcement. CT:  earnings-gated completions, catalyst-dependent adds, multi-leg thesis  builds.
+
+[TABLE 1]
+State || Definition
+QUEUED || CT has been created by the PM and is waiting for its parent tranche trigger  condition (e.g. NEUTRAL regime). CT does not activate until the parent  tranche executes.
+PENDING || Parent tranche has executed. CT is now active and waiting for its Event  Date to pass. No execution can occur in this state.
+ELIGIBLE || Event Date has passed. CT is now awaiting PM Confirmation Signal. The  dashboard surfaces a confirmation prompt to the PM.
+CONFIRMED || PM has submitted confirmation signal within the Confirmation Window. CT  is cleared for execution. LAEP takes over.
+EXECUTING || LAEP is constructing and submitting orders for the CT. Standard LAEP  rules apply (VIX tier, ADV constraints, slippage budget).
+FILLED || CT orders have been filled to the minimum fill threshold (80% of target).  Position updated in portfolio record.
+EXPIRED || PM did not confirm within the Confirmation Window. CT exits without  execution. Returns to queue as UNEXECUTED for PM review.
+CANCELLED || PM explicitly cancelled the CT before confirmation. Clean exit. Portfolio  remains at parent tranche allocation.
+
+[TABLE 2]
+Transition || Condition Required
+QUEUED → PENDING || Parent tranche reaches FILLED state. Automatic — no PM input.
+PENDING → ELIGIBLE || System clock passes Event Date. Automatic — no PM input.
+ELIGIBLE → CONFIRMED || PM submits confirmation signal via dashboard within Confirmation  Window.
+ELIGIBLE → EXPIRED || Confirmation Window closes without PM confirmation. Automatic.
+CONFIRMED → EXECUTING || LAEP receives CT order package from Decision Engine. Automatic.
+EXECUTING → FILLED || Minimum fill threshold (80%) reached. Automatic.
+Any state → CANCELLED || PM explicit cancel action via dashboard. Available in QUEUED, PENDING,  or ELIGIBLE states only.
+
+[TABLE 3]
+Field || Description
+ct_id || Unique identifier. Format: CT-[TICKER]-[YYYYMMDD]. Example: CT GOOGL-20260428.
+ticker || Security symbol. Must be on PM whitelist.
+parent_tranche_id || Queue ID of the initial tranche this CT depends on. CT cannot enter  PENDING until parent is FILLED.
+target_allocation_pct || Target portfolio weight for the CT completion. Example: 1.5 (representing  1.5% of NAV).
+event_date || Calendar date after which CT becomes ELIGIBLE. Format: YYYY-MM-DD.  Example: 2026-04-28.
+event_description || Plain language description of the event. Example: GOOGL Q1 2026  Earnings Release.
+confirmation_window_h || Hours after Event Date within which PM must confirm. Default: 48. After  this window, CT expires.
+entry_range_low || Lower bound of acceptable entry price. LAEP will not execute above  entry_range_high.
+entry_range_high || Upper bound of acceptable entry price.
+order_type || Execution method passed to LAEP. Options: LIMIT, VWAP, TWAP,  MARKET.
+execution_notes || Free-text PM instructions passed to LAEP. Example: Complete only on  positive guidance confirmation.
+state || Current CT state. One of: QUEUED, PENDING, ELIGIBLE, CONFIRMED,  EXECUTING, FILLED, EXPIRED, CANCELLED.
+created_at || Timestamp of CT creation by PM.
+parent_filled_at || Timestamp when parent tranche reached FILLED state. Set automatically.
+eligible_at || Timestamp when CT entered ELIGIBLE state. Set automatically on Event  Date.
+confirmed_at || Timestamp of PM confirmation signal. Set automatically on confirmation.
+expires_at || Timestamp when CT expires if unconfirmed. Computed: eligible_at +  confirmation_window_h.
+
+[TABLE 4]
+{  |  "ct_id": "CT-GOOGL-20260428",  |  "ticker": "GOOGL",  |  "parent_tranche_id": "Q-GOOGL-NEUTRAL-001",  |  "target_allocation_pct": 1.5,  |  "event_date": "2026-04-28",  |  "event_description": "Alphabet Q1 2026 Earnings Release",  |  "confirmation_window_h": 48,  |  "entry_range_low": 265.00,  |  "entry_range_high": 295.00,  |  "order_type": "LIMIT",  |  "execution_notes": "Complete to 5.0% total only on positive guidance. Hold if  guidance disappoints.",  |  "state": "QUEUED",  |  "created_at": "2026-03-29T00:00:00Z",  |  "parent_filled_at": null,  |  "eligible_at": null,  |  "confirmed_at": null,  |  "expires_at": null  | }
+
+[TABLE 5]
+Position || Instruction
+GOOGL — 3.5% (parent  tranche) || Full 3.5% at NEUTRAL trigger. LIMIT order. Entry range $265–$280.  Single queue entry. CT-GOOGL-20260428 is linked child.
+GOOGL — CT +1.5% (child  CT) || CT-GOOGL-20260428. PENDING after parent fills. ELIGIBLE April 28,  2026. Confirmation window: 48 hours. Complete to 5.0% on positive  guidance confirmation only.
+GEV — 2.5–3.0% || 60% first tranche at trigger. 40% on flush to $820–840. Staggered LIMIT.
+CEG — 2.0–2.5% || Full size at trigger. VWAP execution.
+VST — 1.5–2.0% || Full size at trigger. VWAP execution.
+VRT — +0.7% (size-up) || Add to existing 2.3% position. Target 3.0%. LIMIT order.
+
+[TABLE 6]
+Position || Instruction
+BE — 1.0–1.5% || Call-option sizing. Any further weakness. LIMIT.
+NVDA — eval +1.2% || Assess 7.8% → 9.0% if still in correction at RISK_ON trigger. PM reviews  before execution.

@@ -1,0 +1,230 @@
+ARMS Intelligence Architecture — Phase 2 & 3 — Anticipatory Signals + Full Execution Autonomy | CONFIDENTIAL 
+ACHELION CAPITAL MANAGEMENT, LLC 
+ARMS Intelligence Architecture Phase 2 and Phase 3 — Anticipatory Signal Layer + Full Execution Autonomy 
+For: Josh Paul — Lead Developer 
+Version: 1.0 — March 26, 2026 · Addendum 3 to FSD v1.1 
+Classification: CONFIDENTIAL — GP and Development Use Only 
+The PM staring at a monitor is the failure mode. This document specifies the architecture  that puts the PM in the room where Category A intelligence is created — not watching a  dashboard waiting to approve what the system already knows. 
+"See it before the internet does."
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 1 
+ARMS Intelligence Architecture — Phase 2 & 3 — Anticipatory Signals + Full Execution Autonomy | CONFIDENTIAL 
+0. The Design Principle That Governs Everything 
+Every minute the PM spends confirming what the system already knows is a minute not  spent in the room where Category A intelligence is created. The architecture exists to  free the PM entirely from the execution and decision layer — so that the only thing the  PM does is see what the data cannot yet see. 
+This document specifies the architecture that operationalizes that principle completely. It is built on a  single governing question that Josh must ask about every human touchpoint in the system: 
+Is this decision based on math, process, and data inflow — or does it require pre-consensus  human intelligence that no data feed can provide? 
+If the answer is math, process, or data — it is automated. No exceptions. No confirmation windows for  deterministic outcomes. No decision queue items that repeat daily without change. The system  executes. The PM is not notified unless the system fails. 
+If the answer is pre-consensus human intelligence — it goes to the PM immediately, with full context,  structured as a specific question that requires a specific answer. Not a general alert. Not a price  notification. A structured question: does your Category A knowledge change this recommendation? 
+The architecture that follows is the complete implementation of this principle across the anticipatory  intelligence layer and the full execution autonomy layer. Phase 2 builds the intelligence. Phase 3 closes  the last human touchpoints in execution. By the end of Phase 3, the PM's interaction with ARMS is  three things: seeding new thesis ideas through SENTINEL, answering specific Category A questions  when the system surfaces them, and reviewing the monthly session log analytics. Everything else runs  without them.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 2 
+ARMS Intelligence Architecture — Phase 2 & 3 — Anticipatory Signals + Full Execution Autonomy | CONFIDENTIAL 1. The Three Layers of Anticipatory Intelligence 
+Anticipatory intelligence operates at three depths of forward visibility. Each layer sees further ahead  than the one before it. Each requires more sophisticated signal processing. All three are buildable with  the architecture already specified. Josh builds them in sequence.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 3 
+ARMS Intelligence Architecture — Phase 2 & 3 — Anticipatory Signals + Full Execution Autonomy | CONFIDENTIAL 2. Layer 2 — Anticipatory Signal Specifications 
+These four signals are the pre-consensus intelligence layer. All are free. All are buildable in  Phase 2. All connect directly to the CDM thesis dependency structure already built. 
+2.1 Earnings Language Velocity Tracker (ELVT) 
+ELVT tracks how language changes across consecutive earnings calls for every named entity in the  CDM map. Not what they say — how they say it, and whether the direction is changing. Three  language categories are scored on every transcript.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 4 
+ARMS Intelligence Architecture — Phase 2 & 3 — Anticipatory Signals + Full Execution Autonomy | CONFIDENTIAL 
+The ELVT score is not the content of any single transcript. It is the velocity of change across  consecutive transcripts. A company that shifts from conditional to definitive capex language across  three consecutive quarters is describing an investment decision that has been made internally but has  not yet appeared in a financial filing. That is a 2-3 quarter leading indicator. 
+Current book application — the signals that matter most 
+2.2 Job Posting Velocity Intelligence (JPVI) 
+When a hyperscaler is about to accelerate data center investment, its job postings in specific categories  increase 6 to 9 months before the capital spend appears in any financial filing. This is because hiring  decisions precede procurement decisions — you hire the team before you buy the equipment. JPVI  tracks posting velocity for named CDM entities across four job categories that are leading indicators of  AI infrastructure spend.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 5 
+ARMS Intelligence Architecture — Phase 2 & 3 — Anticipatory Signals + Full Execution Autonomy | CONFIDENTIAL 
+A 30% month-over-month increase in data center infrastructure engineering postings at Microsoft or  Google is not a noise signal. It is a company that has decided to build and is hiring to execute. The  equipment orders follow 6 to 9 months later. ARMS sees the hiring before the market sees the orders. 
+JPVI velocity scoring 
+def score_jpvi_velocity(entity: str, category: str, 
+ current_30d: int, 
+prior_90d_avg: float) -> JPVISignal: 
+ velocity = (current_30d - prior_90d_avg) / prior_90d_avg 
+ if velocity > 0.40: return JPVISignal('ACCELERATING', velocity, 'CRITICAL')  if velocity > 0.20: return JPVISignal('INCREASING', velocity, 'HIGH')  if velocity > 0.05: return JPVISignal('ELEVATED', velocity, 'MEDIUM')  if velocity < -0.20: return JPVISignal('DECLINING', velocity, 'HIGH')  return JPVISignal('STABLE', velocity, 'LOW') 
+2.3 Patent Filing Velocity Tracker (PFVT)
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 6 
+ARMS Intelligence Architecture — Phase 2 & 3 — Anticipatory Signals + Full Execution Autonomy | CONFIDENTIAL 
+Patent applications are filed 12 to 18 months before products ship and 24 to 36 months before they  reach material revenue. When a company begins filing patents in a specific technology category, it is  describing its competitive position 2 to 3 years from now. When a hyperscaler begins filing patents in a  new memory architecture or networking topology, it is describing its infrastructure requirements 2 years  hence — requirements that named ARMS positions will be asked to fulfill. 
+2.4 Supply Chain Cross-Reference (SCCR) 
+Physical capital movement precedes financial reporting by 2 to 4 quarters. When TSMC ships an  unusually large volume of advanced packaging materials, something significant is being built. When  hyperscaler equipment orders arrive at specific ports in unusual volume, a data center expansion is 
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 7 
+ARMS Intelligence Architecture — Phase 2 & 3 — Anticipatory Signals + Full Execution Autonomy | CONFIDENTIAL 
+underway that will not appear in any earnings call for 6 months. The supply chain does not lie — it is  the physical reality of investment decisions already made. 
+Phase 2 SCCR monitors two specific patterns against the CDM dependency map. The first is TSMC related shipping activity from Taiwan to major US and Asian data center hubs. The second is  hyperscaler server equipment import volumes at key US ports. Both are available in public manifest  data. Both provide 2 to 4 quarter leading indicators of the AI infrastructure demand that flows to NVDA,  MU, ALAB, ANET, AVGO, and MRVL.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 8 
+ARMS Intelligence Architecture — Phase 2 & 3 — Anticipatory Signals + Full Execution Autonomy | CONFIDENTIAL 
+3. The Closed Learning Loop — How ARMS Gets Smarter 
+The signals are not the edge. The edge is having a thesis framework that tells the system  which signals matter — and a learning loop that continuously improves the signal weights  based on which ones were actually predictive. 
+The four Layer 2 signals produce data. The learning loop converts that data into improving signal  weights over time. This is the machine learning layer that Renaissance built over 30 years. ARMS  builds it from day one — because the session log, the MICS formula, and the CCM are the architecture  of the learning loop. 
+The loop runs quarterly. It asks three questions about each signal across each thesis. 
+The output of the learning loop is not a trading signal. It is a weight update — which signals get more  influence in the Gate 3 mispricing score and which get less, based on their actual track record of  predicting thesis outcomes for each specific position type. Over 8 to 12 quarters of data, the system  builds a position-type-specific signal model that is continuously validated against its own history. 
+This is the exact architecture Renaissance used. They did not know in advance which signals would be  predictive. They built the infrastructure to measure it and let the data decide. ARMS does the same — with the additional constraint that every signal must have a causal explanation rooted in the SENTINEL  thesis framework. No correlation without causation. That constraint is what prevents overfitting.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 9 
+ARMS Intelligence Architecture — Phase 2 & 3 — Anticipatory Signals + Full Execution Autonomy | CONFIDENTIAL 
+4. Full Execution Autonomy — Closing Every Human  Touchpoint 
+This section is the most important in the document. It specifies, exhaustively, every  remaining human touchpoint in ARMS and the specific architecture that eliminates each  one. 
+The goal is a system where the PM's daily interaction with ARMS is zero unless one of three conditions  is true: (1) a Category A intelligence question has been surfaced that requires pre-consensus human  judgment, (2) a SENTINEL thesis seed requires the PM's Gate 6 source declaration, or (3) a GP-level  structural decision has been triggered. Everything else executes without PM involvement. 
+The following table maps every current human touchpoint to its elimination specification. Josh works  through this list systematically. Each row is a build task.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 10 
+ARMS Intelligence Architecture — Phase 2 & 3 — Anticipatory Signals + Full Execution Autonomy | CONFIDENTIAL 
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 11
+ARMS Intelligence Architecture — Phase 2 & 3 — Anticipatory Signals + Full Execution Autonomy | CONFIDENTIAL 
+4.1 The Two Legitimate Human Touchpoints — Defined and Bounded 
+After full execution autonomy is achieved, exactly two human touchpoints remain in the ARMS  architecture. Both are legitimate. Neither is eliminatable. Both are the PM doing what only the PM can  do. 
+Two touchpoints. Both irreplaceable. Everything else automated. The PM is in Dubai — not staring at a monitor.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 12 
+ARMS Intelligence Architecture — Phase 2 & 3 — Anticipatory Signals + Full Execution Autonomy | CONFIDENTIAL 5. Complete Phase 2 and Phase 3 Build Plan for Josh 
+5.1 Phase 2 Build Sequence (Months 3-4) 
+Phase 2 goal: anticipatory signal layer live. Every execution touchpoint promoted to Tier 0  except the two legitimate human gates.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 13 
+ARMS Intelligence Architecture — Phase 2 & 3 — Anticipatory Signals + Full Execution Autonomy | CONFIDENTIAL 
+5.2 Phase 3 Build Sequence (Months 5-6) 
+Phase 3 goal: full FSD achieved. TRP autonomous. LP digest automated. ARMS is a  licensable platform.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 14 
+ARMS Intelligence Architecture — Phase 2 & 3 — Anticipatory Signals + Full Execution Autonomy | CONFIDENTIAL 6. What the PM's Day Looks Like After Full Build 
+This is the design target. Every build decision Josh makes should be measured against  whether it moves closer to this picture.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 15 
+ARMS Intelligence Architecture — Phase 2 & 3 — Anticipatory Signals + Full Execution Autonomy | CONFIDENTIAL 
+The PM is in Dubai. The system is running. The portfolio is being managed. The only  time the phone buzzes is when the system has a question only the PM can answer.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 16 
+ARMS Intelligence Architecture — Phase 2 & 3 — Anticipatory Signals + Full Execution Autonomy | CONFIDENTIAL 
+7. The Architecture in One Statement 
+The goal of ARMS is not to build a better dashboard. It is not to give the PM better information faster. It  is to remove the PM from every decision that can be made by math, process, and data — so that the  PM's entire cognitive capacity is reserved for the one thing that produces irreplaceable alpha: seeing  what the data cannot yet see. 
+The anticipatory signal layer described in this document is the system seeing as far ahead as public  data allows. The two legitimate human touchpoints are the system asking the PM to see further still — through the conversations, the pattern recognition, and the pre-consensus intelligence that 28 years of  market experience produces and no algorithm can replicate. 
+When this architecture is fully built, Achelion will operate with a level of systematic discipline,  anticipatory intelligence, and execution autonomy that no emerging fund — and very few institutional  funds — can match. The edge is real. The architecture is right. The build sequence is clear. 
+See it before the internet does. Act before the market does. Let the system do everything the  system can do. Let the PM do everything only the PM can do. 
+"The PM is in Dubai. The system is running." 
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 17 
+
+[TABLE 0]
+Layer || Name || Signal type || Forward visibility || Phase
+Layer 1 || Reactive   | speed || Legal rulings,   | regulatory filings,  earnings warnings,  insider sales —  | events already on  the internet || 30 minutes ahead  of human reading  speed. Market   | may already be   | moving. || Phase 1 — CDM + TDC  already specified
+Layer 2 || Pattern   | detection   | before   | consensus || Earnings language  velocity, job   | posting trends,   | patent filing   | velocity — public  data not yet   | connected by   | consensus || 1 to 3 quarters   | ahead of market   | consensus framing || Phase 2 — this   | document
+Layer 3 || Upstream   | condition   | detection || Supply chain   | manifests, satellite  data, cross  | industry capital   | flow patterns,   | geopolitical   | preconditions || 2 to 4 quarters   | ahead — the   | conditions that   | precede the   | conditions || Phase 3 — scales with  AUM and data budget
+
+[TABLE 1]
+File || src/intelligence/elvt.py — new module
+Data source || SEC EDGAR full-text search — earnings call transcripts via 8-K  filings. Free API.
+Runs || Quarterly after each earnings season + on-demand when CDM  fires for a named entity
+Build time || 1 week — Claude API already specified. Transcript parsing is  incremental.
+Cost || ~$0.30 per transcript analysis via Claude API. ~$30-50/month at  full Architecture AB coverage.
+
+[TABLE 2]
+Language category || What it measures || Bullish signal || Bearish signal
+Capex   | commitment || Are they saying 'we will  invest' or 'we are   | evaluating'? Commitment  language vs optionality   | language. || Shift from conditional  to definitive capex   | language across 2+   | consecutive calls || Shift from definitive  to conditional or   | absent capex   | language
+Demand visibility || Are they describing backlog  growth, customer urgency,  lead time extensions? Or  cautious ordering, inventory  normalization? || Lead time extension  language + customer  urgency + backlog   | expansion across 2+  calls || Inventory   | normalization +   | order push-out   | language +   | softening urgency
+Competitive   | posture || Are they describing pricing  power, design wins, sole source positions? Or pricing  pressure, competitive   | alternatives, share loss? || Pricing power + new  design wins +   | expanding TAM   | language || Pricing pressure +  competitive   | alternatives   | mentioned + TAM  language softening
+
+[TABLE 3]
+Position || Named entities to track || Signal that matters || Forward indicator of
+MU || Microsoft, Google,   | Amazon, Meta   | earnings calls || Capex commitment language  shifting to definitive on AI   | infrastructure spend || HBM demand   | acceleration 2-3 quarters  out
+NVDA || Microsoft, Google,   | Amazon, Meta, Oracle || Demand visibility: lead time   | extension language + urgency  language || GPU allocation tightening  — revenue acceleration
+ALAB || Microsoft, Google,   | Amazon, Meta || PCIe/CXL connectivity urgency  language in data center   | discussions || ALAB design win   | acceleration
+AVGO || Google, Apple, Meta || Custom ASIC design language  — partner references without  naming || New ASIC customer   | pipeline
+PLTR || DOD press releases,  Congressional budget  hearings || AI program urgency language +  sole-source contract language || Contract expansion cycle
+ANET || Microsoft, Meta,   | Google || Network upgrade urgency   | language + capacity constraint  language || AI networking demand  cycle
+
+[TABLE 4]
+File || src/intelligence/jpvi.py — new module
+Data source || Adzuna API (already in FSD v1.1 free signal feeds) + LinkedIn  public job data
+Runs || Weekly — same Monday cadence as Systematic Scan Engine
+Build time || 3 days — Adzuna already connected. Adds structured query  framework against CDM map.
+Cost || $0 — Adzuna free tier. LinkedIn scraping via public postings.
+
+[TABLE 5]
+Job category || Why it matters || Lead time || Positions it affects
+Data center   | infrastructure   | engineering || These roles build the  physical layer that buys  AI chips and memory || 6-9 months before   | capex || MU, NVDA, ALAB,  ANET
+AI/ML infrastructure   | and platform || These roles deploy the  training and inference  systems that consume  GPU and HBM || 4-6 months before   | procurement || NVDA, MU, AVGO,  MRVL
+Network engineering  — AI cluster   | connectivity || These roles specify the  networking layer for AI  clusters || 4-6 months before   | networking   | procurement || ANET, MRVL,   | AVGO
+Power and cooling   | engineering || These roles build the  infrastructure that   | enables AI data center  density expansion || 6-12 months before   | power procurement || ETN, VRT
+
+[TABLE 6]
+File || src/intelligence/pfvt.py — new module
+Data source || USPTO PatentsView API — free bulk data. Updated weekly.
+Runs || Monthly — lower frequency signal. Patent velocity changes  slowly but leads by 12-36 months.
+Build time || 1 week — USPTO API is documented and free. Mapping  categories to thesis structures is the primary design work.
+
+[TABLE 7]
+Cost || $0 — USPTO bulk data is a public good.
+
+[TABLE 8]
+Patent category || Monitored entities || Lead time || Thesis implication
+HBM and   | advanced memory  packaging || Google, Microsoft,   | Amazon, Samsung, SK  Hynix, Micron || 24-36 months || HBM demand cycle shape  and next-generation spec  requirements for MU
+AI inference chip  architecture || Google (TPU),   | Microsoft, Amazon   | (Trainium/Inferentia),  Meta || 18-30 months || Custom ASIC vs NVDA GPU  substitution risk. Affects   | NVDA conviction score.
+PCIe Gen 6 and   | CXL interconnect || Intel, AMD, ALAB,   | hyperscalers || 18-24 months || ALAB design win pipeline — PCIe Gen 6 adoption velocity
+Data center power  density and   | cooling || Google, Microsoft,   | Amazon, ETN, VRT || 24-36 months || Next-generation data center  power requirements. ETN  and VRT total addressable  market.
+Custom   | networking silicon || Microsoft, Meta,   | Google, MRVL, AVGO || 18-30 months || Custom networking adoption  vs merchant silicon — affects  ANET, MRVL, AVGO
+
+[TABLE 9]
+File || src/intelligence/sccr.py — new module
+Data source || Phase 2: MarineTraffic free tier + US import/export manifest data  (free via ImportYeti/Panjiva open data). Phase 3: Orbital Insight  satellite data (institutional cost).
+Runs || Weekly — shipping manifest data updates with 2-4 week lag but  patterns emerge over monthly windows.
+Build time || 2 weeks — data parsing is more complex than other feeds.  Phase 2 free tier is sufficient for pattern detection.
+Cost || Phase 2: $0. Phase 3: institutional satellite data pricing.
+
+[TABLE 10]
+Question || Method || Output
+Was this signal   | predictive? || Correlate signal readings from 3-6  months ago against subsequent  thesis performance (TIS score  movement, price performance vs  QQQ, MICS score accuracy).   | Spearman rank correlation. || Predictive accuracy score per  signal per thesis type. Stored in  session log.
+Was the signal lead   | time correct? || Measure the actual lag between  signal elevation and thesis outcome.  Compare to assumed lead time.  Adjust lead time assumption. || Updated lead time estimates per  signal per entity. Feeds JPVI and  ELVT timing.
+Did any signal   | combination   | outperform any single  signal? || Test pairwise and three-way signal  combinations against outcomes.  Identify whether ELVT + JPVI   | together is more predictive than  either alone. || Signal combination weights for  multi-signal scoring. Feeds   | forward into MICS Gate 3   | supplementary scoring.
+
+[TABLE 11]
+Current human   | touchpoint || Current tier || Target tier || Elimination specification
+PTRH sizing   | confirmation || Tier 1 || Tier 0 || Module A (PTRH Automation) — already  specified. Build first.
+CDF weight decay  application || Tier 1 || Tier 0 || CDF fires automatically when day count  and performance threshold are met. No  veto window. No confirmation. System  reduces weight and logs. PM sees result in  module status, not decision queue.
+DSHP defensive   | sleeve harvest || Tier 1 || Tier 0 || Module B (DSHP) currently specified as  Tier 1. After 90 days of validated operation  with zero PM vetoes, promote to Tier 0.  PM sets the thresholds once. System  harvests automatically.
+ARES re-entry   | tranche execution || Tier 1 || Tier 0 || ARES gates are deterministic. When all 4  gates clear and VARES sizes the tranche,  the order executes. No veto window. The   | PM has already declared the thesis.  Regime clearing is the execution trigger.
+PERM covered call  evaluation || Tier 1 || Tier 0 || When unrealized gain exceeds 30% AND  the options market is open AND IV is  above a defined threshold (VIX-calibrated),  the covered call is executed automatically.  Strike selection: ATM. No PM confirmation.
+TDC thesis review  PM response || Tier 1 || Tier 1 —  | preserve || This is the correct human touchpoint.  When TIS falls to IMPAIRED or BROKEN,  the PM answers one question: do you have
+
+[TABLE 12]
+ ||  ||  || Category A knowledge that explains why  the thesis remains intact despite the  evidence? If yes, they provide it. If silence,  system proceeds with CDF acceleration.
+SENTINEL new   | position initiation || Tier 1 || Tier 1 —  | preserve || This is the correct human touchpoint. The  PM seeds the thesis. The system runs all 6  gates. If all pass, the position initiates. PM  can provide Category A context via Gate 6.  Silence = system executes at MICS implied sizing.
+FEM ALERT trim   | recommendation || Tier 1 || Tier 0 || When FEM reaches ALERT (>80%) for  more than 24 hours AND a specific trim  recommendation is identified by the Master  Engine AND the trim does not require a full  SENTINEL re-run, it executes   | automatically. Paired trim is deterministic.
+Regime ceiling   | enforcement || Tier 0 || Tier 0 —  | already   | correct || No change. Ceiling is enforced   | immediately on regime transition. Always  has been.
+PDS DELEVERAGE  execution || Tier 0 || Tier 0 —  | already   | correct || No change. Drawdown triggers fire   | immediately. Always have.
+MICS score   | assignment || Currently   | PM  | assigned || Tier 0 —  | MICS formula || When MICS module is live, conviction  scores are formula-derived. PM override is  ±1 level with written reason. This is already  specified in FSD v1.1. Build priority #1.
+Thesis Retirement  Protocol || Tier 1 || Tier 0 after   | CCM live || Once CCM has 90 days of data, TRP can  execute automatically when TIS score is  BROKEN for 30+ consecutive days AND  CDF is at 0.60× AND no PM conviction  reaffirmation has been logged in 45 days.  Orderly exit executes.
+VRT PERM check || Recurring   | manual || Tier 0 || Captured by PERM Tier 0 promotion  above. Covered call evaluation triggers  when unrealized gain crosses 30%. No  manual check required.
+GOOG regime   | queue monitoring || PM   | monitoring || Tier 0 || ARES and regime module monitor this  automatically. When regime clears to  NEUTRAL, GOOG initiation fires without  PM involvement. PM declared the thesis.  System executes the entry.
+
+[TABLE 13]
+Touchpoint || What it requires || What makes it irreplaceable
+SENTINEL thesis   | seeding (Gate 6   | source declaration) || PM identifies a company   | representing a civilizational shift  before it is in any dataset. PM   | declares the source of insight: direct  conversation (Cat A), pattern   | recognition (Cat B), or public   | synthesis (Cat C). System runs  gates 1-5 automatically. Gate 6 is  the only human gate. || No algorithm can replicate 28  years of market pattern   | recognition applied to identifying  what the world will look like before  the data confirms it. This is the  PM's irreducible contribution.  Everything else is the system's  job.
+Category A   | intelligence response  (TDC   | IMPAIRED/BROKEN  flag) || When TDC scores a position as  IMPAIRED or BROKEN, it surfaces  one specific question: do you have  Category A knowledge — a direct  conversation, a pattern recognition  from prior cycles — that explains  why the thesis remains intact despite  the evidence? PM responds or  silently confirms. || The system knows everything that  is knowable from public data. It  cannot know what the PM learned  at dinner last week. The Category  A response gate is the   | mechanism by which private pre consensus knowledge enters the  system in a documented,   | auditable way.
+
+[TABLE 14]
+# || Build item || Time || Cost || Milestone
+1 || CDF Tier 0 promotion  — remove veto   | window, execute   | automatically || 1 day || $0 || CDF never appears in decision  queue. Weight reduction is   | instantaneous and logged.
+2 || PERM Tier 0   | promotion — auto  | execute covered call  when conditions met || 2 days || $0 || Covered call executes automatically  on >30% gain + VIX threshold. VRT  case resolves permanently.
+3 || ARES Tier 0   | promotion — auto  | execute re-entry   | tranches || 2 days || $0 || Re-entry executes when all 4 gates  clear. PM not notified unless gate  failure.
+4 || FEM paired trim Tier 0  — auto-execute when  ALERT + trim   | identified || 2 days || $0 || FEM ALERT no longer a recurring  decision queue item.
+5 || ELVT — earnings   | language velocity   | tracker || 1 week || ~$30-  | 50/month || Quarterly earnings calls for all CDM  entities scored automatically.   | Language velocity signals feeding  Gate 3 supplementary score.
+6 || JPVI — job posting   | velocity intelligence || 3 days || $0 || Weekly hyperscaler hiring trend  signals feeding anticipatory layer. 6-9  month forward visibility on AI capex.
+7 || PFVT — patent filing  velocity tracker || 1 week || $0 || Monthly patent filing trends for named  CDM entities. 12-36 month thesis  visibility.
+8 || SCCR — supply chain  cross-reference (free  tier) || 2 weeks || $0 || Weekly shipping manifest patterns for  TSMC and hyperscaler equipment. 2- 4 quarter leading indicators.
+9 || Learning loop v1 —  | quarterly signal   | calibration || 1 week || $0 || First quarterly CCM + signal weight  recalibration run. System begins self improving.
+
+[TABLE 15]
+10 || DSHP Tier 0   | promotion (after 90-  | day validation) || 1 day || $0 || Defensive sleeve harvest executes  automatically. No veto window.
+
+[TABLE 16]
+# || Build item || Time || Cost || Milestone
+1 || TRP Tier 0 promotion  (after CCM live + 90  days data) || 2 days || $0 || Thesis Retirement Protocol executes  automatically when 3 conditions met.  Orderly exit without PM involvement.
+2 || SCCR upgrade —  | satellite data   | integration || 1 week || AUM  | dependent || Phase 3 upstream condition detection.  2-4 quarter forward visibility on   | physical infrastructure build.
+3 || Proactive Intelligence  Digest (PID) —  | monthly LP report || 1 week || $0 (Claude   | API already   | budgeted) || Automated monthly LP report   | delivered without PM involvement.  Transparent audit of every regime  decision.
+4 || ARMS licensing config  layer || 2 weeks || $0 || Fund-agnostic parameter set. ARMS  becomes a platform that can be  licensed to other funds.
+5 || Performance   | attribution by module || 1 week || $0 || Every basis point of alpha attributed to  the specific ARMS module that   | generated it. LP-defensible track  record documentation.
+6 || Learning loop v2 —  | signal combination   | optimization || 2 weeks || $0 || Multi-signal combination testing.  System identifies which signal pairs  are more predictive than individual  signals.
+
+[TABLE 17]
+Scenario || What happens || PM involvement
+Normal market   | day — no signals || ARMS runs all modules. Monitor  generated at 6AM CT. Portfolio  operating within regime ceiling.  No TDC flags. No CDM alerts. || Zero. PM wakes up to a monitor that  confirms everything is running correctly. No  action required.
+Regime transition  — DEFENSIVE to  NEUTRAL || Macro Compass score crosses  0.65. ARAS immediately   | enforces new ceiling. ARES  begins evaluating re-entry   | gates. PTRH resizes to 1.25×.  SLOF eligibility checked. GOOG  initiation queued and executed if  all gates clear. || Zero. PM reads the monitor the next  morning and sees the transition executed  correctly. No confirmation required.
+Named entity legal  event — Google   | antitrust ruling || CDM fires within 30 minutes. 7  positions receive cross  | reference alerts. TDC runs   | thesis reviews for all 7. Results  logged. WATCH flags updated  on affected positions. Monitor  reflects updated status. || Zero for reactive speed. PM receives a  summary in the monitor. If TDC scores any  position IMPAIRED, PM receives one  specific question: do you have Category A  knowledge that changes this assessment?
+JPVI acceleration  signal — Microsoft  hiring surge || JPVI detects 45% month-over month increase in Azure data  center engineering postings.  Signal scored ACCELERATING.  Feeds Gate 3 supplementary  score for MU, NVDA, ALAB,  ANET. MICS scores   | recalculated. || Zero. If MICS scores cross a threshold that  changes conviction weights materially, PM  sees the summary in the monitor. No  confirmation required unless change  triggers FEM ALERT.
+PERM triggered — VRT crosses 30%  gain || Covered call evaluation   | executes automatically. IV   | check passes (VIX above   | threshold). ATM covered call  sold. Premium logged. Session  log updated. || Zero. PM sees confirmation in module  status: 'PERM executed: VRT covered call  sold [date] [premium]. Next evaluation in  30 days.'
+TDC IMPAIRED   | — position thesis  weakening || TDC scores a position   | IMPAIRED. System surfaces  one question to PM via mobile  push: 'TDC has scored   | [POSITION] thesis as   | IMPAIRED. Bear case: [specific  evidence]. Do you have || One response. PM answers yes (and  provides the knowledge) or no (and system  proceeds with CDF acceleration). Total  time: 5 minutes.
+
+[TABLE 18]
+ || Category A knowledge that  explains why the thesis remains  intact?' || 
+SENTINEL seed  — PM identifies   | new thesis || PM is at dinner in Dubai. Hears  something from a TSMC supply  chain contact that suggests a  specific company is about to  become non-optional AI   | infrastructure. PM opens the  SENTINEL interface on their  phone and seeds the thesis with  a Gate 6 Cat A declaration. || One action — thesis seeding. System runs  all gates automatically overnight. PM  wakes up to a complete SENTINEL  analysis. If all gates pass, PM has a 4-hour  veto window (default execute). Silence =  system initiates.
+Monthly learning  loop || CCM runs quarterly signal   | calibration. MICS formula   | weights updated. Signal lead  time estimates refined. Session  log analytics delivered. || Zero. PM reviews the monthly analytics  digest as strategic context. No operational  decisions required.

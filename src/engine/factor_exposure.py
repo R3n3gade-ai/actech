@@ -37,16 +37,25 @@ from execution.order_request import OrderRequest
 # ------------------------------------------------------------------ #
 
 # Factor 1: AI Capex Cycle — companies whose revenue depends on AI infrastructure spend
+# Spec: THB v4.0 §2 TABLE 3 — {NVDA, AMD, ALAB, MU, MRVL, AVGO, ANET, ARM}
 AI_CAPEX_TICKERS = {'NVDA', 'AMD', 'ALAB', 'MU', 'MRVL', 'AVGO', 'ANET', 'ARM'}
 
 # Factor 2: Taiwan Manufacturing — companies with critical TSMC/Taiwan supply dependency
-TAIWAN_MFG_TICKERS = {'NVDA', 'AMD', 'AVGO', 'MU', 'MRVL', 'ARM', 'ALAB'}
+# Spec: THB v4.0 §2 TABLE 3 — {NVDA, AMD, ALAB, MU, MRVL, ARM} (TSMC-dependent).
+# AVGO is NOT TSMC-dependent (uses multi-fab strategy) — explicitly excluded by spec.
+TAIWAN_MFG_TICKERS = {'NVDA', 'AMD', 'ALAB', 'MU', 'MRVL', 'ARM'}
 
 # Factor 3: BTC Beta — digital asset positions correlated with Bitcoin
 BTC_BETA_TICKERS = {'IBIT', 'ETHB', 'BSOL', 'PLTR', 'TSLA'}
 
-# Factor 4: Dollar Sensitivity — positions materially affected by DXY moves
-DOLLAR_SENSITIVITY_TICKERS = {'NVDA', 'AMD', 'AVGO', 'ANET', 'MU'}
+# Factor 4: Dollar Sensitivity — positions materially affected by DXY moves.
+# Spec: THB v4.0 §2 TABLE 3 — "All equity + BTC (DXY inverse correlation)".
+# Implementation: any equity ticker plus IBIT/ETHB/BSOL crypto proxies.
+DOLLAR_SENSITIVITY_TICKERS = {
+    'NVDA', 'AMD', 'AVGO', 'ANET', 'MU', 'MRVL', 'ARM', 'ALAB',
+    'PLTR', 'TSLA', 'VRT', 'ETN',
+    'IBIT', 'ETHB', 'BSOL',
+}
 
 # Factor 5: Rate Sensitivity — positions sensitive to interest rate changes
 RATE_SENSITIVITY_TICKERS = {'VRT', 'ETN', 'ANET', 'SGOV'}

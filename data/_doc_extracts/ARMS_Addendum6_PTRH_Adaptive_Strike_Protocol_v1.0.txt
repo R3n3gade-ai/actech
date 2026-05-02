@@ -1,0 +1,153 @@
+ACHELION CAPITAL MANAGEMENT 
+ARMS v4.0 — Addendum 6 
+PTRH Adaptive Strike Protocol 
+Delta-Primary Architecture | Autonomous Fallback Resolution | Self-Calibrating Drift Detection 
+Document: ARMS-ADD-006 | Version: 1.0 — Initial Release | Date: April 2026 
+Status: CANONICAL — supersedes all prior PTRH strike selection language 
+Supersedes: FSD v1.1 Section 4.2 (PTRH Strike Parameters), Addendum 1 PTRH clauses, Options Execution Playbook v1.2  Layer 1 spec 
+Author: MJ Pence, Co-Founding GP & Portfolio Manager 
+1. Governing Principle 
+The PTRH exists to provide convexity at the exact strike levels where real portfolio drawdowns occur. This  requires a put with negative delta in the range of -0.30 to -0.40 — the mathematical expression of meaningful  sensitivity to a market decline without overpaying for protection already provided by the defensive sleeve. 
+The prior PTRH specification expressed this intent as a hardcoded OTM percentage band (5-8%). That band was  a reasonable approximation of the delta target at the QQQ price levels prevailing when the spec was written  (~$480-$520). It was never the governing variable — it was a proxy for the governing variable. 
+When QQQ rallied beyond the calibration range, the proxy broke. A 6.5% OTM put at QQQ $480 produces delta  approximately -0.34. A 6.5% OTM put at QQQ $588 produces delta approximately -0.21. Same percentage,  completely different protection profile. The spec produced no-execute conditions not because the market was  dislocated, but because a hardcoded percentage failed to track a floating market. 
+CANONICAL  RULE 
+Delta is the governing variable. OTM% is a derived output, not a constraint. ARMS will  always find the strike that produces the target delta. The OTM% that results is informational  context, not a gate. 
+2. Architecture Change — Delta-Primary Strike Selection 
+2.1 Prior Architecture (Deprecated) 
+The prior spec evaluated contracts against five parallel gates, treating OTM% and delta as independent  constraints of equal weight. A contract that passed delta but failed OTM% was rejected. This produced  irreconcilable conflicts when the two gates diverged at new price levels.
+2.2 New Architecture — Delta-Primary 
+Under the new architecture, ARMS begins with the target delta and solves for the strike. OTM% is computed from  the result and compared against a wide soft guardrail whose sole purpose is catching data errors, not  constraining normal execution. 
+2.3 Strike Selection Algorithm 
+At each CAM scan cycle (every 5 minutes during market hours), ARMS executes the following strike selection  logic: 
+1. Query live options chain for all QQQ puts within the target DTE window (60-90 days). 2. Filter to the nearest two standard monthly expiries within the DTE window. 
+3. For each expiry, identify the strike that minimizes |delta - (-0.35)|. This is the delta-optimal strike. 4. Evaluate the delta-optimal strike against all hard gates (DTE, spread, OI). Delta compliance is confirmed  — the strike was selected precisely to produce compliant delta. 
+5. If multiple expiries produce compliant candidates, select the one with DTE nearest to 75 days. 6. Surface the single winning contract as the PTRH execution ticket. No manual comparison required. 
+AUTONOMY  STANDARD 
+The output of strike selection is a single pre-validated execution ticket — not a list of  candidates for PM review. The PM sees one contract, one quantity, one limit price. The  decision is execute or defer (Tier 1 PM decision only if spec conflict detected). All selection  logic is autonomous.
+3. Autonomous Fallback Resolution Hierarchy 
+The prior specification produced a binary outcome: compliant or abort. Abort was appropriate for discretionary  trades where discipline is the primary objective. It is not appropriate for essential portfolio infrastructure where tail  protection continuity is the primary objective. 
+ARMS will now work through a four-gate fallback hierarchy autonomously before generating a no-execute  condition. Each fallback level relaxes outer boundaries while preserving the governing intent. All fallback  executions are logged with the specific fallback level invoked and the reason Gate 1 was unavailable. 
+GATE 4  
+INTERPRETATION 
+A Gate 4 abort means genuine market dislocation — e.g., options market halted, no  liquid contracts available at any strike, or extreme vol environment where even near ATM puts exceed the delta ceiling. Gate 4 is a market data problem, not a spec  calibration problem. If ARMS produces Gate 4 under normal market conditions, that is  a build error requiring immediate investigation. 
+4. Self-Calibrating Drift Detection 
+4.1 The Problem This Solves 
+The April 2026 spec conflict (QQQ $588, no compliant contract in prior spec) was detectable weeks in advance.  As QQQ rallied from $520 to $588, the delta produced by a 6.5% OTM put declined continuously from  approximately -0.34 to -0.21. ARMS was scanning the chain every 5 minutes and observing this drift, but had no  mechanism to surface it. 
+The drift detection module closes this gap. It monitors the relationship between the target delta and the resulting  OTM% at each scan cycle, and surfaces an alert when the drift indicates an imminent spec conflict — before a  no-execute condition is reached. 
+4.2 Drift Monitoring Logic 
+At each PTRH scan cycle, ARMS logs the following to the calibration table:
+• QQQ spot price at scan time 
+• Strike selected by delta-primary algorithm 
+• OTM% of selected strike 
+• Delta of selected strike (actual from chain) 
+• DTE of selected contract 
+• IV of selected contract (mid-market implied) 
+From this log, ARMS maintains a rolling 30-day calibration baseline: the mean OTM% observed for the target  delta at current spot and IV conditions. 
+4.3 Alert Thresholds 
+4.4 Recalibration Protocol 
+When a drift alert or fallback invocation triggers recalibration, ARMS executes the following sequence without PM  intervention: 
+7. Sample last 30 trading days of PTRH scan data from the calibration log. 
+8. Compute the mean and standard deviation of OTM% observed for the target delta (-0.35) across this  sample. 
+9. Update the soft OTM% guardrail to: [mean - 3SD, mean + 3SD], floored at 1% and capped at 15%. 10. Log the updated guardrail values with timestamp, spot price, and IV at recalibration. 11. Queue a PTRH-RECALIBRATION-COMPLETE notification for the next PM daily summary. 
+INVARIANT  PRINCIPLE 
+The delta target (-0.35 midpoint, -0.30 to -0.40 range) is never auto-recalibrated. It is the  governing intent of the PTRH and can only be changed by PM decision with a new addendum.  Only the derived OTM% guardrail and fallback boundaries auto-update. This prevents the  system from drifting away from its protective purpose while still adapting to market conditions.
+5. Engineer Implementation Specification 
+5.1 Module Location 
+The PTRH Adaptive Strike Protocol lives within the CAM (Conditional Allocation Module) execution loop. The  strike selection algorithm runs as a sub-function of the CAM 5-minute scan cycle. The drift detection module runs  as a parallel process that reads from the calibration log written by the strike selection function. 
+5.2 Required Data Inputs 
+• Live QQQ options chain with per-contract: strike, expiry, bid, ask, delta, open interest, implied volatility • Current QQQ spot price (real-time) 
+• Current ARAS regime (from Macro Compass output) 
+• Current NAV (from portfolio state) 
+• Existing PTRH notional deployed (from position state) 
+• CAM-computed PTRH budget for current scan cycle 
+Data source priority: broker API (TWS/Tastytrade/Tradier) > market data feed. Chain data must be no older than  60 seconds at time of strike selection. If data age exceeds 60 seconds, abort current scan cycle and flag data stale condition. Do not execute on stale chain data. 
+5.3 Output Specification 
+The strike selection function must return a single structured execution ticket containing:
+5.4 Roll Management 
+The roll trigger is autonomous. When the calendar reaches roll_trigger_date (30 DTE from expiry), CAM initiates  the following sequence: 
+12. Run full strike selection algorithm for the next available compliant expiry (target DTE: 75 days from roll  date). 
+13. Generate roll execution ticket: close existing position (buy to close), open new position (buy to open), as  two separate orders executed within the same 2-minute window. 
+14. If new contract selection fails Gate 1, work through fallback hierarchy before generating PM alert. 15. Log roll event with: old contract, new contract, fallback level, cost of roll (debit/credit differential). 
+5.5 Minimum Viable Implementation 
+Phase 1 (required before live deployment): 
+• Delta-primary strike selection algorithm (Section 2.3) 
+• Gate 1 standard execution with structured log output 
+• Gate 4 abort with PM notification 
+• Single expiry scan (nearest compliant monthly) 
+Phase 2 (required within 30 days of first live PTRH execution): 
+• Full 4-gate fallback resolution hierarchy 
+• Multi-expiry scan and DTE optimization 
+• Drift detection and calibration log 
+• Roll trigger automation 
+Phase 3 (V2 intelligence architecture): 
+• IV regime shift detection and automatic guardrail recalibration 
+• Cross-underlier PTRH correlation analysis (QQQ vs SPY put comparison) 
+• PTRH cost attribution in EOD performance snapshot 
+6. Supersession and Integration
+7. Authorization 
+ARMS v4.0 | Addendum 6 — PTRH Adaptive Strike Protocol | v1.0 | April 2026 
+Achelion Capital Management LLC | Confidential — Not for Distribution
+
+[TABLE 0]
+Gate || Prior Spec Constraint || Problem
+Strike OTM% || 5% to 8% (hardcoded) || Calibrated to QQQ ~$480-520. Fails as spot  moves.
+Delta || -0.30 to -0.40 || Correct intent, but treated as co-equal to  OTM%.
+DTE || 60 to 90 days || Correct. Retained.
+
+[TABLE 1]
+Bid-Ask Spread || <= 5% of mid || Correct. Retained.
+Open Interest || >= 500 contracts || Correct. Retained.
+
+[TABLE 2]
+Parameter || Type || Value || Behavior
+Target delta || PRIMARY   | GATE || -0.35 (midpoint) || ARMS scans chain, selects strike producing delta  nearest -0.35. Compliant range: -0.30 to -0.40.
+OTM % result || DERIVED || Computed from   | delta-optimal strike || Informational. Soft guardrail: 2%-10%. Flags only if  outside this range — does not block execution.
+DTE || HARD   | GATE || 60-90 days || Retained. Fallback protocol applies if no compliant  expiry available (see Section 3).
+Bid-ask spread || HARD   | GATE || <= 5% of mid || Retained unchanged.
+Open interest || HARD   | GATE || >= 500 contracts || Retained unchanged.
+
+[TABLE 3]
+Gate || Delta || DTE || OTM   | Guardrail || Spread || Log & Notification
+1 —  | STANDARD || -0.30 to -  | 0.40 || 60 to 90   | days || 2% to 10% || <= 5% || Standard execution log. No alert.
+2 —  | RELAXED || -0.28 to -  | 0.42 || 55 to 95   | days || 1.5% to 12% || <= 7% || Log: FALLBACK-2. Queue ARMS  Architecture Review flag. PM  notification deferred (next daily  summary).
+3 —  | EXTENDED || -0.25 to -  | 0.45 || 45 to 105   | days || 1% to 15% || <= 10% || Log: FALLBACK-3. Generate  PTRH-SPEC-DRIFT alert with  market snapshot. PM notification:  immediate.
+4 —  | ABORT || No contract  satisfies   | Gate 3 ||  ||  ||  || Log: PTRH-NO-EXECUTE with full  market conditions snapshot. PM  immediate alert. Set 24-hour re scan timer. PTRH budget   | preserved in cash sleeve.
+
+[TABLE 4]
+Condition || Threshold || Action
+OTM% drift from 30- day baseline || +/- 1.5% sustained for 5  consecutive days || PTRH-CALIBRATION-WATCH flag. Note in next daily  ARMS summary. No immediate action.
+Delta-optimal strike  approaching Gate 2  boundary || Selected delta within 0.03  of Gate 2 outer limit || PTRH-DRIFT-WARNING. PM notification with current  calibration data and trend projection. Recommend spec  review.
+Fallback level invoked || Any Gate 2 or Gate 3   | execution || Automatic ARMS Architecture Review item created.  Addendum 6 recalibration workflow triggered. Log entry  persists until reviewed.
+IV regime shift || 30-day realized IV   | changes > 8 vol points || Recalibrate delta-to-OTM% baseline. Adjust soft  guardrail bounds. Log recalibration event with  before/after parameters.
+
+[TABLE 5]
+Field || Type || Description
+ticker || string || "QQQ"
+expiry || date || Selected expiry date
+strike || number || Delta-optimal strike
+option_type || string || "PUT"
+contracts || integer || INT(budget / (ask_price * 100))
+limit_price || number || Mid-price = (bid + ask) / 2, rounded to nearest $0.05
+adjusted_price || number || 15-minute no-fill fallback = (mid + ask) / 2
+delta || number || Actual delta from chain at time of selection
+dte || integer || Calendar days to expiry at time of selection
+otm_pct || number || (spot - strike) / spot, informational only
+fallback_level || integer || 1 = standard, 2 = relaxed, 3 = extended, 4 = abort
+budget_deployed || number || contracts * ask_price * 100
+roll_trigger_date || date || expiry minus 30 calendar days
+scan_timestamp || datetime || UTC timestamp of chain data used for selection
+
+[TABLE 6]
+Document || Section(s) Affected || Disposition
+FSD v1.1 || Section 4.2 — PTRH  Strike Parameters || Superseded in full. Replace with reference to  Addendum 6.
+Addendum 1 || PTRH strike and OTM%  clauses || Superseded for all strike selection language.  Non-PTRH clauses remain in force.
+Options Execution Playbook  v1.2 || Layer 1 QQQ Puts — all  strike selection gates || Superseded. Calculator OTM% gate to be  updated to soft guardrail per Section 2.2.
+PM Playbook v4.0 || PTRH execution   | protocol || Update reference to state: delta is primary gate.  Strike selection is autonomous via ARMS.
+PTRH Calculator (Options  Execution Calculator v3+) || Layer 1 OTM%   | validation check || Update C22 (Strike OTM% check) to soft  guardrail: 2%-10%, informational flag rather than  FAIL/PASS gate.
+
+[TABLE 7]
+Role || Name || Signature / Date
+Portfolio Manager (Author) || MJ Pence || _________________ / April 2026
+Lead Engineer (Implementor) || Josh Paul || _________________ /   | ___________
+Co-GP (Acknowledged) || Brandon Thornhill || _________________ /   | ___________
+Co-GP (Acknowledged) || James Bradford || _________________ /   | ___________

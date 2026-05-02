@@ -1,0 +1,137 @@
+ACHELION CAPITAL 
+PM OPERATIONAL PLAYBOOK 
+Decision Framework, Daily Protocol & Regime Management Guide 
+v4.0 · March 2026 · Architecture AB · 58/20/14/8 · Seven-Pillar + Seven-Gap Upgrades 
+1. AUTHORITY HIERARCHY — V4.0 
+The authority hierarchy is unchanged. Two new ceiling authorities exist but both can only make the portfolio  MORE defensive, never less. 
+2. DAILY PM PROTOCOL — V4.0 ASSESSMENT SEQUENCE 
+The daily assessment sequence adds five new checks from v4.0. Complete the existing protocol first, then run the  five new v4.0 checks before finalizing the session log.
+3. FACTOR EXPOSURE MONITOR — PM DECISION GUIDE 
+The FEM tells you what your regime model cannot: whether you are running what looks like a diversified portfolio  but is effectively a single concentrated bet. Review the FEM output every morning as part of Step 5. 
+3.1 When FEM Shows WATCH (>65% single factor) 
+Document in the session log. No mandatory action is required. Consider whether the concentration is intentional (it is  your thesis) or accidental (positions have correlated more than expected). If intentional and within conviction  parameters, note it and move on. If accidental, flag for the next portfolio review. 
+3.2 When FEM Shows ALERT (>80% single factor) 
+Mandatory review within 24 hours. Your choices are: (A) Confirm the concentration is deliberate and within your risk  tolerance — document a conviction reaffirmation. (B) Identify a trim that reduces the factor exposure below the ALERT  threshold. (C) Accept the advisory +0.05 composite input to ARAS, which may shift the regime toward WATCH if you  are near a threshold. 
+4. PORTFOLIO DRAWDOWN SENTINEL — PM DECISION GUIDE 
+The PDS is the only new v4.0 module with ceiling authority. It operates independently of ARAS. It protects  investors when ARMS itself is wrong or slow — and any honest system must plan for that possibility. 
+4.1 WARNING Level (−8% from HWM) 
+No mandatory action. Heightened monitoring. Review all open positions. Confirm conviction levels are current. Check  whether any Conviction Decay Function flags are active. Consider whether market conditions have changed in ways that  make your thesis weaker. Document the review in the session log. 
+4.2 DELEVERAGE 1 (−12% from HWM) 
+The system automatically enforces a 60% gross ceiling. This happens regardless of ARAS regime. If ARAS says  RISK_ON at 100%, and PDS fires at −12%, the effective ceiling is 60%. The kill chain executes to 60% using the  standard priority order with liquidity-adjusted execution. The PM is notified immediately. This is not an override  request — it is an automatic execution. 
+4.3 DELEVERAGE 2 (−18% from HWM)
+The system automatically enforces a 30% gross ceiling. LP communication is triggered — the auto-narrative engine  generates a disclosure. The PM must review and approve the narrative before it is sent, but the deleverage itself is  automatic. GP notification is required within 2 hours. This level is designed to never be reached if the system is  operating correctly — it is the final backstop. 
+5. PERMANENT TAIL RISK HEDGE — PM OPERATIONAL GUIDE 
+5.1 The Two Layers — Permanent and Dynamic 
+There are two distinct hedge layers that coexist at all times. The permanent PTRH is always on — it never goes to zero  and does not depend on regime. The dynamic STRC reserve layer deploys into the same instrument (QQQ puts) but is  separately managed per the existing STRC protocols. Both layers are additive. In DEFENSIVE regime, you have both  layers fully deployed simultaneously. 
+5.2 Roll Protocol — 30 DTE Trigger 
+When QQQ put positions reach 30 days to expiry (DTE), initiate a roll. The roll involves buying the next expiry at the  same strike (5–8% OTM relative to current QQQ price, targeting ~6.5% OTM, delta −0.35) and selling the expiring  position. Target the 60–90 day expiry. If implied volatility is elevated at roll time (VIX >35), consider rolling to a longer  expiry (90 days) to reduce the vol premium paid. 
+5.3 Why QQQ Puts, Not SPX 
+This is documented here for LP conversations. QQQ puts hedge the technology sector directly. In the stress scenarios  most relevant to Achelion's portfolio — AI capex pause, Taiwan manufacturing disruption, tech sector rotation — QQQ  falls materially harder than SPX. In 2022, QQQ fell 32.6% while SPX fell 18.1%. An SPX put would have provided  roughly 55% of the protection of a QQQ put per dollar of premium in that scenario. The portfolio's AI concentration  means it will behave more like QQQ than SPX in both directions. 
+6. VOLATILITY-ADJUSTED RE-ENTRY — PM DECISION GUIDE 
+When ARES clears all four gates and PM approval is given, VARES determines the size of each re-entry tranche  based on current volatility. The PM does not set the tranche size — VARES calculates it automatically. The PM  confirms the calculation and approves execution.
+7. CONVICTION DECAY FUNCTION — PM DECISION GUIDE 
+The most dangerous behavior in concentrated portfolios is maintaining high conviction on a position that is  quietly failing while the PM refuses to update their priors. The CDF makes this failure visible and automatically  reduces position weight — without requiring the PM to admit they were wrong. 
+7.1 When a Position Enters Decay 
+A position enters decay when it has underperformed QQQ by more than 10pp over 45 consecutive days. This means it is  not just lagging — it is significantly underperforming the technology benchmark that Achelion's thesis is built on. The  first decay flag (Day 45) is a warning. It does not require action, but it requires acknowledgment in the session log. 
+7.2 PM Response Options 
+8. STRESS SCENARIO LIBRARY — PM INTERPRETATION GUIDE 
+The SSL output appears in the daily monitor every morning. It is advisory — it does not trigger any automatic  action. Its purpose is to make the PM aware of tail exposure before a tail event occurs, not after. 
+8.1 How to Read the Scenario Output 
+Each scenario shows gross portfolio P&L (before the PTRH payoff) and net P&L (after estimated PTRH payoff). Focus  on the net figure — it represents what investors would actually experience after the permanent hedge pays off. A well structured portfolio should show net losses of less than 20% even in the worst defined scenario. 
+8.2 Scenarios Requiring PM Attention
+9. COMPLETE REGIME REFERENCE — V4.0 
+10. LICENSING READINESS — ACHELION TECH 
+v4.0 closes the final institutional gap set that separates a sophisticated risk management system from a world class one. The following table documents the licensing differentiators against competitive alternatives.
+CONFIDENTIAL: This playbook is for the Achelion Capital PM and authorized GPs only. v4.0 is the canonical operational standard. All prior  versions are superseded. Architecture AB v4.0 · March 2026 · Achelion Capital Management, LLC. 
+ACHELION CAPITAL MANAGEMENT, LLC · Flow. Illumination. Discipline. Conviction.
+
+[TABLE 0]
+v4.0 UPGRADE SUMMARY — WHAT IS NEW  | v4.0 closes seven world-class institutional risk gaps: (1) Factor Exposure Monitor — detects hidden  concentration in AI capex, Taiwan manufacturing, BTC beta, and dollar sensitivity before it becomes a  drawdown. (2) Volatility-Adjusted Re-entry Sizing — re-entry tranche size scaled to current vol conditions so  you come back smaller when vol is elevated. (3) Portfolio Drawdown Sentinel — independent of ARAS,  monitors NAV vs high-water mark with automatic ceiling triggers at −8%, −12%, and −18%. (4) Liquidity Adjusted Execution — VWAP in elevated vol, reordered priority in crisis (illiquid positions first). (5)  Permanent Tail Risk Hedge — QQQ puts, always on, rolled at 30 DTE, 5–8% OTM, delta −0.35, DTE 60–90  days (canonical spec: PTRH Addendum 1 + Options Execution Calculator v3). (6) Conviction Decay Function  — automatic position weight reduction when a thesis underperforms for 45+ days. (7) Stress Scenario  Library — daily computation of 8 defined stress scenarios against current portfolio.
+
+[TABLE 1]
+AUTHORITY || CEILING RULE || OVERRIDE?
+ARAS || Absolute regime ceiling. Always prevails unless PDS is lower. || No human override
+PDS — NEW v4.0 || Drawdown ceiling — fires when portfolio falls 12% or 18% from  HWM. Lower of ARAS or PDS always prevails. || PM can override with   | documented justification
+FEM — Advisory || Factor concentration monitor. No ceiling authority. Advisory  signal to PM. || N/A — advisory only
+PTRH — Additive || QQQ puts — outside exposure ceiling calculation. Never  removed below DEFENSIVE. || PM can suspend with GP  approval
+PM + GPs || PM may override PDS ceiling with documented justification and  GP co-sign. Cannot override ARAS. || PDS only
+
+[TABLE 2]
+STEP || CHECK || ACTION IF FLAGGED || SOURCE
+1 || ARAS Composite Score || Regime determination → ceiling setting || aras.py output
+2 || Circuit Breakers || Hard trigger → immediate deleverage per kill  chain || circuit_breaker.py
+3 || SLOF Overlay Status || Confirm SLOF on/off per regime || slof.py output
+4 || Escalation Rule Status || Check auto-suppress condition || escalation_engine.py
+5 ★ || Factor Exposure Monitor — NEW  v4.0 || WATCH: document. ALERT: mandatory review  within 24h || factor_exposure.py
+
+[TABLE 3]
+STEP || CHECK || ACTION IF FLAGGED || SOURCE
+6 ★ || Portfolio Drawdown Sentinel — NEW v4.0 || WARNING: heightened monitoring.   | DELEVERAGE: automatic execution || drawdown_sentinel.py
+7 ★ || Tail Hedge Status — NEW v4.0 || DTE ≤ 30: initiate roll. Regime shift: resize per  PTRH schedule || tail_hedge.py
+8 ★ || Stress Scenario P&L — NEW v4.0 || Advisory. Worst scenario noted in session log. || stress_scenarios.py
+9 ★ || Conviction Decay Flags — NEW  v4.0 || Day 45: acknowledge. Day 90: sizing review. Day  135: full review || perm.py CDF
+10 || Session Log + LP Narrative || Document all decisions, overrides, and flags || pm_protocol.py
+
+[TABLE 4]
+WHAT HIGH FACTOR EXPOSURE ACTUALLY MEANS  | A portfolio showing 82% AI Capex factor exposure is not necessarily wrong — if your thesis is AI  infrastructure, concentration is the point. The FEM ALERT is not telling you to diversify. It is telling you that  in a scenario where the AI capex cycle pauses — a single earnings miss from a major hyperscaler, a Taiwan  geopolitical event, a regulatory overhang — your portfolio has minimal natural offset. That risk is known  and accepted. ALERT simply means it must be acknowledged explicitly, not ignored.
+
+[TABLE 5]
+PDS LEVEL || AUTOMATIC || PM ACTION REQUIRED || GP NOTIFICATION
+WARNING || None — advisory || Review positions. Document. || Not required
+DELEVERAGE 1 || 60% ceiling enforced. Kill chain executes. || Review and confirm execution.  Update session log. || Notify within 24h
+DELEVERAGE 2 || 30% ceiling enforced. LP  narrative triggered. || Approve LP narrative before send.  Full position review. || Notify within 2h
+
+[TABLE 6]
+LAYER || ALWAYS ON? || SIZED BY || REGIME DEPENDENCY
+Permanent PTRH || YES — never  removed || Strike: 5–8% OTM · Delta  −0.35 · DTE 60–90 days · Roll  at 30 DTE || Sizes up in WATCH/DEFENSIVE. In CRASH:  hold, no new buys.
+Dynamic STRC Reserve || No — deploys  NEUTRAL+ || STRC sleeve size per existing  protocol || Locks in RISK_ON. Deploys 50% NEUTRAL,  100% DEFENSIVE/CRASH.
+
+[TABLE 7]
+THE KEY PRINCIPLE  | Re-entry size is inversely proportional to current volatility. When VIX is elevated relative to its 90-day  average, you come back smaller. This is not timidity — it is correct position sizing. A portfolio re-entering at  57% of normal tranche size when VIX is at 35 is protecting itself against a second leg down that has not yet
+
+[TABLE 8]
+arrived. If the regime holds and vol normalizes, the subsequent tranches restore full exposure. If vol spikes  again, you were right to come back small.
+
+[TABLE 9]
+VIX CONDITION || VOL ADJ FACTOR || TRANCHE SIZE || PRACTICAL EXAMPLE
+VIX at avg (VIX=20, avg=20) || 1.00 (full) || 33% of target || Target 60% ceiling → T1 adds 20pp to current  40%
+VIX elevated (VIX=35,   | avg=20) || 0.57 (reduced) || 19% of target || Target 60% → T1 adds only 11pp. Cautious  re-entry.
+VIX high (VIX=50, avg=20) || 0.40 → floor 0.15 || 15% of target (min) || Minimum tranche floor applies. Very cautious.
+
+[TABLE 10]
+SCENARIO || RECOMMENDED ACTION || DOCUMENTATION REQUIRED
+Still believe in the thesis — temporary underperformance || Document a conviction reaffirmation. Provide  updated thesis rationale. Decay clock resets to  zero. || Written thesis update in session log.
+Thesis partially intact but   | weakening || Allow decay to reduce sizing naturally. Use  smaller position as the thesis resolves. Do not  force a sell. || Acknowledge in session log. Outline  what would restore conviction.
+Thesis is broken || Initiate an orderly exit via PERM protocols. Do not wait for Day 135. The CDF is a signal — PERM is the exit mechanism. || Full fundamental review documented.    | Exit rationale written.
+Day 135 reached without   | resolution || Mandatory full fundamental review required. GP  must be briefed. The position is sized at 60% of  original C² weight until resolved. || Formal review memo. GP sign-off  on path forward.
+
+[TABLE 11]
+IF THIS SCENARIO SHOWS... || IT MEANS... || CONSIDER...
+S8 (AI Bubble −40%) shows net loss >25% || Equity sleeve concentration in AI names  is too high relative to hedge size || Increasing PTRH size or trimming  highest-beta AI names
+
+[TABLE 12]
+IF THIS SCENARIO SHOWS... || IT MEANS... || CONSIDER...
+S6 (BTC −60%) shows net loss >20% || Crypto sleeve is outsized relative to  defensive offset || Whether 20% crypto allocation is  appropriate for current regime
+S5 (Hormuz 90d) shows net gain || Defense sleeve (SGOL, DBMF) is  correctly positioned for the current  geopolitical risk || No action — this is the architecture  working
+Worst scenario is S7 (Fed +100bps) || Rate sensitivity of the portfolio is elevated — SGOV allocation is working but may  not be sufficient || Whether DBMF allocation adequately  offsets rate sensitivity
+
+[TABLE 13]
+REGIME || CEILING || SLOF || FEM || PTRH || VARES || CDF || PDS OVERRIDE?
+RISK_ON || 100% || Active || Monitor || 1.0× base || N/A || Active || PDS can add ceiling   | independently
+WATCH || 100% || Active || Monitor || 1.25× || N/A || Active || PDS can add ceiling   | independently
+NEUTRAL || 75% || Reduce || Alert→review || 1.25×+STRC || N/A || Active || PDS can add ceiling   | independently
+DEFENSIVE 40% ||  || Remove || Alert→review || 1.5×+STRC || Engaged || Active || PDS ceiling: 40% or lower
+CRASH || 15% || Remove || Alert→review || 2.0× base   | (CAM   | autonomous)  — see   | Addendum 4 || VARES   | active || Active || PDS ceiling: 15% or lower
+
+[TABLE 14]
+CAPABILITY || ARMS v4.0 || TYPICAL $50M FUND || INSTITUTIONAL   | SYSTEM
+Regime detection with confidence  scoring || ✓ 7-module ARAS || Partial — rules-based || ✓ Bloomberg MARS
+Factor exposure monitoring || ✓ FEM — v4.0 || Rarely || ✓ Barra/MSCI
+Portfolio drawdown sentinel   | (independent) || ✓ PDS — v4.0 || Manual HWM tracking || ✓ Custom
+Permanent tail risk hedge (structural) || ✓ PTRH QQQ puts — v4.0 || Rarely — cost concern || ✓ Universa-style
+Volatility-adjusted re-entry sizing || ✓ VARES — v4.0 || No || Partial
+Conviction decay with automatic  weighting || ✓ CDF — v4.0 || No || No
+Daily stress scenario library (8  scenarios) || ✓ SSL — v4.0 || No || ✓ Custom
+Liquidity-adjusted crisis execution || ✓ LAEP — v4.0 || No || Partial
+Automated LP narrative generation || ✓ v3.1 (unchanged) || No || No
+Fund-agnostic config layer (licensable) || ✓ v3.1 (unchanged) || N/A — custom per fund || ✓ Bloomberg

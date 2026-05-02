@@ -39,7 +39,7 @@ print("\n" + "=" * 70)
 print("PHASE 2 SMOKE TEST: Full Arch AB, 2020 H1 (6 months)")
 print("=" * 70)
 
-from simulation.historical_engine_phase2 import run_simulation_phase2
+from simulation.replay_harness import run_backtest as run_simulation_phase2
 
 res2 = run_simulation_phase2(
     "2020-01-02", "2020-06-30",

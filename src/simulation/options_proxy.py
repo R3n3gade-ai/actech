@@ -11,13 +11,16 @@ formula to price protective puts with 60-90 DTE rolling windows.
 import logging
 import math
 from dataclasses import dataclass
-from typing import Optional
+from typing import List, Optional
 
 import numpy as np
 import pandas as pd
-from scipy.stats import norm
 
 logger = logging.getLogger(__name__)
+
+
+def _norm_cdf(value: float) -> float:
+    return 0.5 * (1.0 + math.erf(value / math.sqrt(2.0)))
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -85,8 +88,8 @@ def black_scholes_put(S: float, K: float, T: float, r: float,
     d1 = (math.log(S / K) + (r + 0.5 * sigma ** 2) * T) / (sigma * math.sqrt(T))
     d2 = d1 - sigma * math.sqrt(T)
 
-    put_price = (K * math.exp(-r * T) * norm.cdf(-d2)
-                 - S * norm.cdf(-d1))
+    put_price = (K * math.exp(-r * T) * _norm_cdf(-d2)
+                 - S * _norm_cdf(-d1))
     return max(0.0, put_price)
 
 
@@ -97,7 +100,7 @@ def black_scholes_delta_put(S: float, K: float, T: float, r: float,
         return -1.0 if K > S else 0.0
 
     d1 = (math.log(S / K) + (r + 0.5 * sigma ** 2) * T) / (sigma * math.sqrt(T))
-    return norm.cdf(d1) - 1.0
+    return _norm_cdf(d1) - 1.0
 
 
 def find_strike_for_delta(
@@ -298,7 +301,7 @@ def estimate_covered_call_premium(
         mid = (lo + hi) / 2.0
         d1 = (math.log(underlying_price / mid) +
               (RISK_FREE_RATE + 0.5 * sigma ** 2) * T) / (sigma * math.sqrt(T))
-        call_delta = norm.cdf(d1)
+        call_delta = _norm_cdf(d1)
         if call_delta > delta:
             lo = mid
         else:
@@ -312,7 +315,7 @@ def estimate_covered_call_premium(
     d1 = (math.log(underlying_price / strike) +
           (RISK_FREE_RATE + 0.5 * sigma ** 2) * T) / (sigma * math.sqrt(T))
     d2 = d1 - sigma * math.sqrt(T)
-    call_price = (underlying_price * norm.cdf(d1)
-                  - strike * math.exp(-RISK_FREE_RATE * T) * norm.cdf(d2))
+    call_price = (underlying_price * _norm_cdf(d1)
+                  - strike * math.exp(-RISK_FREE_RATE * T) * _norm_cdf(d2))
 
     return max(0.0, call_price)

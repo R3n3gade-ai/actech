@@ -1,0 +1,267 @@
+ACHELION CAPITAL MANAGEMENT | ARMS AUTO DEPLOYMENT & EXECUTION ARCHITECTURE v1.1 | CONFIDENTIAL 
+ACHELION CAPITAL MANAGEMENT 
+CONFIDENTIAL — INTERNAL USE ONLY 
+ARMS AUTOMATED DEPLOYMENT & EXECUTION ARCHITECTURE 
+v1.1 | Corrected Edition 
+Authored for Josh Paul — Lead Engineer, Achelion Technology LLC 
+March 2026 | ARMS v4.0 Canonical 
+Correction Note — v1.1 
+v1.0 incorrectly described CAM as constructing put spreads and omitted SLOF entirely. Both errors  are corrected here. ARMS v4.0 operates exactly two options instruments: SLOF (offensive synthetic  long) and PTRH (QQQ puts, CAM-sized). No single-stock puts. No exceptions.
+Achelion Technology LLC | ARMS v4.0 | March 2026 1 
+ACHELION CAPITAL MANAGEMENT | ARMS AUTO DEPLOYMENT & EXECUTION ARCHITECTURE v1.1 | CONFIDENTIAL 
+SECTION 1 — GOVERNING PRINCIPLE 
+Prime Directive 
+The PM needs to be at the lunch. The system runs the portfolio. Every eliminatable human touchpoint  is evidence of an incomplete build. 
+This document specifies the complete automated deployment and execution architecture for ARMS v4.0. PM  investment decisions — made once at the strategic level — are translated into autonomous, rules-based machine  execution at every subsequent step. The human role is intelligence and governance. The system role is  everything else. 
+1.1 What Automation Covers 
+• Regime detection and scoring — continuous, no human input required. 
+• Portfolio rebalancing — triggered by regime transitions, CDF decay, or PDS thresholds. • Order construction and submission — LAEP-tiered, broker API executed. 
+• SLOF sizing and adjustment — regime-gated, automated by Decision Engine. 
+• PTRH sizing and roll — CAM autonomous every 5 minutes. Never in PM queue. 
+1.2 What Stays With the PM 
+• Gate 6 / Category A thesis initiation — new position ideas entering the queue. 
+• Regime override declarations — manual CRASH escalation in extreme events. 
+• Whitelist approval of new securities before the system can trade them. 
+• Annual architecture review and version approval.
+Achelion Technology LLC | ARMS v4.0 | March 2026 2 
+ACHELION CAPITAL MANAGEMENT | ARMS AUTO DEPLOYMENT & EXECUTION ARCHITECTURE v1.1 | CONFIDENTIAL 
+SECTION 2 — SYSTEM ARCHITECTURE OVERVIEW 
+ARMS automation is a layered pipeline. Data flows in one direction: from market feeds at the top to broker  execution at the bottom. No human touchpoint exists between regime detection and trade settlement unless a PM  override is explicitly triggered. 
+2.1 Pipeline Layers 
+2.2 Broker Integration 
+• Primary: Alpaca Markets REST API — primary execution for equities and SLOF/PTRH options. • Failover: Interactive Brokers TWS API — failover. Full options chain access. 
+• Failover Logic: Health check every 60 seconds during market hours. Auto-route to failover on primary  failure.
+Achelion Technology LLC | ARMS v4.0 | March 2026 3 
+ACHELION CAPITAL MANAGEMENT | ARMS AUTO DEPLOYMENT & EXECUTION ARCHITECTURE v1.1 | CONFIDENTIAL 
+SECTION 3 — REGIME ENGINE & TRIGGER LOGIC 
+The regime engine runs every 5 minutes during market hours and produces a single composite score (0.00–1.00).  That score determines the active regime, which sets the equity allocation ceiling and governs SLOF and PTRH  behavior. 
+3.1 Regime Score Bands 
+3.2 Composite Score Inputs 
+3.3 Regime Transition Confirmation Rules 
+• Upgrade (e.g. DEFENSIVE → NEUTRAL): score must hold below upper boundary for 3 consecutive 5- min cycles (15 min). 
+• Downgrade (e.g. NEUTRAL → DEFENSIVE): score must breach boundary for 2 consecutive cycles (10  min). Asymmetric by design — defense is faster than offense. 
+• CRASH exception: any single cycle crossing 0.81 triggers CRASH immediately. No confirmation delay.  Survival before precision. 
+Current State — March 29, 2026 
+Regime: DEFENSIVE | Score: 0.79 | CRASH boundary: 0.80 | CRASH probability: ~35% | Brent:  ~$111 | VIX: ~27.4 | SSL Active: S3 (Geopolitical) + S6 (Energy Shock)
+Achelion Technology LLC | ARMS v4.0 | March 2026 4 
+ACHELION CAPITAL MANAGEMENT | ARMS AUTO DEPLOYMENT & EXECUTION ARCHITECTURE v1.1 | CONFIDENTIAL 
+SECTION 4 — NEUTRAL DEPLOYMENT: AUTOMATED EXECUTION  PLAN 
+Trigger Condition 
+ARMS composite score drops to ≤ 0.65 and holds for 3 consecutive 5-minute cycles (15 minutes).  Equity ceiling opens to 75%. Decision Engine fires Deployment Event: NEUTRAL. Execution happens  first. PM receives confirmation notification — not a request for approval. 
+4.1 Power Singularity — New Position Deployment Sequence 
+4.2 Phase 2 — RISK_ON Additions (Score ≤ 0.45) 
+4.3 Existing Positions — No Action at NEUTRAL 
+• NVDA 7.8% — Hold. Evaluate add at RISK_ON only. 
+• AVGO 3.7% — Hold. Custom silicon and AI networking backbone. 
+• PLTR — Reassess. Defense AI demand elevated with Iran conflict active. 
+• ANET 4.3% — Hold. Networking infrastructure of AI buildout. 
+• TSLA 8.8% — Hold. Existing position. 
+4.4 FEM Pre-Flight Check 
+FEM runs automatically before any Power Singularity order submits. If energy + AI concentration post-add would  breach the 80% ALERT threshold, GOOGL and GEV execute first (dual-identity: both tech and energy).  Remaining positions queue until concentration normalizes.
+Achelion Technology LLC | ARMS v4.0 | March 2026 5 
+ACHELION CAPITAL MANAGEMENT | ARMS AUTO DEPLOYMENT & EXECUTION ARCHITECTURE v1.1 | CONFIDENTIAL Achelion Technology LLC | ARMS v4.0 | March 2026 6
+ACHELION CAPITAL MANAGEMENT | ARMS AUTO DEPLOYMENT & EXECUTION ARCHITECTURE v1.1 | CONFIDENTIAL 
+SECTION 5 — PTRH: PORTFOLIO TAIL RISK HEDGE 
+Canonical Definition 
+PTRH is the portfolio's permanent defensive hedge. One instrument only: QQQ outright puts. Always  on. CAM sizes it autonomously every 5 minutes. PTRH never appears in the PM decision queue. The  PM is informed of sizing — never asked to approve it. 
+5.1 PTRH Instrument Rules — Absolute 
+• Instrument: QQQ outright puts only. No single-stock puts. No put spreads. No exceptions. • Expiry: 90–120 day target at purchase. Roll at 30 DTE automatically. 
+• Baseline floor: 1.2% NAV minimum. CAM cannot size below this under any regime. 
+• VIX entry preference: CAM prefers sub-22 VIX for new premium deployment. Above 28, CAM holds  existing positions and does not add new puts. 
+• Roll mechanic: spread order — buy new expiry, sell expiring leg simultaneously via LAEP. 
+5.2 CAM — Autonomous PTRH Sizer 
+CAM (src/engine/cam.py) runs every 5 minutes immediately after the regime engine produces its composite  score. It outputs a single number: target PTRH notional as a percentage of NAV. If actual PTRH notional deviates  from target by more than 5%, CAM auto-corrects at the next available execution window. 
+5.3 CAM Four Multipliers 
+Current PTRH State 
+S3 + S6 SSL scenarios active. Regime score 0.79. Equity ceiling 40% (DEFENSIVE). CAM macro  stress multiplier: 1.8x. PTRH notional elevated accordingly. Holds at current sizing — VIX ~27.4 is  above new-put-purchase threshold.
+Achelion Technology LLC | ARMS v4.0 | March 2026 7 
+ACHELION CAPITAL MANAGEMENT | ARMS AUTO DEPLOYMENT & EXECUTION ARCHITECTURE v1.1 | CONFIDENTIAL 
+SECTION 6 — SLOF: SYNTHETIC LONG OFFENSIVE FRAMEWORK 
+Canonical Definition 
+SLOF is the portfolio's offensive leverage instrument. It is not a hedge. It amplifies upside exposure in  favorable regimes using an ATM synthetic long: buy call + sell put, same strike, same expiry,  combined delta +1.0, net debit. SLOF is regime-gated and automated by the Decision Engine. 
+6.1 SLOF Structure 
+• Legs: Buy ATM call + Sell ATM put. Same underlying, same strike, same expiry. • Net position delta: +1.0 (equivalent to long 100 shares per contract pair). 
+• Cost: net debit (call premium exceeds put premium at ATM). 
+• Purpose: amplify equity upside without adding cash to the long book. Offensive, not defensive. 6.2 SLOF Regime Gates — Automated 
+6.3 SLOF Automation Rules 
+• SLOF sizing and adjustment are fully automated by the Decision Engine on every regime transition. 
+• No PM approval required for SLOF adjustments. PM receives EOD confirmation of SLOF status and  notional. 
+• SLOF legs are always executed as a spread order — both legs simultaneously. No legged risk. 
+• At DEFENSIVE trigger: Decision Engine unwinds SLOF before deploying any equity trims. Sequence  matters. 
+Current SLOF State 
+Regime: DEFENSIVE. SLOF: Removed entirely per architecture. No SLOF legs currently active. Will  re-engage automatically when regime returns to NEUTRAL or better.
+Achelion Technology LLC | ARMS v4.0 | March 2026 8 
+ACHELION CAPITAL MANAGEMENT | ARMS AUTO DEPLOYMENT & EXECUTION ARCHITECTURE v1.1 | CONFIDENTIAL SECTION 7 — LAEP: ORDER CONSTRUCTION & EXECUTION 
+LAEP (Liquidity-Adjusted Execution Protocol) converts a target allocation into actual broker orders. It accounts for  VIX regime, position size relative to ADV, and spread conditions before submitting to the broker API. 
+7.1 VIX Execution Tiers 
+7.2 Position Size Constraints 
+• Maximum single-order size: 20% of 10-day ADV for that security. 
+• Positions exceeding 20% ADV: LAEP splits into multiple child orders across the session. • Minimum fill: 80% of target allocation within session. Remainder carries as resting limit. • Slippage budget: 0.15% maximum vs. decision-time price. Exceeded = order cancelled, PM alert. 
+7.3 Order Types by Scenario
+Achelion Technology LLC | ARMS v4.0 | March 2026 9 
+ACHELION CAPITAL MANAGEMENT | ARMS AUTO DEPLOYMENT & EXECUTION ARCHITECTURE v1.1 | CONFIDENTIAL 
+SECTION 8 — AUTOMATED RISK MODULES 
+8.1 PDS — Portfolio Drawdown Sentinel 
+8.2 CDF — Conviction Decay Function 
+• 45 days without PM thesis update: position auto-trimmed to 80% of target allocation. • 90 days without PM thesis update: position auto-trimmed to 60% of target allocation. • PM resets the CDF clock by submitting a thesis confirmation via dashboard. One action, one click. • New positions (GOOGL, GEV, CEG, VST, BE) — CDF clock starts at deployment date. 
+8.3 FEM — Factor Exposure Monitor 
+• Runs at every regime cycle AND as a pre-flight check before any new deployment order. • WATCH threshold: >65% factor concentration in any single theme. Alert to PM. Orders proceed. 
+• ALERT threshold: >80% factor concentration. New orders in that theme are blocked until concentration  normalizes. 
+8.4 SSL — Stress Scenario Library 
+• 8 pre-defined macro stress scenarios. Each carries a signature pattern in the composite sub-inputs. • Pattern match >70% confidence: SSL flags the scenario and adjusts CAM macro stress multiplier. • Active Scenarios: S1: Rate Shock. S2: Credit Event. S3: Geopolitical Escalation. S4: Liquidity Freeze. • S5: Dollar Spike. S6: Energy Price Shock. S7: Tech Earnings Collapse. S8: Systemic Contagion. 
+Current SSL Status 
+S3 (Geopolitical Escalation) + S6 (Energy Price Shock) both active. Combined CAM macro stress  multiplier: 1.8x baseline. PTRH notional elevated accordingly.
+Achelion Technology LLC | ARMS v4.0 | March 2026 10 
+ACHELION CAPITAL MANAGEMENT | ARMS AUTO DEPLOYMENT & EXECUTION ARCHITECTURE v1.1 | CONFIDENTIAL 
+SECTION 9 — EOD SNAPSHOT & PM DASHBOARD 
+The EOD Snapshot module runs at 16:30 ET every trading day. It is the PM's primary morning briefing. The  dashboard provides real-time visibility during market hours. 
+9.1 EOD Snapshot — Contents 
+• Regime score at close, all sub-scores, regime classification. 
+• Full portfolio holdings with current vs. target allocations. 
+• All automated orders executed during session — fill prices and slippage vs. decision price. • SLOF status: active/removed, current notional, regime gate that set it. 
+• PTRH current notional, target notional, CAM multipliers that drove sizing. 
+• FEM factor concentration reading across all themes. 
+• PDS current drawdown from peak. Distance to each threshold. 
+• CDF status for all positions — days since last PM thesis update. 
+• SSL scenario flags with confidence levels. 
+• PM Action Queue — items requiring PM input only (see 9.3). 
+9.2 PM Dashboard — Real-Time 
+• Live regime score gauge with 5-min rolling history. 
+• Portfolio NAV and allocation bar chart vs. targets. 
+• Active alerts: PDS, FEM, CDF, SSL flags. 
+• Intraday order log with status: pending / filled / cancelled. 
+• SLOF status panel: regime gate, current notional, delta exposure. 
+• PTRH hedge meter: current notional vs. CAM target. 
+9.3 PM Action Queue — Valid Items Only 
+Rule 
+Only two categories may ever appear in the PM Action Queue: (1) New position thesis submissions  for Gate 1–6 review. (2) Regime override declaration requests. Anything else in the queue is evidence  of an incomplete build. Josh must eliminate it.
+Achelion Technology LLC | ARMS v4.0 | March 2026 11 
+ACHELION CAPITAL MANAGEMENT | ARMS AUTO DEPLOYMENT & EXECUTION ARCHITECTURE v1.1 | CONFIDENTIAL 
+SECTION 10 — BUILD MILESTONES FOR JOSH 
+Four phases from first code to live deployment. Paper trading is mandatory before any live capital is touched — per Services Agreement Section 2.5, minimum two consecutive weeks of successful paper trading. 
+10.1 Phase 1 — Foundation (Weeks 1–4) 
+• arms_core.py: composite score computation from all 5 sub-inputs. 5-min cadence. • cam.py: four multipliers live. PTRH notional output. 5% auto-correct logic. 
+• eod.py: full state capture at 16:30 ET. PM receives before 07:00 ET next day. 
+• Broker API: Alpaca primary, IBKR failover. 60-second health check during market hours. • Dashboard skeleton: regime score, NAV, alert flags. Read-only. 
+10.2 Phase 2 — Decision & Execution (Weeks 5–8) 
+• decision.py: regime transition detection, confirmation cycle logic, event firing. SLOF gate automation. 
+• laep.py: VIX tier logic, order type selection, ADV constraints, slippage monitoring. SLOF and PTRH  spread order construction. 
+• PDS: continuous drawdown monitoring. Auto-ceiling execution at -12% and -18%. • FEM: factor concentration calculation. Pre-deployment check. ALERT blocking. 
+• CDF: position age tracking. Auto-trim at 45d and 90d thresholds. 
+• SSL: 8 scenario pattern matching. CAM multiplier integration. 
+10.3 Phase 3 — Paper Trading (Weeks 9–12) 
+• Full system runs in paper mode against live market data. 
+• Minimum two consecutive weeks successful paper trading before live gate — Services Agreement  Section 2.5. 
+• PM reviews EOD snapshots daily. Any deviation from specification = issue logged, Josh fixes before live  gate. 
+• Stress tests: inject S1–S8 SSL scenarios. Verify CAM multiplier response. 
+• SLOF test: simulate NEUTRAL→DEFENSIVE transition. Verify SLOF removed before equity trims  execute. 
+• PTRH roll test: simulate 30 DTE trigger. Verify spread order construction and execution. 
+10.4 Live Deployment Gate — All Five Required 
+• Two consecutive weeks paper trading with zero critical deviations. 
+• PM sign-off on EOD snapshot format and content. 
+• Broker API failover test passed — primary disconnected, IBKR picks up with no order loss. • PDS auto-ceiling test passed in paper mode — simulated -12% triggers correct trim sequence. • CAM 5% tolerance auto-correct verified against simulated PTRH position. 
+10.5 Section 2.6 Reminder
+Achelion Technology LLC | ARMS v4.0 | March 2026 12 
+ACHELION CAPITAL MANAGEMENT | ARMS AUTO DEPLOYMENT & EXECUTION ARCHITECTURE v1.1 | CONFIDENTIAL 
+Code Originality 
+All code must be original. GPL, LGPL, AGPL, and MPL licensed dependencies are prohibited without  prior written PM approval. A full dependency register must be submitted with Phase 1 delivery. No  exceptions. 
+SECTION 11 — SECURITY, COMPLIANCE & FAILURE PROTOCOLS 
+11.1 API Key & Credential Management 
+• All API keys stored in environment variables only. Never in code or version control. • Alpaca and IBKR credentials rotated quarterly minimum. 
+• Read-only key for market data. Separate trading-enabled key for execution. Principle of least privilege. • All outbound API calls logged: timestamp, endpoint, payload hash, response status. 
+11.2 Kill Switch & Order Validation 
+• LAEP pre-submission validation: ticker on whitelist, allocation within regime ceiling, FEM pre-check, ADV  constraint, slippage budget. 
+• Any order failing validation is rejected, logged, and PM alerted. No exceptions. 
+• Hard kill switch: PM halts all new order submission via dashboard toggle. Open orders cancelled.  Positions held. 
+11.3 System Failure Handling 
+11.4 Compliance Note 
+FINRA / Broker-Dealer Bridge Period 
+All automated execution routes to registered broker-dealers. System design does not require PM to  hold direct order authority during bridge period. Brandon and James (active GPs) retain trading  authority during pre-launch phase. Confirm all system-generated order flow with fund counsel before  live deployment.
+Achelion Technology LLC | ARMS v4.0 | March 2026 13 
+
+[TABLE 0]
+Layer || Function || Cadence || Module
+1 || Market Data Ingestion || Continuous / 1-min tick || Polygon.io + Alpaca feed
+2 || Regime Engine (ARMS  Core) || Every 5 min (market  hours) || src/engine/arms_core.py
+3 || CAM — PTRH Sizer || Every 5 min post  | regime || src/engine/cam.py
+4 || Decision Engine || On regime change   | event || src/engine/decision.py
+5 || LAEP — Order   | Constructor || On decision event || src/engine/laep.py
+6 || Broker API Executor || On order ready || src/broker/executor.py
+7 || EOD Snapshot &   | Logging || 16:30 ET daily || src/reporting/eod.py
+8 || PM Dashboard || Real-time push || src/ui/dashboard.py
+
+[TABLE 1]
+Regime || Score   | Range || Equity   | Ceiling || SLOF Status || PTRH Status
+RISK_ON || 0.00 – 0.35 || 100% || Active — full size || Active — baseline 1.2% NAV
+WATCH || 0.36 – 0.50 || 100% || Active — full size || Active — CAM sized
+NEUTRAL || 0.51 – 0.65 || 75% || Reduced || Active — CAM sized, elevated
+DEFENSIVE || 0.66 – 0.80 || 40% || Removed entirely || Active — CAM sized, maximum
+CRASH || 0.81 – 1.00 || 15% || Removed entirely || Active — CAM sized, maximum
+
+[TABLE 2]
+Sub-Score || Inputs & Weight
+Credit Stress Index || HYG/LQD spread, IG CDS, TED spread — 25% weight
+Volatility Regime || VIX level, VIX/VIX3M ratio, realized vol — 25% weight
+Macro Momentum || PMI trend, yield curve shape, rate hike probability — 20% weight
+Liquidity Conditions || Fed balance sheet delta, repo rates, dollar index — 20% weight
+Equity Internals || Breadth, momentum dispersion, sector rotation — 10% weight
+
+[TABLE 3]
+# || Ticker || Target   | Alloc || Entry Range || Order   | Type || Execution Notes
+1 || GOOGL || 4.5 – 5.0% || $265 – $280 || Limit || 3.5% pre-earnings (Apr 28). Complete to 5% post confirmation.
+2 || GEV || 2.5 – 3.0% || $820 – $880 || Limit || 60% first tranche. 40% on flush to $820.
+3 || CEG || 2.0 – 2.5% || Market || VWAP || Full size. Already at most oversold RSI since last  rebound.
+4 || VST || 1.5 – 2.0% || Market || VWAP || Full size. 50% below avg analyst PT. All 12 ratings  Strong Buy.
+5 || VRT || +0.7% || Market || Limit || Size up existing 2.3% position to 3.0%.
+
+[TABLE 4]
+# || Ticker || Target   | Alloc || Entry Range || Order   | Type || Execution Notes
+6 || BE || 1.0 – 1.5% || Any   | weakness || Limit || Call-option sizing. Behind-the-meter power. Violent re rate if energy constraint narrative prices in.
+7 || NVDA || Eval +1.2% || $115 – $130 || Limit || Evaluate 7.8% → 9.0% if still in correction range at  RISK_ON trigger.
+
+[TABLE 5]
+Multiplier || Logic
+Regime Score Multiplier || Linear scale: score 0.50 = 1.0x base. Score 0.80 = 2.4x. Score 1.00 = 3.0x.  Higher regime stress = larger hedge notional.
+Equity Exposure Multiplier || Scales proportionally with current equity book as % of NAV. More equity  deployed = more hedge required.
+FEM Concentration Multiplier || Activates above 65% factor concentration (WATCH). ALERT (>80%) adds  40% to hedge notional.
+Macro Stress Multiplier || Activates on SSL scenario detection (S1–S8). Ranges 1.0x–2.0x  depending on scenario severity.
+
+[TABLE 6]
+Regime || SLOF Status
+RISK_ON || Active — full size. Decision Engine deploys SLOF at maximum authorized  notional.
+WATCH || Active — full size. No reduction. Upside environment still favorable.
+NEUTRAL || Reduced. Decision Engine scales SLOF notional proportionally with equity  ceiling reduction (75%).
+DEFENSIVE || Removed entirely. Decision Engine unwinds all SLOF legs at regime  transition. No exceptions.
+CRASH || Removed entirely. SLOF is incompatible with crisis posture. Only PTRH  remains active.
+
+[TABLE 7]
+Tier || VIX Range || Condition || Execution Behavior
+1 || < 16 || Normal || Limit orders at mid. Aggressive fill targeting.
+2 || 16 – 22 || Elevated || Limit orders 0.1–0.2% through mid. Patience mode.
+3 || 22 – 28 || High || VWAP execution for large sizes. Spread-aware limits.
+4 || > 28 || Stress || TWAP over full session. Single-order size reduced 50%.
+5 || > 40 || Crisis || Execution halted except CRASH protocol. PM alert.
+
+[TABLE 8]
+Scenario || Order Behavior
+Standard deployment (VIX <  22) || Limit at mid-market. 30-min fill window before stepping to offer.
+High-volatility deployment || VWAP algo. 15% volume participation. Full session.
+CRASH exit (forced de-risk) || Market orders for top 5 positions by ADV. Limits for illiquid.
+SLOF leg execution || Spread order: both legs simultaneously. No legged risk ever.
+PTRH roll (CAM-triggered) || Spread order: buy new expiry + sell expiring leg simultaneously.
+CDF-triggered trim || Limit sell at bid+1. If unfilled in 60 min, steps to bid.
+PDS auto-ceiling (-12% or - 18%) || Immediate market sell to target ceiling. No fill-price optimization.
+
+[TABLE 9]
+Drawdown from Peak NAV || System Response
+-8% || WARNING. PM alert pushed immediately. No automatic action. PM  reviews.
+-12% || AUTO: equity ceiling hard-capped at 60% of NAV. LAEP executes trims  immediately.
+-18% || AUTO: equity ceiling hard-capped at 30% of NAV. Full de-risk sequence  initiates.
+
+[TABLE 10]
+Failure Mode || System Response
+Regime engine offline || Last known regime score held. No new orders until restored. PM alert  immediately.
+Broker API failure || Failover to IBKR within 30 seconds. Both fail: all pending orders cancelled,  positions held.
+Data feed interruption || ARMS holds last known prices. Regime score pauses. CAM holds current  PTRH sizing.
+CAM module crash || PTRH held at current notional. PM notified. Manual review required before  next session.
+Dashboard offline || EOD snapshot emailed directly to PM. System continues operating  normally.

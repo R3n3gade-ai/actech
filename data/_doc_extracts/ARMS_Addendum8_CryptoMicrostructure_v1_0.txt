@@ -1,0 +1,252 @@
+ACHELION CAPITAL MANAGEMENT, LLC ARMS Addendum 8 | CONFIDENTIAL 
+ARMS Addendum 8 
+Early Detection Radar: Crypto Microstructure Module crypto_microstructure.py · Full Signal Specification · Evidence-Based Calibration 
+0. Governing Context and Distinction From Addendum 7 
+This addendum specifies the crypto_microstructure.py module, the second of six ARAS sub modules in the Early Detection Radar architecture. It must be read in conjunction with  Addendum 7 (deleveraging_risk.py), which specifies the companion module. 
+The two modules are complementary and non-redundant. They detect different failure modes  that combine to produce cascade events:
+Achelion Capital Management, LLC · Flow. Illumination. Discipline.  
+Page 1 of 10 
+Conviction. 
+ACHELION CAPITAL MANAGEMENT, LLC ARMS Addendum 8 | CONFIDENTIAL 
+1. Module Identity 
+2. The Question This Module Answers 
+The October 10, 2025 event was not simply a large sell. It was a liquidation cascade — a  feedback loop where each forced sale consumed liquidity, widened spreads, and triggered the  next wave of liquidations. The five signals in this module detect the structural conditions that  make such a cascade possible: thin order books, crowded positioning, dense liquidation  clusters, basis breakdown, and smart money withdrawal. Each condition is detectable days  before any price event occurs.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline.  
+Page 2 of 10 
+Conviction. 
+ACHELION CAPITAL MANAGEMENT, LLC ARMS Addendum 8 | CONFIDENTIAL 
+3. Five Signal Layers 
+3.1 Signal Layer 1 — Spot/Futures Basis Compression 
+Lead time: 3–7 days · Weight: 0.30 · Earliest structural warning 
+The basis is the annualized premium of futures price over spot price. In healthy bull markets,  futures trade above spot at 15–25% annualized — institutions pay to hold leveraged exposure.  When the basis compresses sharply toward zero or goes negative despite spot price holding  high, it signals that sophisticated participants are quietly unwinding futures exposure while retail  price has not yet caught up. This divergence is the first fracture in the market structure. 
+October 10 2025 context: Prior to the crash, the basis had been supporting a thick layer of basis  trades and carry structures. When that structure began to compress under the weight of  elevated open interest, it signaled that the carry trade was becoming untenable. The basis  compression was a leading indicator that the crowded trade was unwinding before the price  reflected it. 
+Data source: Binance quarterly futures vs perpetual price spread · Already in binance_feed.py  · No new feed required · Computed as: (quarterly_futures_price / perp_price − 1) annualized 
+3.2 Signal Layer 2 — Order Book Depth Deterioration 
+Lead time: 1–3 days · Weight: 0.25 · Market maker retreat signal 
+Order book depth is the total bid-side liquidity within a given price range of the current market  price. When market makers reduce quoted size or widen spreads without a visible price  catalyst, it means they are anticipating a move they cannot safely hedge. In early October 2025,  BTC order book depth at 0.5% from mid-price fell from approximately $15.5 million to under $10  million before the crash — a 35% deterioration in available liquidity with no corresponding price  decline. 
+This signal is the market maker's equivalent of the canary in the coal mine. They see the  liquidation cluster data, the funding rate stress, and the basis compression before retail  participants do. Their withdrawal of liquidity is itself a signal that they expect a disorderly move.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline.  
+Page 3 of 10 
+Conviction. 
+ACHELION CAPITAL MANAGEMENT, LLC ARMS Addendum 8 | CONFIDENTIAL 
+Data source: Binance order book API (GET /api/v3/depth) · Already wired in binance_feed.py  · Requires intraday polling at 5-minute cadence to compute rolling average · Josh stores  depth snapshots in db table: order_book_depth_log 
+3.3 Signal Layer 3 — Liquidation Cluster Density 
+Lead time: 2–5 days · Weight: 0.20 · The loaded gun signal 
+Liquidation clusters are zones on the BTC price ladder where a large concentration of leveraged  long positions will be automatically liquidated if price reaches that level. The ResearchGate  academic analysis published post-crash confirmed that a BTC liquidation leverage heatmap  from October 6–14, 2025 showed concentrated liquidation zones directly at the levels reached  during the October 10–11 cascade. Those clusters were visible for days before the event. 
+When a dense cluster sits within 8–12% below current price — exactly where the October 10  crash reached — any move toward it becomes self-fulfilling. The liquidation engine executes the  selling automatically, with no human decision required. The cluster is the loaded gun. The  macro trigger is the finger that pulls it. 
+Data source: Coinglass liquidation heatmap API (free public endpoint) · NEW feed — not  currently wired · Josh adds as src/data_feeds/coinglass_feed.py using the FeedPlugin  receptor pattern · Estimated build: 0.5 days
+Achelion Capital Management, LLC · Flow. Illumination. Discipline.  
+Page 4 of 10 
+Conviction. 
+ACHELION CAPITAL MANAGEMENT, LLC ARMS Addendum 8 | CONFIDENTIAL 
+3.4 Signal Layer 4 — Long/Short Ratio Extremity 
+Lead time: 3–7 days · Weight: 0.15 · Crowded positioning signal 
+When the long/short ratio on perpetual futures reaches extreme levels — above 70% longs  across major exchanges — the market is dangerously one-sided. Any adverse move forces the  majority to exit through the same narrow door simultaneously. The ratio itself does not predict  the direction of the move. It predicts the severity when a move occurs. At the time of the  October 10 crash, 88% of the $19.1 billion in liquidated positions were long positions — the  market had been overwhelmingly one-directional for days. 
+Data source: Binance (wired) + OKX REST API + Bybit REST API · OKX and Bybit are new  lightweight plugins · Josh adds as src/data_feeds/okx_feed.py and bybit_feed.py · Simple  GET requests returning JSON · Estimated build: 0.5 days total for both 
+Computation: weighted average of long% across three exchanges by OI share. Binance ~45%,  OKX ~30%, Bybit ~25% of combined perpetual volume. 
+3.5 Signal Layer 5 — Stablecoin Exchange Outflow 
+Lead time: 3–5 days · Weight: 0.10 · Smart money withdrawal signal 
+Before major crashes, sophisticated participants convert crypto holdings to stablecoins on-chain  and withdraw them from exchanges — reducing their exchange-held collateral before the storm.  Net stablecoin outflows from major exchanges while BTC price holds high is a classic pre-crash  signature that has appeared before every major crypto deleveraging event since 2021. It  
+represents smart money reducing exchange exposure before the liquidation cascade they  anticipate. 
+This signal carries the lowest weight because it is the least precise — stablecoin flows have  many causes beyond crash anticipation. However, when it fires in conjunction with the other  four signals, it adds meaningful confirmation that the withdrawal is defensive rather than routine.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline.  
+Page 5 of 10 
+Conviction. 
+ACHELION CAPITAL MANAGEMENT, LLC ARMS Addendum 8 | CONFIDENTIAL 
+Data source: Glassnode free tier or DefiLlama exchange stablecoin data · NEW feed — not  currently wired · Josh adds as src/data_feeds/glassnode_feed.py using FeedPlugin receptor  pattern · Estimated build: 0.5 days · Upgrade path: Glassnode paid tier for higher-frequency  updates at scale 
+4. Composite Score Formula 
+Each signal layer produces a sub-score 0.0–1.0. Weights are calibrated by lead time — the  basis compression signal fires earliest and carries the highest weight. The long/short and  stablecoin signals provide confirmation rather than primary warning. 
+Python implementation 
+def score(self, market_data: dict) -> float: 
+ """ 
+ Returns float 0.0-1.0. Higher = more microstructure fragility.  Weights calibrated against Oct 10 2025 cascade anatomy. 
+ """ 
+ s1 = self._basis_compression_score(market_data) # weight 0.30  s2 = self._order_book_depth_score(market_data) # weight 0.25  s3 = self._liquidation_cluster_score(market_data) # weight 0.20  s4 = self._long_short_ratio_score(market_data) # weight 0.15  s5 = self._stablecoin_outflow_score(market_data) # weight 0.10
+Achelion Capital Management, LLC · Flow. Illumination. Discipline.  
+Page 6 of 10 
+Conviction. 
+ACHELION CAPITAL MANAGEMENT, LLC ARMS Addendum 8 | CONFIDENTIAL 
+ composite = ( 
+ s1 * 0.30 + 
+ s2 * 0.25 + 
+ s3 * 0.20 + 
+ s4 * 0.15 + 
+ s5 * 0.10 
+ ) 
+ return max(0.0, min(1.0, composite)) 
+5. ARAS Integration — Dual-Module Alert 
+The crypto_microstructure module feeds the ARAS composite independently from  deleveraging_risk. The advisory contribution table is identical in structure. The critical addition is  a dual-module alert that fires when both modules are simultaneously elevated. 
+Dual-module alert logic 
+When both deleveraging_risk.score() and crypto_microstructure.score() simultaneously exceed  0.60, ARAS receives a combined advisory contribution of up to +0.12 to the composite score.  This dual-elevation condition is the specific signature of October 10, 2025 — active institutional  selling pressure meeting structural plumbing fragility simultaneously. The dual alert fires a  dedicated flag in the daily monitor EDR section and is logged permanently with both module  scores and timestamps. 
+# In aras.py — dual-module alert logic 
+if (deleveraging_risk_score > 0.60 and 
+ crypto_microstructure_score > 0.60): 
+ dual_alert = True 
+ log_dual_edr_alert(deleveraging_risk_score, 
+ crypto_microstructure_score) 
+ # Combined advisory contribution applied 
+ # Maximum combined: +0.12 to composite
+Achelion Capital Management, LLC · Flow. Illumination. Discipline.  
+Page 7 of 10 
+Conviction. 
+ACHELION CAPITAL MANAGEMENT, LLC ARMS Addendum 8 | CONFIDENTIAL 
+6. Validation Target — October 10, 2025 
+The Amberdata forensic report confirmed that the October 10 crash operated across seven  dimensions of market microstructure simultaneously: price action, liquidations, open interest,  funding rates, order book depth, bid-ask imbalance, and spread widening. This module's five  signals map directly to those dimensions. 
+An estimated composite score of 0.62–0.67 by October 6–7, combined with the Addendum 7  deleveraging_risk score of 0.52–0.58, would have triggered the dual-module alert and  contributed a combined +0.10 to +0.12 to the ARAS composite. This is sufficient to push the  regime score decisively into DEFENSIVE territory — achieving the 4-day advance warning  target. 
+7. New Feed Requirements 
+Three new lightweight feed plugins are required for this module. All use the FeedPlugin receptor  pattern specified in FSD v1.1 Section 11.2. Each is a simple GET request returning JSON — no  authentication required for free tiers.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline.  
+Page 8 of 10 
+Conviction. 
+ACHELION CAPITAL MANAGEMENT, LLC ARMS Addendum 8 | CONFIDENTIAL 
+8. Engineering Build Requirements 
+Phase 1 — Wired signals (1–2 days) 
+Implement basis_compression_score() and order_book_depth_score() using Binance feeds  already wired. Both are pure arithmetic on existing data. No new APIs. Run unit tests against  historical snapshots. 
+Phase 2 — New feed plugins (1.5 days) 
+Build coinglass_feed.py, okx_feed.py, bybit_feed.py, and glassnode_feed.py using FeedPlugin  interface. Validate each returns correct SignalRecord format before connecting to the module. 
+Phase 3 — Full score() implementation (1 day) 
+Implement remaining three sub-score methods using new feeds. Run full module integration test  against Oct 10 2025 historical data window. 
+Phase 4 — Dual-module alert in ARAS (0.5 days) 
+Add dual-module alert logic to aras.py as specified in Section 5. Ensure both modules are in  scope before the alert fires. Add dual_edr_alert field to ARAS output dataclass and session log. 
+Phase 5 — Backtest validation (1 day) 
+Run backtest_runner.py for September 15 – October 15, 2025. Target: composite score above  0.60 by October 7 AND dual-module alert firing by October 7. Both conditions are required for  the validation to pass.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline.  
+Page 9 of 10 
+Conviction. 
+ACHELION CAPITAL MANAGEMENT, LLC ARMS Addendum 8 | CONFIDENTIAL 
+9. Governing Constraints 
+"Silence is trust in the architecture." 
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline.  
+Page 10 of 10 
+Conviction. 
+
+[TABLE 0]
+Document || ARMS Addendum 8 — Crypto Microstructure Module Specification
+Classification || CONFIDENTIAL — GP and Development Use Only
+System || ARMS V2 — Early Detection Radar (EDR)
+Module || src/modules/crypto_microstructure.py
+Version || 1.0 — Initial Specification
+Date || April 2026
+Author || MJ Pence, Co-Founding GP & Portfolio Manager
+Assigned || Josh Paul, Lead Engineer — Achelion Technology LLC
+Status || Specification Complete — Pending Engineering Build
+Companion || Addendum 7 (deleveraging_risk.py) — read first
+Validation target || October 10, 2025 event — structural fragility pre-signal required
+
+[TABLE 1]
+Module || Question answered || Failure mode detected
+Addendum 7   | deleveraging_risk || Are institutions being forced to sell? || Active selling pressure before price  confirms
+Addendum 8   | crypto_microstructure || Will the market plumbing amplify selling  into a cascade? || Structural fragility that turns a sell event  into a wipeout
+
+[TABLE 2]
+DUAL-MODULE INTERACTION  | You can have high deleveraging risk with healthy microstructure — the event will be painful but  orderly. When both modules are elevated simultaneously, ARAS receives double advisory pressure.
+
+[TABLE 3]
+That dual-elevation condition is the precise signature of October 10, 2025: an 18% BTC crash with  $19.1 billion in liquidations in nine hours.
+
+[TABLE 4]
+File || src/modules/crypto_microstructure.py
+Class || CryptoMicrostructure
+Interface || score(market_data: dict) -> float
+Output range || 0.0 – 1.0 (higher = more structural fragility / cascade risk)
+Authority || ARAS sub-module — advisory input to composite score
+Run cadence || Every 5 minutes with data ingestion cycle
+Tier || Tier 0 — fully autonomous, no PM input
+Feeds into || ARAS composite (advisory), daily monitor EDR section, dual-module alert  logic
+New feeds required || Coinglass liquidation heatmap API (free) · OKX and Bybit long/short ratio  (free REST)
+Build time || 4–6 days — includes 2 new lightweight feed plugins
+Ongoing cost || $0 — all sources are free public APIs
+
+[TABLE 5]
+“Is the internal plumbing of the crypto derivatives market showing stress fractures  that will amplify any sell event into a cascade?”
+
+[TABLE 6]
+Condition || Definition || Sub-score
+Healthy contango || Basis 10–25% annualized — normal carry  premium || 0.0 – 0.2
+Compressing || Basis drops below 8% while spot price still  elevated || 0.3 – 0.5
+Warning || Basis below 4% — carry trade unwinding || 0.5 – 0.7
+Critical / backwardation || Basis goes negative while spot has not  corrected || 0.8 – 1.0
+
+[TABLE 7]
+Condition || Bid depth vs 7-day average (within 1% of  mid) || Sub-score
+Normal || Depth within ±15% of 7-day average || 0.0 – 0.2
+Thinning || Depth 15–25% below average without price  move || 0.3 – 0.5
+Warning || Depth 25–40% below average — market  makers withdrawing || 0.5 – 0.7
+Critical || Depth more than 40% below average — substantial withdrawal || 0.8 – 1.0
+
+[TABLE 8]
+Condition || Long liquidation cluster density within  10% downside || Sub-score
+Normal || Cluster density at or below 30-day average || 0.0 – 0.2
+Building || Cluster density 1.2× the 30-day average || 0.2 – 0.4
+Warning || Cluster density 1.5× average — elevated  cascade risk || 0.5 – 0.7
+Critical || Cluster density 2.5×+ average — cascade  waiting for trigger || 0.8 – 1.0
+
+[TABLE 9]
+Condition || 3-exchange weighted long/short ratio || Sub-score
+Balanced || 45–60% longs — healthy two-way positioning || 0.0 – 0.2
+Directional skew || 60–70% longs — directional bias building || 0.2 – 0.4
+Crowded || 70–75% longs — fragile one-sided market || 0.5 – 0.7
+Extreme || Above 75% longs — cascade risk on any sell  catalyst || 0.8 – 1.0
+
+[TABLE 10]
+Condition || 7-day net stablecoin flow (USDT + USDC) || Sub-score
+Normal || Net flows within ±3% of total exchange  reserves || 0.0 – 0.2
+
+[TABLE 11]
+Condition || 7-day net stablecoin flow (USDT + USDC) || Sub-score
+Mild outflow || Net outflows 3–5% of reserves while BTC flat  or rising || 0.2 – 0.4
+Warning || Net outflows 5–10% of reserves — defensive  withdrawal || 0.5 – 0.7
+Critical || Net outflows above 10% of reserves — significant capital exit || 0.8 – 1.0
+
+[TABLE 12]
+Signal layer || Weight || Lead time || Data source status
+Basis compression || 0.30 || 3–7 days || Binance — already wired
+Order book depth deterioration || 0.25 || 1–3 days || Binance — already wired
+Liquidation cluster density || 0.20 || 2–5 days || Coinglass — new plugin   | required
+Long/short ratio extremity || 0.15 || 3–7 days || OKX + Bybit — new plugins  required
+Stablecoin exchange outflow || 0.10 || 3–5 days || Glassnode — new plugin   | required
+TOTAL || 1.00 || — || —
+
+[TABLE 13]
+Score range || ARAS advisory contribution || Regime pressure
+0.0 – 0.40 || No contribution || Normal ARMS operation
+0.40 – 0.60 || +0.02 to composite || Pressure toward WATCH
+0.60 – 0.75 || +0.04 to composite || Pressure toward NEUTRAL
+0.75 – 1.00 || +0.06 to composite || Strong pressure toward DEFENSIVE
+
+[TABLE 14]
+DUAL-MODULE AUTHORITY NOTE  | Maximum individual advisory contribution: +0.06. Maximum combined dual-module contribution:  +0.12. Neither module can force a regime change independently. Together at full elevation they can
+
+[TABLE 15]
+contribute meaningfully to a regime transition — which is correct behavior. The October 10 signature  should produce a DEFENSIVE flag. The architecture is designed to deliver exactly that.
+
+[TABLE 16]
+Signal || First warning est. || Observed condition || Module sub-score est. || Pass
+Basis   | compression || Oct 3–6 || Carry trade becoming   | untenable as OI peaked at  $220B || ~0.50 || ✓
+Depth   | deterioration || Oct 7–9 || Top-of-book depth fell  ~35% from $15.5M to   | $10M || ~0.65 || ✓
+Liquidation   | clusters || Oct 6–9 || Heatmap showed dense  clusters at $104–108K  range || ~0.70 || ✓
+Long/short   | extremity || Oct 1–5 || 88% of liquidations were  long positions || ~0.75 || ✓
+Stablecoin outflow || Oct 5–8 || Pre-crash defensive   | positioning confirmed || ~0.45 || ✓
+Composite   | (weighted) || Oct 6–7 || All five signals elevated  simultaneously || ~0.62–0.67 || ✓
+
+[TABLE 17]
+Plugin file || Source || Build time || Upgrade path
+coinglass_feed.py || Coinglass liquidation   | heatmap API || 0.5 days || Paid tier for higher   | resolution
+okx_feed.py || OKX long/short ratio REST  endpoint || 0.25 days || No upgrade needed
+bybit_feed.py || Bybit long/short ratio REST  endpoint || 0.25 days || No upgrade needed
+glassnode_feed.py || Glassnode exchange   | stablecoin flows || 0.5 days || Paid tier at scale
+
+[TABLE 18]
+FEED REUSE ACROSS EDR MODULES  | Total new feed build time: approximately 1.5 days. All three feeds are built once and serve all future  EDR modules that need the same data. Coinglass liquidation data will also feed margin_stress.py  (Addendum 9). Glassnode stablecoin data will feed deleveraging_risk.py as an optional supplemental  signal. Build the receptors correctly once and they pay dividends across the full EDR module suite.
+
+[TABLE 19]
+BUILD SUMMARY  | Total build time: 5–6 days across all five phases. New feeds in Phase 2 are shared infrastructure — they reduce the build time for margin_stress.py and the remaining EDR modules. Build them carefully  once.
+
+[TABLE 20]
+Constraint || Specification
+Advisory only || Module cannot force a regime change. Max individual contribution:  +0.06. Max dual contribution with Addendum 7: +0.12.
+No PM input || score() runs every 5 minutes fully autonomously. PM never asked  about microstructure conditions.
+ARAS ceiling absolute || Module output never relaxes the ARAS ceiling. Upward pressure only.
+Feed-agnostic pattern || All new feeds implemented as FeedPlugin receptors. Upgrades are  config changes, not rebuilds.
+Dual-alert logging || Every dual-module alert logged permanently with both module scores,  timestamps, and regime score at time of alert.

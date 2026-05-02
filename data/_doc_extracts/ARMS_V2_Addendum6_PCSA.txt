@@ -1,0 +1,170 @@
+ACHELION CAPITAL MANAGEMENT LLC 
+ARMS V2 — Intelligence Architecture 
+Addendum 6 
+Early Detection Radar: 
+Pre-Consensus Screening Agent 
+Document Classification 
+CONFIDENTIAL — Internal Use Only 
+System 
+ARMS V2 — Intelligence Architecture Phase 
+Module 
+Early Detection Radar (EDR) 
+Sub-Module 
+Pre-Consensus Screening Agent (PCSA) 
+Version 
+1.0 — Initial Specification 
+Date 
+April 2026 
+Author 
+MJ Pence, Co-Founding GP & Portfolio Manager 
+Status 
+Specification Complete — Pending Engineering Build 
+Assigned: Josh Paul, Lead Engineer — Achelion Technology LLC 
+1. Genesis and Purpose 
+This addendum formalizes the Pre-Consensus Screening Agent (PCSA) as a core sub-module of the Early  Detection Radar (EDR) within ARMS V2. Its specification emerged directly from a structured research session  conducted in April 2026, during which the PM and AI research layer identified a systematic gap in Achelion's  investment process. 
+The gap: by the time a thesis is articulable in plain language — AI infrastructure, power demand, data center  construction — the market has already begun pricing it. The companies that deliver Achelion-grade  asymmetric returns (3–10x within the 1–5 year horizon) are identified 12–18 months before institutional  consensus forms, not after. The April 2026 session demonstrated this precisely: every name in the existing  ARMS deployment queue — GEV, CEG, VST — failed Gate 3 of the SENTINEL protocol on pre-consensus  grounds. FIX (Comfort Systems USA), the archetypal pre-consensus play of the AI infrastructure cycle, had  already delivered a 5x return by the time the research session reached it.
+ACHELION CAPITAL MANAGEMENT LLC | CONFIDENTIAL | 1 
+The PCSA exists to ensure Achelion never again identifies the right name at the wrong price. It systematizes  the derivative chain reasoning and continuous screening that the PM currently performs manually and  episodically into an autonomous, scheduled intelligence function. 
+2. Governing Philosophy 
+The PCSA is built on three intellectual foundations established during the April 2026 research session and  now formalized as operational doctrine: 
+2.1 The Derivative Chain Principle 
+Markets price first-derivative beneficiaries of a mega-trend first, second-derivative beneficiaries 12 months  later, and third-derivative beneficiaries 24 months later. Achelion's edge lives in the third derivative — unglamorous, underfollowed companies that are non-optional to a supply chain that the market has not yet  named. The PCSA screens for third-derivative candidates before they become second-derivative consensus. 
+2.2 The 1990s Internet Analog 
+The definitive historical template for this approach is the 1990s internet infrastructure expansion. The  generational wealth was not created in the dot-com darlings but in the picks-and-shovels enablers: Corning  Glass (fiber optic cable), Amphenol (connectors), and underfollowed industrial contractors who retrofitted  physical infrastructure for digital load. None of these were called internet stocks. That was the point. PCSA  applies this pattern recognition framework to the AI infrastructure cycle, systematically hunting the Corning  Glass of AI before it has that name. 
+2.3 The Non-Optional Fingerprint 
+Achelion's target companies share one characteristic above all others: the demand for their product or service  cannot be routed around. You cannot train a foundation model without clean annotated data. You cannot build  a data center without HVAC contractors. You cannot run an SMR without HALEU fuel. Non-optional  positioning within a scaling supply chain is the single most durable source of pricing power and margin  expansion available to a small-cap industrial or services company. PCSA screens for this fingerprint explicitly. 
+3. System Architecture 
+The PCSA operates as a three-layer architecture. Each layer has a defined owner, cadence, and output. No  layer substitutes for another.
+ACHELION CAPITAL MANAGEMENT LLC | CONFIDENTIAL | 2 
+3.1 Layer 1 — Thesis Architecture (PM + Claude) 
+The PM and Claude research layer conduct a structured derivative chain session. Input: current macro regime  and first-derivative consensus themes. Output: a defined list of target categories with specific sector and  financial parameter filters for the agent to execute. This session is not schedulable by the system — it  requires PM judgment and cannot be automated. It is the irreducible intellectual contribution of the PM to the  screening process. 
+Output format: a Category Instruction Set (CIS) delivered to the PCSA agent. The CIS specifies sectors,  market cap ranges, growth thresholds, coverage limits, and any qualitative filters derived from the derivative  chain reasoning. 
+3.2 Layer 2 — Autonomous Screening Agent (PCSA) 
+The agent executes the Category Instruction Set against connected financial data sources on a defined  schedule. It returns only the delta — names that are new to the output since the last run — to prevent PM  attention fatigue from reviewing the same universe repeatedly. It does not evaluate, rank, or make  recommendations. It delivers a raw candidate list. 
+3.3 Layer 3 — SENTINEL Evaluation (Claude) 
+Claude receives the candidate list and evaluates each name against the full SENTINEL 6-gate protocol. For  each candidate that survives initial elimination, Claude builds the three-chart financial suite (Revenue/Net  Income/EBITDA, Cash/Debt, Operating Margin/FCF/ROIC) and produces a written conviction assessment.  Output is a ranked shortlist with explicit gate verdicts and a recommended deployment queue entry or monitor  list classification. 
+4. PCSA Agent Specification 
+4.1 Data Source Requirements 
+The PCSA requires programmatic access to a financial data API. Finviz free tier is not sufficient — it is not  queryable via API. Approved data sources in priority order: 
+• Finviz Elite — screener API access, sufficient for parameter-based filtering 
+• Polygon.io — real-time and historical fundamental data, broader coverage 
+• Intrinio — institutional-grade fundamentals API, highest data quality 
+• Koyfin — adequate for manual supplemental checks, not primary agent source 
+Engineering requirement: Josh Paul to evaluate API cost and coverage against ARMS V2 budget before data  source selection is finalized. Recommended starting point: Polygon.io at the Starter tier ($29/month) for initial  build validation, with upgrade path to Intrinio for production deployment.
+ACHELION CAPITAL MANAGEMENT LLC | CONFIDENTIAL | 3 
+4.2 Screening Parameter Set 
+The following parameters constitute the base screening configuration. They are adjustable via the Category  Instruction Set delivered by Layer 1 but represent the validated default configuration derived from the April  2026 research session. 
+4.3 Qualitative Disqualification Filters 
+The following conditions automatically exclude a name from the candidate list regardless of quantitative  scores. These cannot be screened programmatically and require a brief automated text scan of recent IR  materials or a Claude evaluation pass: 
+• Company uses the words 'AI,' 'artificial intelligence,' or 'data center' as primary positioning language in  its own investor relations materials — the pre-consensus window is closing when the company has  named it 
+• Stock has delivered more than 200% return in the trailing 12 months — price has already discounted  the thesis 
+• Insider selling transactions outnumber insider buying transactions in the trailing 90 days by a ratio  greater than 3:1
+ACHELION CAPITAL MANAGEMENT LLC | CONFIDENTIAL | 4 
+• Revenue growth in the most recent reported quarter decelerated more than 5 percentage points versus  prior quarter — acceleration reversal 
+• Net debt exceeding 3x EBITDA without a clear deleveraging trajectory 
+4.4 Agent Output Format 
+The PCSA delivers a structured candidate report to the SENTINEL evaluation layer. Format requirements: 
+• Candidate ticker and company name 
+• Sector and sub-industry classification 
+• Market cap at time of screening 
+• Revenue growth rate: most recent year, prior year, and two-year acceleration delta • Gross margin: most recent year and two-year trend direction 
+• Analyst count 
+• Institutional ownership percentage 
+• ROIC if available 
+• New to output flag — Y/N indicating whether this name appeared in prior week's run • Disqualification check — pass/fail on the five qualitative filters above 
+The agent does not score, rank, or recommend. It delivers clean structured data. All judgment passes to  Layer 3. 
+5. SENTINEL Integration 
+Every candidate that passes the PCSA disqualification filters enters the SENTINEL 6-gate evaluation  protocol. The PCSA does not replace SENTINEL — it feeds it. The gates are applied in sequence and  elimination is immediate upon failure.
+ACHELION CAPITAL MANAGEMENT LLC | CONFIDENTIAL | 5 
+Gate 3 Addendum — Price Momentum Screen (new, formalized April 2026): A name can pass the narrative  pre-consensus test but fail on price-already-discounting-the-thesis. These are two distinct conditions and the  framework now distinguishes them explicitly. A stock delivering more than 200% in the trailing twelve months  is reclassified to monitor status regardless of analyst coverage or institutional ownership metrics. The bear  market entry exception applies: if the broader market has corrected more than 20% from recent highs and the  individual name has pulled back more than 30% from its peak concurrent with intact fundamentals, the price  momentum disqualification is waived and Gate 3 re-evaluated on fundamentals alone. 
+6. Monitor List Protocol 
+Names that fail a gate but retain thesis integrity are classified to the PCSA Monitor List rather than discarded.  The monitor list has defined re-evaluation triggers for each failure mode: 
+Current Monitor List as of April 2026: FIX (price correction required), LEU (catalyst pending — DOE HALEU  contract expansion), OKLO (venture stage — first PPA), NuScale/SMR (venture stage — NRC construction  permit), INOD (active evaluation — SENTINEL in progress), DVLT (pending evaluation), OUST (pending  evaluation). 
+7. Deployment Queue Integration 
+Names that clear all six SENTINEL gates enter the ARMS Deployment Queue with a defined position size  and regime trigger. The PCSA does not set position sizes — that remains PM judgment informed by the  ARMS regime system. The queue entry format is: 
+• Ticker and company name 
+• Target allocation range at NEUTRAL trigger 
+• Conditional Tranche specification if applicable (earnings-contingent sizing) 
+• SENTINEL gate summary — one sentence per gate 
+• Monitoring cadence — weekly, earnings-triggered, or continuous 
+Current Deployment Queue as of April 2026 (post-session revision):
+ACHELION CAPITAL MANAGEMENT LLC | CONFIDENTIAL | 6 
+GEV, CEG, VST removed — consensus-priced thesis, failed Gate 3. VRT size-up removed — pending re evaluation as standalone pre-consensus candidate. FIX removed — price run disqualification, reclassified to  monitor list. 
+8. Engineering Build Requirements 
+The following specifications are directed to Josh Paul, Lead Engineer, Achelion Technology LLC, for  integration into the ARMS V2 build roadmap. 
+8.1 Phase 1 — Data Connection (Weeks 1–2) 
+• Evaluate and select financial data API: Polygon.io Starter recommended for initial build • Establish authenticated API connection within ARMS infrastructure 
+• Build parameter query function: accepts Category Instruction Set JSON, returns raw company list • Implement deduplication against prior week output — delta-only delivery 
+• Output format: structured JSON matching PCSA candidate report specification in Section 4.4 
+8.2 Phase 2 — Scheduling and Alerting (Week 3) 
+• Weekly automated run: every Monday 6:00 AM CT 
+• Regime-triggered run: fires automatically when ARMS regime score crosses NEUTRAL boundary (0.60  threshold) 
+• PM notification: candidate report delivered via defined channel (email or ARMS dashboard) within 15  minutes of run completion 
+• Failed run alerting: notify PM if agent fails to complete within 30-minute window 
+8.3 Phase 3 — SENTINEL Pipeline Integration (Weeks 4–6) 
+• Claude API integration: candidate list passed to Claude evaluation layer automatically • Three-chart financial suite generation: automated for each candidate passing disqualification filters • SENTINEL gate scoring: structured output with explicit pass/fail per gate 
+• Monitor list management: automated classification and trigger monitoring 
+• Deployment queue update: PM approval required before any queue modification — system proposes,  PM confirms 
+8.4 Minimum Viable Build Constraint 
+Per the Services Agreement v3.0 governing principle, the PCSA must complete a minimum two-week paper  trading validation period before any output influences live portfolio decisions. During this period, agent output  is reviewed by the PM and Claude evaluation layer but no deployment queue modifications are made.  Validation criteria: candidate list quality assessed against known pre-consensus names identifiable in  retrospect.
+ACHELION CAPITAL MANAGEMENT LLC | CONFIDENTIAL | 7 
+9. Governing Constraints 
+The PCSA operates under the following inviolable constraints consistent with the Sovereign Execution  Mandate (Addendum 5) and the broader ARMS governing philosophy: 
+• The agent screens. It does not decide. 
+◦ No candidate enters the deployment queue without explicit PM Gate 6 confirmation. The system  proposes; the PM disposes. 
+• The PM defines the thesis. The agent executes it. 
+◦ Category Instruction Sets originate from PM + Claude Layer 1 sessions. The agent has no thesis  generation capability and does not modify its own parameters. 
+• Regime governs deployment. The queue governs targets. 
+◦ No PCSA output overrides the ARMS regime-gating system. A candidate clearing all six SENTINEL  gates in a DEFENSIVE regime enters the queue but does not deploy until NEUTRAL trigger fires. 
+• Every eliminatable human touchpoint is evidence of an incomplete build. ◦ The PM's role in the PCSA is thesis architecture (Layer 1) and Gate 6 conviction judgment only. All  screening, scheduling, formatting, chart generation, and gate evaluation is system-autonomous. 
+10. Version History and Forward Roadmap 
+ARMS V2 — Addendum 6 | Pre-Consensus Screening Agent | Version 1.0 | April 2026 
+Achelion Capital Management LLC | Confidential — Internal Use Only
+ACHELION CAPITAL MANAGEMENT LLC | CONFIDENTIAL | 8 
+
+[TABLE 0]
+Layer || Function || Owner || Cadence
+Layer 1 Thesis   | Architecture || PM + AI define   | derivative chain and  category targets || PM + Claude Research  Layer || Quarterly or on regime  change
+Layer 2   | Autonomous   | Screening || Agent executes   | screener queries,   | monitors delta, returns  candidate list || PCSA Agent   | (automated) || Weekly + on NEUTRAL  trigger
+
+[TABLE 1]
+Layer 3 SENTINEL  Evaluation || Claude builds financial  charts, runs 6-gate   | SENTINEL protocol,  produces conviction  ranking || Claude Research Layer || On each agent delivery
+
+[TABLE 2]
+Parameter || Default Value || Rationale
+Market Capitalization || $300M — $6B || Large enough to be fundable,  small enough to be underfollowed
+Revenue Growth (5Y) || Above 20% CAGR || Sustained momentum, not single quarter noise
+Revenue Growth Acceleration || Rate increasing 2+   | consecutive years || Slope steepening is the pre  | consensus signal; manual   | verification required on survivors
+Gross Margin || Above 20% || Floor for pricing power; expanding  margin concurrent with revenue  growth = bottleneck fingerprint
+Analyst Coverage || 8 or fewer active analysts || Above 8 = institutional money  already present; window closing
+Institutional Ownership || Below 60% || Proxy for underfollowed status  when analyst count unavailable
+ROIC (where available) || Above 12% || Capital efficiency in unglamorous  business = genuine moat   | fingerprint
+Operating Cash Flow || Positive and growing || Confirms revenue quality; OCF  growing faster than net income =  clean earnings
+Sectors || Industrials, Materials,   | Utilities, Technology   | Services || Run as separate queries; combine  outputs with deduplication
+Geography || United States only || Regulatory and reporting   | consistency; international added in  V2.1
+
+[TABLE 3]
+Gate || Name || PCSA Enhancement || Failure =
+Gate 1 || Thesis Identification || Derivative chain classification pre assigned by Layer 1 CIS || Remove from list
+Gate 2 || Non-Optional   | Positioning || Claude evaluates supply chain  role; cannot be automated || Remove from list
+Gate 3 || Pre-Consensus Status || Analyst count + institutional   | ownership + price momentum  screen (new: <200% TTM return) || Monitor list only
+Gate 4 || Fundable Thesis || Three-chart financial suite built by  Claude; revenue acceleration  manual verification || Remove or monitor
+Gate 5 || Time Horizon Fit || Catalyst timeline mapped against  1-5Y Achelion horizon; pre  | revenue names flagged || Monitor pending   | catalyst
+Gate 6 || PM Conviction || PM judgment only — no   | automation || Monitor or deploy
+
+[TABLE 4]
+Failure Mode || Monitor Classification || Re-Evaluation Trigger
+Gate 3 fail — price run || Monitor: Price Correction   | Required || 30%+ drawdown from peak with  fundamentals intact
+Gate 5 fail — time horizon || Monitor: Catalyst Pending || Defined sector catalyst event  (e.g., NRC permit, binding offtake  agreement, DOE contract   | expansion)
+Gate 2 fail — thesis unclear || Monitor: Thesis Development || Two consecutive quarters of  accelerating revenue with margin  expansion
+SMR / pre-revenue binary || Monitor: Venture Stage || First commercial revenue contract  or construction permit
+
+[TABLE 5]
+Ticker || Company || Target Allocation || Trigger
+GOOGL || Alphabet Inc. || 4.5–5.0% || NEUTRAL regime — 3.5%  base + 1.5% CT contingent on  April 28 earnings
+
+[TABLE 6]
+Version || Date || Changes
+1.0 || April 2026 || Initial specification. Derivative chain principle, 1990s analog  framework, three-layer architecture, SENTINEL integration,  Gate 3 price momentum addendum, monitor list protocol,  engineering build requirements.
+1.1 (planned) || Q3 2026 || International market expansion. Canadian and UK small-cap  screening added. Currency normalization layer.
+2.0 (planned) || Q4 2026 || Earnings call language forensics module. NLP scan of earnings  transcripts for pre-consensus demand signals. Integration with  Thesis Repository.

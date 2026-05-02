@@ -1,6 +1,6 @@
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from simulation.historical_engine_phase2 import run_simulation_phase2
+from simulation.replay_harness import run_backtest as run_simulation_phase2
 
 res = run_simulation_phase2('2024-01-02','2025-08-29', 500_000_000, use_individual_tickers=True)
 h = res.history

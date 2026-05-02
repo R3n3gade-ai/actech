@@ -1,0 +1,197 @@
+ARMS Addendum 4 — Governing Principle + PTRH Coverage Adequacy Model | CONFIDENTIAL 
+ACHELION CAPITAL MANAGEMENT, LLC 
+ARMS Addendum 4 
+Part One — The Governing Principle 
+Part Two — PTRH Coverage Adequacy Model (CAM) 
+For: Josh Paul — Lead Developer 
+Version: 1.0 — March 27, 2026 · Addendum 4 to FSD v1.1 
+Classification: CONFIDENTIAL — GP and Development Use Only 
+Read Part One before writing any code. The principle it contains is not context — it is the  architectural directive that governs every decision you make about human touchpoints in  ARMS. 
+"The PM needs to be at the lunch. The system needs to be running the portfolio."
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 1 
+ARMS Addendum 4 — Governing Principle + PTRH Coverage Adequacy Model | CONFIDENTIAL 
+PART ONE — THE GOVERNING PRINCIPLE Why every human touchpoint you eliminate matters 
+0. In the PM's Own Words 
+The most important thing is keeping humans out of the process. Where the PM needs  to be is not second-guessing or attempting to be smarter than the algorithm and AI — that is futile. The PM needs to be the boots on the ground, at the lunch, networking to  find the next CEO that is selling or buying before it happens. The world has changed.  The market is regressing to what used to add value: not illegal insider information but  
+insider awareness that translates to moving before consensus by having a deep  network of boots on the ground. 
+That statement — made on March 27, 2026, the morning the Strait of Hormuz was formally closed and  the ARMS regime score reached 0.79 — is the governing principle of every architectural decision in this  system. It is not context. It is a directive. 
+Read it again before you build anything. Then ask: does this feature I am about to build put the PM  closer to the lunch or further from it?
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 2 
+ARMS Addendum 4 — Governing Principle + PTRH Coverage Adequacy Model | CONFIDENTIAL 
+1. The Full Principle — Stated Precisely 
+1.1 What the PM's edge is not 
+The PM's edge is not analytical superiority over the algorithm. Every public signal — earnings calls,  regulatory filings, price action, macro data, options flow, job postings, patent filings — is processed  faster and more completely by ARMS than any human can read it. Attempting to out-analyze the  system is not only futile — it is a misallocation of the most scarce resource in the enterprise: the PM's  time and attention. 
+Every minute the PM spends confirming what the system already knows is a minute they are not  building the network that creates the only durable edge left in modern markets. 
+1.2 What the PM's edge is 
+The PM's irreplaceable edge is physical presence in the rooms where the future is being decided  before it enters any dataset. 
+• The lunch with the CEO who is quietly reducing their position — before the Form 4 is filed. • The conversation with the TSMC supply chain executive whose capacity allocation decisions  predict semiconductor demand two quarters ahead of any earnings call. 
+• The network that surfaces the insight before it becomes a signal — and the signal before it  becomes a headline. 
+• Not illegal insider information. Earned, relationship-driven awareness that precedes consensus  by weeks or months and cannot be replicated by any algorithm operating on public data. 
+This is Category A intelligence. It is what SENTINEL Gate 6 was built to capture. It is the only input the  system cannot generate itself. Everything else ARMS can produce — and must produce — without  human involvement. 
+1.3 The division of labor — stated as a law 
+The system executes everything that can be decided by math, process, and data inflow. The  PM executes everything that requires being in the room where the data does not yet exist. 
+There are no exceptions to this division. A recurring decision queue item that requires the same PM  action every day is not a safety feature. It is evidence of an incomplete build. A confirmation window for  a deterministic outcome is not discipline. It is latency. A sizing decision made by PM opinion rather than  MICS formula is not conviction. It is noise.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 3 
+ARMS Addendum 4 — Governing Principle + PTRH Coverage Adequacy Model | CONFIDENTIAL 
+Every human touchpoint in ARMS must be tested against this question: does this require being in the  room where the data does not yet exist? If the answer is no — automate it. If the answer is yes — preserve it, surface it precisely, and make the PM's response as frictionless as possible. 
+1.4 The ALAB lesson — why this principle was restated today 
+On March 21, 2026, a CEO insider sale was filed on a current portfolio position. The CDM and TDC  modules that would have caught it on day one were not yet built. The signal appeared in the daily  monitor as a manual flag. Six daily monitors carried the flag. The PM did not act. The position continued  to deteriorate in a worsening market environment. The decision to trim — which the system would have  initiated automatically within 24 hours of the Form 4 filing under the CDM/TDC specification — was  deferred six days into worse conditions. 
+This is the cost of the gap. It is real, it is measurable, and it illustrates precisely why the governing  principle exists. The PM should not have been watching the monitor waiting to make a sizing decision.  The system should have made it. The PM should have been at the lunch — the one that might have  surfaced the next CEO who is selling before the Form 4 is filed. 
+The CDM and TDC modules Josh builds will close this gap permanently. But the principle applies to  every module, every decision, every human touchpoint across the entire ARMS architecture. Build  everything with this case study in mind. 
+1.5 What Josh must ask before preserving any human touchpoint 
+The PM is in Dubai. The network is being built. The system is running the portfolio. This  is not a future aspiration. This is the design target. Every line of code Josh writes  should move toward it.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 4 
+ARMS Addendum 4 — Governing Principle + PTRH Coverage Adequacy Model | CONFIDENTIAL 
+PART TWO — PTRH COVERAGE ADEQUACY MODEL CAM — Autonomous Tail Hedge Sizing · Addendum to Module A (PTRH Automation) 2. Why CAM Exists — The Gap It Closes 
+The PTRH sizing question — how much tail protection does the portfolio need right now — is a math question. It has always been a math question. ARMS has all the inputs. The PM  should never be asked to answer it. 
+Module A (PTRH Automation, specified in Addendum 1) closes the execution gap: the system rolls puts  automatically, resizes on regime transition, and corrects notional drift. What it does not do is  autonomously determine whether the current coverage level is adequate given the specific risk  configuration of the portfolio at any given moment. 
+The current specification requires a PM declaration of a dual-risk event before the system applies an  override coverage standard. That declaration is a human touchpoint. It is asking the PM to answer a  math question. The CAM removes that touchpoint entirely by calculating the required coverage from  first principles using data ARMS already has. 
+3. The Coverage Adequacy Formula
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 5 
+ARMS Addendum 4 — Governing Principle + PTRH Coverage Adequacy Model | CONFIDENTIAL 
+The CAM answers one question every 5 minutes: given the current portfolio composition, regime score,  and identified risk factors, what QQQ put notional is required to protect the portfolio to the defined loss  floor? It then compares that to actual notional and auto-corrects any shortfall. 
+3.1 Inputs — all available from existing ARMS modules 
+3.2 The Coverage Requirement Formula 
+The required coverage is the product of four multipliers applied to a base coverage rate. Each multiplier  reflects a specific risk dimension. When all four are elevated simultaneously — as they are today — the  system automatically increases coverage without any human involvement. 
+def calculate_required_coverage( 
+ current_equity_pct: float, # e.g. 0.40 for 40% equity 
+ regime_score: float, # 0.0 - 1.0 
+ fem_concentration_score: float, # 0.0 - 1.0 (ALERT = >0.80) 
+ macro_stress_score: float, # 0.0 - 1.0 
+ cdm_active_signals: int, # count of CRITICAL/HIGH signals 
+ nav: float # current portfolio NAV 
+) -> float:
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 6 
+ARMS Addendum 4 — Governing Principle + PTRH Coverage Adequacy Model | CONFIDENTIAL 
+ # Base coverage: 1.2% of NAV (minimum permanent insurance)  BASE_COVERAGE_PCT = 0.012 
+ # Multiplier 1: Regime — higher score = more coverage needed  # Maps linearly from 1.0x at RISK_ON to 2.0x at CRASH boundary  regime_multiplier = 1.0 + (regime_score * 1.0) 
+ # Multiplier 2: Equity exposure — more equity = more to protect  # Full deployment (100%) = 1.0x, current 40% ceiling = 0.67x floor  equity_multiplier = 0.67 + (current_equity_pct * 0.33) 
+ # Multiplier 3: Concentration — correlated book = amplified loss  # NORMAL (<0.65): 1.0x · WATCH (0.65-0.80): 1.15x · ALERT (>0.80): 1.30x  if fem_concentration_score > 0.80: 
+ concentration_multiplier = 1.30 
+ elif fem_concentration_score > 0.65: 
+ concentration_multiplier = 1.15 
+ else: 
+ concentration_multiplier = 1.00 
+ # Multiplier 4: Acute stress — macro + CDM signals 
+ # Base macro stress component 
+ stress_multiplier = 1.0 + (macro_stress_score * 0.40) 
+ # Each active CDM CRITICAL/HIGH signal adds 3% to stress multiplier  stress_multiplier += (cdm_active_signals * 0.03) 
+ stress_multiplier = min(stress_multiplier, 1.60) # cap at 1.60x 
+ # Required coverage percentage of NAV 
+ required_pct = (BASE_COVERAGE_PCT 
+ * regime_multiplier 
+ * equity_multiplier 
+ * concentration_multiplier 
+ * stress_multiplier) 
+ # Floor: never below regime-table minimum (from Module A)  regime_minimum = get_regime_table_minimum(regime_score) 
+ required_pct = max(required_pct, regime_minimum) 
+ # Ceiling: never above 3.5% of NAV (prevents over-hedging)  required_pct = min(required_pct, 0.035) 
+ return required_pct * nav # returns required notional in dollars 3.3 Worked example — current conditions (March 27, 2026)
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 7 
+ARMS Addendum 4 — Governing Principle + PTRH Coverage Adequacy Model | CONFIDENTIAL 
+This is the calculation ARMS would have run at 0530 CT this morning automatically. 
+The CAM would have identified a 1.32% NAV shortfall in PTRH coverage this morning and auto corrected to 3.12% before the market opened. The PM would never have been asked about it. The  daily monitor would show: 'PTRH: CAM auto-corrected to 3.12% NAV at 0525 CT — regime 0.79, FEM  ALERT, macro stress 0.85.' Status confirmation. Not a decision request. 
+3.4 Auto-correction logic 
+def run_cam_correction(required_notional: float, 
+ current_notional: float, 
+nav: float, 
+positions: List[OptionsPosition]) -> CamResult: 
+ tolerance = 0.05 # 5% tolerance band — avoid constant micro-adjustments  pct_diff = abs(required_notional - current_notional) / required_notional 
+ if pct_diff <= tolerance: 
+ return CamResult(action='NONE', reason='Within tolerance band') 
+ if required_notional > current_notional: 
+ # Increase coverage — buy additional puts at ATM 
+ delta = required_notional - current_notional 
+ execute_put_purchase(notional=delta, strike='ATM') 
+ log_cam_action('INCREASE', delta, required_notional, current_notional)  return CamResult(action='INCREASED', delta=delta)
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 8 
+ARMS Addendum 4 — Governing Principle + PTRH Coverage Adequacy Model | CONFIDENTIAL 
+ else: 
+ # Decrease coverage — reduce puts (over-hedged) 
+ # Only reduce if over-hedged by more than 15% — asymmetric tolerance  if pct_diff > 0.15: 
+ delta = current_notional - required_notional 
+ execute_put_sale(notional=delta) 
+ log_cam_action('DECREASED', delta, required_notional, current_notional)  return CamResult(action='DECREASED', delta=delta) 
+ return CamResult(action='NONE', reason='Over-hedged within asymmetric tolerance') 
+Note the asymmetric tolerance: the system corrects under-coverage at 5% deviation but only corrects  over-coverage at 15% deviation. This reflects the asymmetric cost of being wrong in each direction.  Under-hedged in a crash is catastrophic. Over-hedged is merely slightly expensive. 
+4. What Disappears From the PM's Day 
+After CAM is built and deployed, the PM is never asked about PTRH sizing under any  conditions — not for routine sizing, not for regime transitions, not for dual-risk scenarios,  not for any market event.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 9 
+ARMS Addendum 4 — Governing Principle + PTRH Coverage Adequacy Model | CONFIDENTIAL 
+5. Daily Monitor Integration 
+The PTRH module status card in the daily monitor is updated to show CAM output rather than a sizing  confirmation request. The PM reads a status line, not an action item. 
+6. Updated File Structure
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 10 
+ARMS Addendum 4 — Governing Principle + PTRH Coverage Adequacy Model | CONFIDENTIAL 
+7. Testing Protocol 
+1. Set regime_score to 0.79, fem_concentration_score to 0.82, macro_stress_score to 0.85,  cdm_active_signals to 2. Verify CAM output matches the worked example in Section 3.3 — required notional should be approximately 3.12% of NAV. 
+2. Set all inputs to RISK_ON baseline (regime 0.25, FEM 0.40, macro stress 0.20, zero CDM  signals). Verify required notional is close to base 1.2% NAV — the minimum permanent  insurance floor. 
+3. Set required notional to 3.12% and current notional to 1.8%. Verify auto-correction fires and  buys the additional puts. Verify session log captures the correction with all four multiplier values. 4. Set required notional to 1.8% and current notional to 1.9% (4.5% over-hedged — within  asymmetric tolerance). Verify NO correction fires. 
+5. Set required notional to 1.8% and current notional to 2.2% (18% over-hedged — exceeds  asymmetric tolerance). Verify reduction fires. 
+6. Simulate a broker API failure during correction. Verify DANGER alert fires in module status.  Verify decision queue receives a single item: 'PTRH execution failed — manual review  required.' This is the only PTRH item that should ever appear in the decision queue. 
+After CAM is live: the PM is never asked about tail hedge sizing again. Not once. The system  knows what protection the portfolio needs. The system provides it. The PM is at the lunch. 
+"The PM needs to be at the lunch. The system needs to be running the portfolio." Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 11 
+
+[TABLE 0]
+If the answer is YES to this question || If the answer is NO to this question
+Does this decision require knowledge that exists  BEFORE the data — a personal conversation, a  pattern recognition from lived experience, a pre consensus insight no algorithm can generate? || Can this decision be made correctly using math,  process, and data inflow that ARMS already has  or can collect?
+PRESERVE the human touchpoint. Surface it  to the PM immediately. Make the response  frictionless — one tap, structured question,  specific context. Do not make the PM wait. || AUTOMATE IT. Remove it from the decision  queue. The PM should never see it. If the  system fails to execute, fire an alert. The PM  acts on system failures — not on system  operations.
+
+[TABLE 1]
+File || src/engine/cam.py — new module, extends tail_hedge.py
+Tier classification || Tier 0 — fully autonomous. No PM involvement. No declaration  required. No veto window.
+Build time || 2-3 days — pure Python arithmetic on existing module outputs.  No new APIs.
+Dependencies || ARAS regime output · FEM factor exposure scores · Macro  Compass composite inputs · Master Engine current weights ·  broker_api current QQQ put positions
+Runs || Every 5 minutes with the data ingestion cycle — same cadence  as ARAS
+Ongoing cost || $0 — no new APIs or feeds
+Replaces || The dual-risk PM declaration touchpoint in Module A. PM is  never asked about PTRH sizing again under any conditions.
+
+[TABLE 2]
+Input || Source module || Update   | frequency || What it represents
+current_equity_pct || Master Engine || Every   | portfolio   | snapshot || Actual equity exposure as %  of NAV at this moment
+regime_score || ARAS || Every 5 min || Current composite risk score  0.0–1.0
+fem_concentration_score || FEM || Daily + real  | time on CDM  trigger || Factor concentration level — how correlated the equity  book is
+macro_stress_score || Macro Compass || Every 5 min || Derived from Brent, 10Y,  VIX, credit spreads —  | measures acute stress level  0.0–1.0
+cdm_active_signals || CDM || Real-time || Number and severity of   | active cross-sector risk   | signals
+nav || Master Engine || Every   | portfolio   | snapshot || Current portfolio NAV
+current_put_notional || broker_api || Real-time || Actual QQQ put notional  currently in place
+
+[TABLE 3]
+Input || Current value || Multiplier result
+Base coverage || 1.2% of NAV || Starting point
+Regime score (ARAS) || 0.79 || Regime multiplier: 1.0 + (0.79 × 1.0) =  1.79×
+Equity exposure (Master   | Engine) || 40% (DEFENSIVE  ceiling) || Equity multiplier: 0.67 + (0.40 × 0.33) =  0.80×
+FEM concentration (FEM  module) || ~0.82 (ALERT) || Concentration multiplier: 1.30×
+Macro stress score (Macro  Compass) || ~0.85 (Brent $110,  10Y 4.45%, VIX 27) || Base stress: 1.34 + 2 CDM signals × 0.03 =  1.40×
+Required coverage % || 1.2% × 1.79 × 0.80  × 1.30 × 1.40 || = 3.12% of NAV
+vs. current 1.5× base || = 1.8% of NAV in   | puts || SHORTFALL: 1.32% of NAV — AUTO CORRECT TRIGGERED
+
+[TABLE 4]
+Scenario || Before CAM || After CAM
+Routine regime transition || PM confirms new sizing in  decision queue || System auto-resizes. PM sees  confirmation in module status.
+Dual-risk event (Iran + Warsh) || PM declares event and sets  coverage standard || CAM calculates required   | coverage from inputs. Auto corrects. PM not involved.
+Brent spikes overnight || Daily monitor flags PTRH   | sizing concern || CAM runs at 0525 CT. Auto corrects before open. Monitor  shows confirmation.
+FEM reaches ALERT || PM asked to confirm PTRH  adequacy || CAM reads FEM score,   | applies concentration   | multiplier, auto-corrects.
+VIX spikes intraday || PM receives LAEP mode alert  and PTRH note || CAM recalculates   | macro_stress_score on next 5- min cycle. Auto-corrects if  needed.
+Score approaches CRASH  boundary || PM confirms PTRH adequacy  in decision queue || CAM runs continuously. As  score approaches 0.80,   | required coverage increases
+
+[TABLE 5]
+ ||  || automatically. No PM   | notification unless execution  fails.
+
+[TABLE 6]
+Monitor field — PTRH card || Shows: current notional % · required notional % (CAM) · last  auto-correction timestamp · auto-correction reason · next  scheduled review
+Example — normal session || PTRH: 1.84% NAV · CAM required: 1.80% NAV · Within  tolerance · Last correction: 0525 CT Mar 27 (regime 0.79, FEM  ALERT)
+Example — active correction || PTRH: AUTO-CORRECTED 0525 CT · 1.8% → 3.12% NAV ·  Reason: regime 0.79 + FEM ALERT + macro stress 0.85 · No  action required
+Alert condition || Only fires if execution FAILS — broker API error, insufficient  liquidity, options market closed. PM acts on failures. Never on  operations.
+Decision queue || PTRH never appears in the PM decision queue after CAM  deployment. Zero exceptions.
+
+[TABLE 7]
+File || Status || Change
+src/engine/cam.py || NEW || Coverage Adequacy Model — full autonomous  PTRH sizing calculation and auto-correction.  Runs every 5 minutes.
+src/engine/tail_hedge.py || UPDATED || Imports CAM. Regime-table minimum becomes  the floor in CAM formula. DTE roll and drift  correction unchanged.
+src/engine/macro_compass.py || UPDATED || Exposes macro_stress_score as a named output  for CAM consumption. Composite of Brent
+
+[TABLE 8]
+ ||  || deviation from $80 baseline, 10Y vs neutral rate,  VIX level, credit spread.
+src/reporting/daily_monitor.py || UPDATED || PTRH module status card shows CAM output  fields. PTRH removed from decision queue  template permanently.

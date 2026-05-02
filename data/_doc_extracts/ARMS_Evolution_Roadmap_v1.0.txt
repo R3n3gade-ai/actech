@@ -1,0 +1,178 @@
+ACHELION CAPITAL MANAGEMENT | ARMS EVOLUTION ROADMAP | CONFIDENTIAL 
+ACHELION CAPITAL MANAGEMENT 
+CONFIDENTIAL — INTERNAL USE ONLY 
+ARMS EVOLUTION ROADMAP 
+Version 1 → Version 2 → Full Autonomy 
+The North Star Document 
+For Josh Paul, Lead Engineer | Achelion Technology LLC | March 2026 
+How To Read This Document 
+This is the last document you receive before April 1st. It does not add to Version 1 scope. It shows  you where Version 1 ends, where Version 2 begins, and what the system looks like when it has fully  earned autonomous authority. Read it once before you write a single line of code. Then build Version  1 as if Version 2 depends on it — because it does.
+Achelion Technology LLC | ARMS v4.0 | March 2026 1 
+ACHELION CAPITAL MANAGEMENT | ARMS EVOLUTION ROADMAP | CONFIDENTIAL 
+SECTION 1 — THE ARC 
+From Automated Execution to Autonomous Intelligence 
+ARMS is not a trading system. It is an intelligence-execution architecture — a machine that translates a PM's pre consensus thesis work into precise, disciplined portfolio action at speeds and consistency no human can match.  The arc of its evolution follows a single logic: the system earns autonomy by demonstrating accuracy. It is not  granted authority. It proves it. 
+The PM builds the rules. The system earns the right to extend them. 
+Version 1 automates execution of pre-defined rules. Version 2 automates intelligence capture and performance  attribution. Full autonomy grants the system the right to initiate positions when its signal accuracy has been  validated across a full market cycle. Each version is a gate, not a timeline. The system advances when it earns it  — not on a calendar. 
+1.1 The Three Versions At a Glance 
+v1.0 
+Autonomous  
+Execution 
+IN BUILD — April 2026 
+v2.0 
+Intelligence  
+Architecture 
+FUTURE — Post Live  Track Record 
+v3.0 
+Full Autonomy 
+EARNED — After Full  Cycle Validation 
+The regime engine runs. The portfolio responds to macro shifts without the  PM. SLOF and PTRH are managed by the system. Orders are constructed  and submitted automatically. The PM's job is thesis origination and queue  population. Everything after the queue is the machine's job. 
+The Thesis Repository is built. The EDR connects to the queue via  compressed latency. Multi-dimensional concentration risk is monitored.  Performance attribution is native. The PM's intelligence is captured, versioned,  and queryable by the system. The machine begins to learn from the PM's  decisions. 
+The EDR is granted autonomous position initiation within pre-defined size  limits, on signal types that have demonstrated statistically significant accuracy  across a full market cycle. The PM reviews, doesn't approve. The system  operates with the intellectual fingerprint of its architect — without requiring his  presence.
+Achelion Technology LLC | ARMS v4.0 | March 2026 2 
+ACHELION CAPITAL MANAGEMENT | ARMS EVOLUTION ROADMAP | CONFIDENTIAL 
+SECTION 2 — VERSION 1: AUTONOMOUS EXECUTION 
+What Is In Scope Now. What Is Not. 
+Version 1 Scope Boundary 
+Version 1 is complete when the PM can be unreachable for an entire trading session and the portfolio  behaves exactly as the architecture specifies. No calls needed. No approvals pending. No manual  orders required. Until that is true, Version 1 is not done. 
+2.1 Version 1 Capabilities — In Scope 
+2.2 Version 1 — Explicitly Out of Scope 
+• Thesis Repository — PM intelligence is captured in queue entries and EOD logs only. No structured per position thesis database in Version 1. 
+• EDR-to-queue automation — Early Detection Radar signals surface to the PM dashboard. PM initiates  queue entries manually. No autonomous queue population. 
+• Performance attribution layer — EOD snapshots log all actions. Attribution analysis is PM-directed from  those logs. No automated attribution reporting. 
+• Feedback loop calibration — System parameters are set by PM and Josh based on design spec. No  automated regime engine recalibration in Version 1. 
+• Autonomous position initiation — The system executes what is in the queue. It does not add to the queue  without PM instruction in Version 1.
+Achelion Technology LLC | ARMS v4.0 | March 2026 3 
+ACHELION CAPITAL MANAGEMENT | ARMS EVOLUTION ROADMAP | CONFIDENTIAL 
+Why These Are Deferred — Not Forgotten 
+Each deferred capability requires Version 1 to be live and generating clean data before it can be built  correctly. You cannot build a feedback loop with no data to feed back. You cannot validate  autonomous signal accuracy with no signal history. Version 1 creates the foundation. Version 2 builds  on proven ground.
+Achelion Technology LLC | ARMS v4.0 | March 2026 4 
+ACHELION CAPITAL MANAGEMENT | ARMS EVOLUTION ROADMAP | CONFIDENTIAL 
+SECTION 3 — VERSION 2: INTELLIGENCE ARCHITECTURE 
+After Version 1 Is Live and Validated 
+Version 2 is not scheduled. It begins when Version 1 has demonstrated stable live operation across at least one  full regime cycle — a complete transition from RISK_ON through DEFENSIVE and back. That is the gate. Not a  date. 
+3.1 Thesis Repository 
+A structured per-position database that captures the original Gate 1–6 thesis, invalidation conditions, and every  PM update over the life of the position. The system reads it. CDF checks it. CAM references it. The PM's  intelligence moves from his head and chat logs into institutional memory that persists regardless of who is in the  room. 
+3.2 EDR Compressed Latency Architecture 
+The Early Detection Radar graduates from a dashboard alert to an active pipeline participant. When a CRITICAL  signal fires, the system does not wait for the PM to notice. It acts — up to the boundary of its authority. 
+Why Compressed Latency — Not Full Autonomy — At Version 2 
+The EDR processes data at machine speed. But a CRITICAL signal indicates something may be  happening — not that a thesis exists. The PM's 28 years of civilizational pattern recognition is the 
+Achelion Technology LLC | ARMS v4.0 | March 2026 5 
+ACHELION CAPITAL MANAGEMENT | ARMS EVOLUTION ROADMAP | CONFIDENTIAL 
+thesis. The AI prepares the case. The PM renders the verdict. At Version 2, the PM's response time  drops from hours to minutes. The system does 95% of the work. The PM provides the one thing no  machine generates: conviction. 
+3.3 Native Performance Attribution 
+Because every system decision is logged with the exact regime score, multipliers, and execution conditions that  triggered it, attribution is not forensic analysis. It is a structured query on clean data. Version 2 builds the reporting  layer that makes this queryable by LPs without PM involvement. 
+3.4 Multi-Dimensional Concentration Risk 
+This is the one Version 1 gap that is actually a Version 1.5 addition — it belongs in the FEM module before  Version 2 is formally built. Josh adds it in Phase 2 alongside existing FEM logic.
+Achelion Technology LLC | ARMS v4.0 | March 2026 6 
+ACHELION CAPITAL MANAGEMENT | ARMS EVOLUTION ROADMAP | CONFIDENTIAL 
+SECTION 4 — FULL AUTONOMY: VERSION 3 
+Earned After a Full Market Cycle 
+Full autonomy is not a feature. It is a credential. The system earns it by demonstrating statistically significant  signal accuracy across a complete market cycle — at minimum one full transition from RISK_ON through CRASH  and back to RISK_ON. No calendar date grants this. Only track record does. 
+The system does not get autonomy because it is capable. It gets autonomy  because it has proven it. 
+4.1 Autonomy Gate Requirements 
+• Full live operation across at least one complete regime cycle (RISK_ON → WATCH → NEUTRAL →  DEFENSIVE → CRASH → recovery). 
+• EDR CRITICAL signal hit rate above 65% on 20 or more signals — meaning 65% of CRITICAL signals  that were acted upon produced positive thesis outcomes. 
+• Zero critical system failures across the observation period — no unhandled exceptions, no missed regime  transitions, no order routing failures. 
+• PM formal sign-off on autonomy grant per signal type. Autonomy is granted signal-by-signal, not system wide. Dark pool accumulation may earn autonomy before earnings language inflection does. 
+• Legal and compliance review of autonomous position initiation authority in the context of fund structure  and broker agreements. 
+4.2 What Full Autonomy Looks Like 
+In Version 3, the EDR is granted the authority to initiate positions within strictly defined parameters — without PM  confirmation — on signal types that have cleared the autonomy gate:
+Achelion Technology LLC | ARMS v4.0 | March 2026 7 
+ACHELION CAPITAL MANAGEMENT | ARMS EVOLUTION ROADMAP | CONFIDENTIAL 
+4.3 What Never Becomes Autonomous 
+• Thesis invalidation decisions — the PM always makes the final call on closing a thesis position. • Regime override declarations — only the PM can escalate to CRASH manually. • New security whitelist additions — PM gatekeeps what the system is permitted to trade. • Architecture parameter changes — version updates always require PM approval. • Positions above 2.0% of NAV — meaningful conviction positions always originate from PM thesis work. 
+The Permanent PM Role 
+No version of ARMS replaces the PM's civilizational pattern recognition — the ability to see GOOGL  becoming an energy company before the market prices it, to identify the Power Singularity thesis  before consensus forms, to recognize that a grey swan like the Iran conflict does not break the AI  thesis. That judgment is the product of 28 years of investment pattern recognition. It is the only input  the system cannot generate. It is why the PM is not at the dashboard. He is at the lunch. Finding what  comes next.
+Achelion Technology LLC | ARMS v4.0 | March 2026 8 
+ACHELION CAPITAL MANAGEMENT | ARMS EVOLUTION ROADMAP | CONFIDENTIAL 
+SECTION 5 — COMPLETE DOCUMENT SET 
+Everything Josh Has Before April 1st 
+The following documents constitute the complete canonical specification package for ARMS v4.0. They are listed  in the order Josh should read them. This roadmap is the last document in the sequence — it provides context for  everything that came before it. 
+For Josh — One Final Instruction 
+You are not building a trading system. You are building the execution layer of an investment  philosophy that took 28 years to develop. Every module you write is a direct translation of that  philosophy into machine logic. When you are uncertain how a module should behave, return to the  Engineer Brief. The answer is there. Build Version 1 completely. Build it correctly. Build it as if Version  2 depends on it — because it does.
+Achelion Technology LLC | ARMS v4.0 | March 2026 9 
+ACHELION CAPITAL MANAGEMENT | ARMS EVOLUTION ROADMAP | CONFIDENTIAL 
+SECTION 6 — VERSION 1 BUILD TIMELINE 
+Reference Only — Milestones Not Deadlines 
+These phases are sequenced by dependency, not by calendar pressure. Josh moves to the next phase when the  current phase is complete and validated. No phase is skipped. No live deployment before paper trading is proven. 
+The goal of everything in this document set is singular. 
+When the market moves, the portfolio responds correctly — 
+immediately, precisely, and without the PM being in the room. 
+Build it that way. 
+Achelion Technology LLC | ARMS v4.0 Evolution Roadmap | March 2026 | Confidential
+Achelion Technology LLC | ARMS v4.0 | March 2026 10 
+
+[TABLE 0]
+Capability || Module || Status
+Regime detection and scoring || arms_core.py || Phase 1
+PTRH autonomous sizing and roll || cam.py || Phase 1
+EOD snapshot and PM dashboard || eod.py / ui || Phase 1
+Broker API — primary and failover || executor.py || Phase 1
+Regime-triggered order execution || decision.py || Phase 2
+SLOF regime-gated automation || decision.py || Phase 2
+LAEP order construction || laep.py || Phase 2
+PDS drawdown sentinel || decision.py || Phase 2
+CDF conviction decay trimming || decision.py || Phase 2
+FEM factor concentration monitor || decision.py || Phase 2
+SSL stress scenario library || arms_core.py || Phase 2
+Multi-dimensional concentration risk || decision.py || Phase 2
+Conditional tranche execution (CT) || decision.py || Phase 2
+Paper trading validation || All modules || Phase 3
+Live deployment || All modules || Phase 4
+
+[TABLE 1]
+Component || Description
+Thesis Record || Per-position structured entry: original thesis, conviction tier, Gate score,  invalidation conditions, entry date, PM notes.
+Invalidation Conditions || PM-defined conditions under which a position is flagged for Priority 1 review  regardless of CDF clock or regime state.
+CDF Integration || CDF checks thesis update timestamp — not just a dashboard confirmation  click. Richer signal of actual PM engagement.
+Version History || Every thesis update is versioned. The system can show how the PM's view  on a position evolved over time.
+Query Interface || PM can query the repository: 'Show all positions where invalidation condition  involves memory bandwidth.' Intelligence becomes searchable.
+
+[TABLE 2]
+Signal Level || System Response in Version 2
+LOW || Logged. Appears in EOD snapshot. No PM alert.
+MEDIUM || Dashboard flag. PM reviews at next session. No queue action.
+HIGH || PM alert pushed immediately. System prepares draft thesis and preliminary sizing. PM  reviews pre-populated entry — not a blank page.
+CRITICAL || PM alert pushed immediately with 4-hour response window. System prepares full draft  queue entry with thesis, sizing, entry range, and order type pre-populated from signal  data. PM approves, modifies, or rejects. If no response in 4 hours, system defaults to  PM-pre-specified behavior per signal type.
+
+[TABLE 3]
+Attribution Dimension || What It Measures
+Regime Positioning Alpha || Return contribution from equity ceiling changes across regime transitions.
+Position Selection Alpha || Return contribution from individual thesis positions vs. benchmark.
+SLOF Amplification || Return contribution (positive and negative) from synthetic long exposure  during RISK_ON and WATCH regimes.
+PTRH Cost Drag || Premium cost of QQQ puts vs. protection value delivered during drawdown  events.
+CAM Accuracy || How closely actual PTRH notional tracked CAM target across the period.
+CDF Decision Quality || Return impact of positions trimmed by CDF — did the trim preserve or  destroy value?
+
+[TABLE 4]
+Concentration Dimension || What FEM Monitors
+Factor Concentration || Already in Version 1. AI infrastructure, energy, semiconductors, software.  WATCH >65%, ALERT >80%.
+Geographic Concentration || Version 1.5. US-listed vs. international exposure. Single-country  concentration above 85% triggers WATCH.
+Broker Concentration || Version 1.5. Percentage of book routable through each broker. Single broker above 70% triggers alert.
+Liquidity Concentration || Version 1.5. Percentage of book liquidatable within one session at current  ADV without >0.5% market impact. Below 60% triggers WATCH.
+
+[TABLE 5]
+Parameter || Constraint
+Maximum autonomous position  size || 1.0% of NAV per initiation. PM can adjust per signal type after track  record review.
+Signal type restriction || Only signal types that have individually cleared the 65% hit rate gate.  Not all EDR signals simultaneously.
+Regime restriction || Autonomous initiation only in RISK_ON and WATCH regimes.  NEUTRAL requires PM confirmation. DEFENSIVE and CRASH: no  initiation.
+Whitelist restriction || Autonomous initiation only in securities already on PM whitelist. New  securities always require PM approval.
+PM notification || PM receives immediate notification of every autonomous initiation. Can  reverse within 30 minutes at no penalty. After 30 minutes, position is  live.
+
+[TABLE 6]
+Daily autonomy limit || Maximum 3 autonomous initiations per session. Prevents system over trading on correlated signals.
+
+[TABLE 7]
+Document || Purpose || Read When
+ARMS Engineer Brief || Primary directive. The line never crossed.  Plain language. No jargon. || First. Before anything  else.
+ARMS Auto Deployment &   | Execution Arch v1.1 || Complete technical specification. 11 sections.  Every module defined. || Second. The build   | bible.
+ARMS Addendum 1 — Conditional  Tranche || Decision Engine extension. CT state machine,  schema, failure handling. GOOGL queue entry  pattern. || Third. Before Phase 2  begins.
+ARMS Evolution Roadmap || North star. Version 1 scope boundary. Version  2 design. Full autonomy criteria. The   | destination. || Fourth. This document.
+
+[TABLE 8]
+Phase || Deliverables || Gate To Next Phase
+Phase 1 Weeks  1–4 || arms_core.py (regime scoring) cam.py (PTRH  sizing) eod.py (snapshot) Broker API connections  Dashboard skeleton || Regime score running cleanly on live  data for 5 consecutive sessions. CAM  outputting valid PTRH notional. EOD  snapshot delivered before 07:00 ET.
+Phase 2 Weeks  5–8 || decision.py (transitions + SLOF + CT) laep.py  (order construction) PDS, CDF, FEM, SSL modules  Multi-dimensional concentration (FEM v1.5) || Full simulated regime cycle completes  without error. SLOF correctly removed  at DEFENSIVE. PDS -12% ceiling test  passes. CT state machine validated   | end-to-end.
+Phase 3 Weeks  9–12 || Full paper trading on live data PM EOD review daily  Stress tests: S1–S8 SSL scenarios SLOF, PTRH  roll, CT validation || Two consecutive weeks zero critical  deviations. All stress tests pass. PM  signs off on EOD snapshot format.
+Phase 4 Post   | Week 12 || Live deployment Broker failover test PM dashboard  final review All 5 live gate conditions met || System is live. PM is at the lunch.

@@ -74,7 +74,10 @@ _aras_assessor = ARASAssessor()
 from engine.master_engine import compute_target_weights
 from execution.trade_order_generator import generate_rebalance_orders
 from engine.drawdown_sentinel import run_pds_check
-from engine.pds_state import load_high_water_mark, update_high_water_mark
+from engine.pds_state import (
+    load_high_water_mark,
+    update_high_water_mark,
+)
 from engine.factor_exposure import run_fem_check, generate_paired_trims
 from engine.incapacitation import run_incapacitation_check
 from engine.asymmetric_upside import run_aup_check
@@ -291,7 +294,7 @@ def run_full_arms_cycle():
     last_hb = now - datetime.timedelta(minutes=45)
     incap_res = run_incapacitation_check(last_hb, current_regime)
     
-    # 2.4 Portfolio Drawdown Sentinel (PDS)
+    # 2.4 Portfolio Drawdown Sentinel (PDS) - stateless threshold check
     hwm = load_high_water_mark(nav)
     pds_res = run_pds_check(nav, hwm)
     update_high_water_mark(nav)

@@ -1,0 +1,186 @@
+ACHELION CAPITAL · ARMS THB v4.0 FINAL · MARCH 2026 · CONFIDENTIAL 
+1. AUTHORITY HIERARCHY — UNCHANGED IN V4.0 
+The seven-pillar authority hierarchy is unchanged. New v4.0 modules are ADVISORY or ADDITIVE — they tighten ceilings  further or provide information, but they never loosen what ARAS has set. 
+2. GAP 1 — FACTOR EXPOSURE MONITOR (FEM) 
+The FEM is a new ARAS sub-module detecting hidden concentration risk across positions. ARMS can be in RISK_ON at  100% ceiling while effectively running a single concentrated bet. The FEM surfaces this to the PM before it becomes a  drawdown. 
+2.1 Factor Definitions
+ACHELION CAPITAL · ARMS THB v4.0 FINAL · MARCH 2026 · CONFIDENTIAL 
+2.2 Thresholds and Actions 
+2.3 Interface Contract — FactorExposureSignal 
+File: src/modules/factor_exposure.py · Runs daily after portfolio snapshot · DB table: factor_exposure_log
+ACHELION CAPITAL · ARMS THB v4.0 FINAL · MARCH 2026 · CONFIDENTIAL 
+3. GAP 2 — VOLATILITY-ADJUSTED RE-ENTRY SIZING (VARES) 
+Re-entry tranche size is inversely proportional to current VIX relative to its 90-day moving average. Higher volatility at re entry = smaller tranches. Normalized volatility = full tranches. Standard practice at every major risk-managed fund. 
+3.1 VARES Formula 
+3.2 Tranche Timing 
+4. GAP 3 — PORTFOLIO DRAWDOWN SENTINEL (PDS) 
+4.1 Drawdown Thresholds
+ACHELION CAPITAL · ARMS THB v4.0 FINAL · MARCH 2026 · CONFIDENTIAL 
+4.2 High-Water Mark Rules 
+The HWM is the portfolio's highest ever closing NAV. Updates daily when a new high is set. NEVER decrements — only  moves up. Drawdown = (current_NAV / HWM) − 1. 
+4.3 DrawdownSentinelSignal Dataclass 
+File: src/engine/drawdown_sentinel.py · Runs daily after NAV calculation · DB table: drawdown_sentinel_log
+ACHELION CAPITAL · ARMS THB v4.0 FINAL · MARCH 2026 · CONFIDENTIAL 
+5. GAP 4 — LIQUIDITY-ADJUSTED EXECUTION PROTOCOL (LAEP) 
+SYS-3 execution methodology adjusts automatically based on market liquidity conditions. In normal markets, market  orders execute within 30 minutes. In elevated volatility, VWAP extends to 60 minutes. In crisis, VWAP extends to 90  minutes with priority reordering to protect the least liquid positions. 
+5.1 Liquidity Mode Classification 
+6. GAP 5 — PERMANENT TAIL RISK HEDGE (PTRH) 
+6.1 Hedge Structure
+ACHELION CAPITAL · ARMS THB v4.0 FINAL · MARCH 2026 · CONFIDENTIAL 
+6.2 Regime-Dependent Sizing
+ACHELION CAPITAL · ARMS THB v4.0 FINAL · MARCH 2026 · CONFIDENTIAL 
+7. GAP 6 — CONVICTION DECAY FUNCTION (CDF) 
+The CDF makes the existing Conviction Drift Monitor actionable by automatically reducing conviction weight when a  position underperforms its thesis. This prevents the most dangerous behavior in concentrated portfolios: maintaining full  sizing in a broken thesis. 
+7.1 Decay Schedule 
+7.2 PositionTarget Extension 
+File: src/engine/perm.py (CDF logic) · src/engine/master_engine.py (applies decay to sizing) 
+8. GAP 7 — STRESS SCENARIO LIBRARY (SSL) 
+The SSL runs daily after portfolio snapshot, applying eight defined stress scenarios to current portfolio weights. Outputs  estimated P&L for each scenario. Gives the PM information the regime model cannot — not what has happened, but what  would happen if a defined stress event occurred today. 
+8.1 Scenario Definitions
+ACHELION CAPITAL · ARMS THB v4.0 FINAL · MARCH 2026 · CONFIDENTIAL 
+File: src/modules/stress_scenarios.py · Computation: scenario_returns × position_weights · Runs in milliseconds · DB table: scenario_pnl_log
+ACHELION CAPITAL · ARMS THB v4.0 FINAL · MARCH 2026 · CONFIDENTIAL 
+9. UPDATED DATABASE SCHEMA — V4.0 ADDITIONS 
+10. UPDATED FILE STRUCTURE — V4.0 
+11. DAILY ASSESSMENT — V4.0 ADDITIONS
+ACHELION CAPITAL · ARMS THB v4.0 FINAL · MARCH 2026 · CONFIDENTIAL 
+CONFIDENTIAL: This document is intended solely for authorized development personnel and Achelion Capital GPs. v4.0 FINAL represents the  complete world-class risk management specification with all four prior draft corrections applied. Architecture AB v4.0 · March 2026. ACHELION CAPITAL MANAGEMENT, LLC · Flow. Illumination. Discipline. Conviction.
+
+[TABLE 0]
+ACHELION CAPITAL  | ARMS Technical Handoff  Brief  | System Architecture · Interface Contracts · Integration Pipeline || V4.0 FINAL  | March 2026  | Architecture AB · 58/20/14/8  | Seven-Pillar + Seven-Gap Upgrades  | CONFIDENTIAL — GP & Dev Use Only
+
+[TABLE 1]
+VERSION || KEY CHANGES
+v3.1 → v4.0 || Seven institutional gap upgrades: (1) FEM — Factor Exposure Monitor, (2) VARES — Volatility Adjusted Re-entry Sizing, (3) PDS — Portfolio Drawdown Sentinel, (4) LAEP — Liquidity Adjusted Execution Protocol, (5) PTRH — Permanent Tail Risk Hedge using QQQ puts (10–15%  OTM), (6) CDF — Conviction Decay Function, (7) SSL — Stress Scenario Library. Four new  dataclasses. Four new database tables.
+v3.1 base || All v3.1 features retained: Adaptive signal weighting · Regime Confidence Score · Escalation Rule v2 ·  ARES Gate 4 · Conviction Drift Monitor · Tiered SLOF · LP Auto Narrative · Pre-Staging SYS-3B ·  Contagion Velocity SYS-5B · Nowcast/Forecast Divergence · Backtesting Infrastructure · Fund agnostic Config Layer · Data Feed Resilience · Multi-portfolio Governance · Model Validation ·  Transaction Cost Model · Version Governance.
+Status || CONFIDENTIAL — Development team and authorized GP use only. v4.0 FINAL is the canonical build  target for Josh. All prior versions superseded. CAM (Coverage Adequacy Model) removed from v4.0  scope — see Section 6 correction note.
+
+[TABLE 2]
+AUTHORITY || RULE
+ARAS — Highest   | Authority || Absolute exposure ceiling. Cannot be exceeded by any module, human, or override  under any circumstance.
+PDS — New v4.0 || Portfolio Drawdown Sentinel sets its own ceiling. The LOWER of ARAS or PDS ceiling  always prevails. PDS can only make the portfolio MORE defensive than ARAS, never  less.
+FEM — Advisory || Factor Exposure Monitor is ADVISORY. Flags concentration risk to the PM but does  not override ARAS or PDS ceilings. Maximum advisory contribution to composite:  +0.05.
+PTRH — Additive || Permanent Tail Risk Hedge exists OUTSIDE the exposure ceiling calculation. QQQ  puts are protective instruments, not offensive exposure. Exempt from ceiling math — identical treatment to defensive sleeve.
+
+[TABLE 3]
+FACTOR || POSITIONS AFFECTED || WEIGHT METHOD
+AI Capex Cycle || NVDA, AMD, ALAB, MU, MRVL,  AVGO, ANET, ARM || Beta-weighted position size × AI revenue exposure  %
+Taiwan   | Manufacturing || NVDA, AMD, ALAB, MU, MRVL, ARM  (TSMC-dependent) || Sum of weights of TSMC-dependent positions
+BTC Beta || IBIT, ETHB, BSOL, PLTR (BTC  treasury), TSLA (BTC treasury) || BTC correlation coefficient × position weight
+Dollar Sensitivity || All equity + BTC (DXY inverse   | correlation) || 90-day DXY correlation × position weight (signed)
+Rate Sensitivity || VRT, ETN, ANET (infrastructure  capex), SGOV (positive) || Duration-equivalent sensitivity to 100bps rate move
+
+[TABLE 4]
+LEVEL || THRESHOLD || ACTION
+WATCH || >65% single factor || PM alert on daily monitor. No mandatory action. Document in  session log.
+ALERT || >80% single factor || Mandatory PM review within 24 hours. If not resolved by conviction  update or trim, escalate to ARAS as advisory input (+0.05  composite).
+Cross-sleeve   | CORR || >0.70 equity/crypto   | 30d || Advisory flag. Feeds existing SYS-5/SYS-5B contagion monitors. Not  a new ceiling.
+
+[TABLE 5]
+@dataclass class FactorExposure:  |  factor_name: str # e.g. 'AI_CAPEX_CYCLE'  |  exposure_pct: float # 0.0–1.0 of portfolio NAV  |  positions_affected: List[str]  |  threshold_watch: float = 0.65  |  threshold_alert: float = 0.80  |  status: Literal['NORMAL','WATCH','ALERT']  | @dataclass class FactorExposureSignal:  |  as_of: str  |  factors: List[FactorExposure]  |  cross_sleeve_correlation: float # rolling 30d equity/crypto  |  total_advisory_composite_add: float # max +0.10 if multiple ALERTs
+
+[TABLE 6]
+vix_90d_avg = mean(VIX, lookback=90)  | vol_adj_factor = min(1.0, vix_90d_avg / vix_current) # never amplifies  | base_tranche_pct = 0.333 # 3 equal tranches adjusted_tranche = base_tranche_pct * vol_adj_factor  | adjusted_tranche = max(0.15, min(0.35, adjusted_tranche)) # hard limits  | # Example: VIX current=35, VIX 90d avg=20  | # vol_adj_factor = 20/35 = 0.571  | # adjusted_tranche = 0.333 * 0.571 = 0.190 (19% of target per tranche)
+
+[TABLE 7]
+TRANCHE || TIMING || SIZE || CONDITION
+T1 || Gate 4 clear + PM   | approval || base × vol_adj_factor || ARES gates 1–4 all clear. Composite below  DEFENSIVE threshold.
+T2 || T1 + 48 hours || Same as T1 || Regime held 48h post-T1. No new circuit  breaker. Composite stable or declining.
+T3 || T2 + 48 hours || Remainder to target || Regime held 48h post-T2. Full deployment  reached. SLOF reactivation at PM   | discretion.
+ABORT || Any tranche window || Halt all tranches || If any circuit breaker fires between   | tranches: abort re-entry, return to current  regime ceiling.
+
+[TABLE 8]
+CRITICAL — INDEPENDENT MODULE  | The Portfolio Drawdown Sentinel operates INDEPENDENTLY of ARAS. It monitors portfolio NAV against its rolling  high-water mark. It is the last line of defense when ARAS is wrong or slow. PDS and ARAS ceilings are always  compared — the lower ceiling always prevails. ARAS cannot override PDS. PDS cannot override ARAS. The  effective ceiling is computed in master_engine.py as: effective_ceiling = min(aras_ceiling, pds_ceiling).
+
+[TABLE 9]
+LEVEL || DRAWDOWN FROM  HWM || ACTION || CEILING
+WARNING || −8% from HWM || PM alert. Heightened monitoring.  Document in daily log. No   | mandatory action. || None — advisory only
+DELEVERAGE 1 || −12% from HWM || Automatic — force portfolio to 60%  gross ceiling. Independent of ARAS  regime. || 60% gross
+
+[TABLE 10]
+DELEVERAGE 2 || −18% from HWM || Automatic — force portfolio to 30%  gross ceiling. PM notified. LP   | communication triggered. || 30% gross
+
+[TABLE 11]
+@dataclass class DrawdownSentinelSignal:  |  as_of: str  |  current_nav: float  |  high_water_mark: float  |  hwm_date: str # ISO date HWM was set  |  drawdown_pct: float # negative number, e.g. -0.082  |  status: Literal['NORMAL','WARNING','DELEVERAGE_1','DELEVERAGE_2']  |  pds_ceiling: float # 1.0 | 0.60 | 0.30  |  days_since_hwm: int  | # NOTE: effective_ceiling is computed in master_engine.py as:  | # effective_ceiling = min(aras_output.exposure_ceiling, pds_output.pds_ceiling) # PDS does not know the ARAS ceiling. They are independent peers.
+
+[TABLE 12]
+MODE || VIX   | TRIGGER || ORDER   | TYPE || WINDOW || SLIPPAGE || PRIORITY ORDER
+NORMAL || VIX < 25 || Market || 30 min || 8 bps || P1 → P2 → P3 → P4
+ELEVATED || VIX 25–45 || VWAP || 60 min || 20 bps || P1 → P2 → P3 → P4
+CRISIS || VIX > 45 || VWAP || 90 min || 40 bps || BSOL → ETHB → IBIT → equity  (least liquid first)
+
+[TABLE 13]
+CRISIS PRIORITY REORDER RATIONALE  | In CRISIS mode (VIX >45), BSOL executes first because it is the least liquid crypto ETF — widest spread, highest  market impact. ETHB second (newer, less liquid than IBIT). IBIT third (most liquid crypto ETF). Equity last  because major AI names (NVDA, AMD) retain the deepest liquidity even in crisis. This is the OPPOSITE of normal  priority — in crisis, exit illiquid positions first while you still can.
+
+[TABLE 14]
+QQQ PUTS — NOT SPX  | The PTRH uses QQQ puts, not SPX puts. Rationale: Achelion's 58% equity sleeve is concentrated in AI  infrastructure names that trade as NASDAQ/QQQ proxies. In a technology-specific drawdown — the primary risk  — QQQ falls materially harder than SPX (2022: QQQ −32.6% vs SPX −18.1%). QQQ puts provide approximately  1.8× the protection of SPX puts per dollar of premium in the scenarios most relevant to this portfolio.
+
+[TABLE 15]
+CORRECTION — v4.0 FINAL · Supersedes prior specification  | Prior: 5–8% OTM (prior specification in some draft versions)  | Corrected: 10–15% OTM — target ~12.5% OTM. Locked canonical specification.  | Rationale: 10–15% OTM maximizes convexity in the −20% to −40% drawdown range where ARMS protection is most  needed. 5–8% OTM is significantly more expensive and is largely redundant with the ceiling-reduction protection ARMS  already provides through regime management. The 10–15% OTM range is the locked decision. This supersedes any  prior draft showing 5–8%.
+
+[TABLE 16]
+PARAMETER || SPECIFICATION
+Instrument || QQQ put options — listed, exchange-traded
+Strike || 10–15% out-of-the-money from current QQQ price. Target ~12.5% OTM.  Recalibrate at each roll. Rationale: maximizes convexity at deep drawdown  strikes where AI/tech concentration creates tail risk. Not redundant with ceiling  management.
+Expiry || 60–90 day options. Roll at 30 DTE to avoid gamma decay acceleration.
+
+[TABLE 17]
+Target protection || Meaningful protection in a −30% to −40% QQQ scenario. At 10–15% OTM,  positions move into the money on severe drawdowns and provide accelerating  gamma response as losses deepen.
+Annual premium cost || Target 0.30–0.50% NAV per year at base size. At $50M AUM: approx $150K– $250K/year.
+Exposure ceiling || PTRH is EXEMPT from ARAS gross exposure calculation — identical  treatment to the defensive sleeve. QQQ puts are never included in  portfolio ceiling math.
+
+[TABLE 18]
+REMOVED FROM v4.0 SCOPE — CAM (Coverage Adequacy Model)  | A prior draft of this document included an 'Addendum 4' referencing an autonomous Coverage Adequacy Model (CAM)  that would recalculate PTRH coverage every 5 minutes in CRASH regime and reference a file src/engine/cam.py. This  has been removed from v4.0 scope entirely.  | Rationale: CAM was not designed, specified, or approved. It referenced non-existent code. It introduced autonomous  PM-bypass behavior that conflicts with ARMS governance principles. It is a future roadmap concept — not a v4.0  deliverable.
+
+[TABLE 19]
+REGIME || PTRH SIZE || STRC DYNAMIC LAYER || COMBINED PROTECTION
+RISK_ON || 100% base (1.0×) || Locked — not deployed || Permanent hedge only
+WATCH || 125% base (1.25×) || Locked || Permanent + 25% upsize
+NEUTRAL || 125% base (1.25×) || 50% reserve deployed (QQQ  puts) || Permanent + STRC reserve layer
+DEFENSIVE || 150% base (1.50×) || 100% reserve deployed || Maximum hedge stack
+CRASH || 150% base (1.50×) — HOLD, no new buys || All in — hold existing || Hold at maximum. Implied vol too  expensive for new puts in CRASH.
+
+[TABLE 20]
+# CDF fires when BOTH conditions are met:  | condition_1 = position_return_45d < (qqq_return_45d - 0.10) # -10pp vs QQQ condition_2 = days_underperforming >= 45  | # Decay schedule:  | if days_underperforming >= 45: conviction_decay_factor = 0.80 # C²×0.80 if days_underperforming >= 90: conviction_decay_factor = 0.60 # C²×0.60 if days_underperforming >= 135: conviction_decay_factor = 0.60 # mandatory PM review  | # Reset condition:  | if position_outperforms_qqq_by_5pp_over_15d: conviction_decay_factor = 1.00
+
+[TABLE 21]
+WHAT CDF DOES NOT DO  | CDF does not force a sell. It does not trigger a regime change. It does not reduce SLOF eligibility. It only reduces  the position's effective C² weight in the Master Engine portfolio construction calculation. The PM can override at  any time with a documented conviction reaffirmation. The decay is visible on the daily monitor as a flag next to the  position.
+
+[TABLE 22]
+# Extended PositionTarget dataclass (v4.0 additions):  | @dataclass class PositionTarget:  |  ticker: str  |  conviction_level: int # original 1-10  |  conviction_decay_factor: float # NEW: 1.0 normal | 0.80 | 0.60 decayed  effective_c_squared: float # NEW: conviction^2 * decay_factor  |  target_weight: float  |  decay_days: int # NEW: 0 if no decay active  |  decay_triggered: bool # NEW
+
+[TABLE 23]
+ID || NAME || EQUITY   | (QQQ) || BTC || DEFENSE || SOURCE
+S1 || 2008 Lehman Collapse || −35% || N/A || Agg +5%, Gold +12% || Sep–Nov 2008 actual
+S2 || 2020 COVID Crash || −34% || −53% || Agg +3% || Feb 20 – Mar 23, 2020
+S3 || 2022 Rate Shock || −22% || −35% || Agg −5%, DBMF +8% || Q1 2022 actual
+S4 || Flash Crash — Intraday || −10% in 20   | min || −15% || Flat || Custom — worst-case   | session
+
+[TABLE 24]
+S5 || Hormuz Closed 90 Days || −15% || −10% || SGOL +18%, DBMF  +12% || Custom — current conflict
+S6 || Crypto Bear — BTC   | −60% || −5% || −60%   | BTC,   | −65%   | ETH || Flat || 2022 crypto collapse   | analog
+S7 || Fed Shock +100bps || −12% || −20% || SGOV +1%, Agg −8% || Custom — surprise   | tightening
+S8 || AI Bubble Unwind −40% || −40% (AI   | names) || −20% || SGOL +8% || Custom — thesis-specific  stress
+
+[TABLE 25]
+NEW TABLE || PURPOSE || KEY COLUMNS
+factor_exposure_log || Daily factor concentration snapshots || date, factor_name, exposure_pct, status,  positions_affected
+drawdown_sentinel_log || NAV vs HWM tracking and PDS status || date, nav, hwm, drawdown_pct, status,  pds_ceiling
+tail_hedge_positions || Current QQQ put positions and PTRH  status || date, strike, expiry, contracts,   | premium_paid, current_value,   | size_multiplier, regime
+scenario_pnl_log || Daily scenario library output || date, scenario_id, portfolio_pnl_pct,  portfolio_pnl_usd, hedge_offset, net_pnl
+
+[TABLE 26]
+achelion-arms/  | ├── CLAUDE.md ← architectural memory (read at session start) ├── src/  | │ ├── engine/  | │ │ ├── aras.py # unchanged core  | │ │ ├── macro_compass.py # unchanged  | │ │ ├── master_engine.py # updated: computes effective_ceiling = min(ARAS,PDS) │ │ ├── kevlar.py # unchanged  | │ │ ├── perm.py # UPDATED: CDF conviction decay  | │ │ ├── slof.py # unchanged  | │ │ ├── ares.py # UPDATED: VARES vol-adjusted tranche sizing │ │ ├── drawdown_sentinel.py # NEW: Portfolio Drawdown Sentinel  | │ │ └── tail_hedge.py # NEW: Permanent Tail Risk Hedge  | │ ├── modules/  | │ │ ├── deleveraging_risk.py # PRIORITY BUILD — Oct 10 2025 validation │ │ ├── crypto_microstructure.py  | │ │ ├── margin_stress.py  | │ │ ├── dealer_gamma.py  | │ │ ├── pcr_regime.py  | │ │ ├── shutdown_risk.py  | │ │ ├── factor_exposure.py # NEW: Factor Exposure Monitor  | │ │ └── stress_scenarios.py # NEW: Stress Scenario Library  | │ ├── execution/  | │ │ └── order_book.py # UPDATED: LAEP liquidity-adjusted execution │ └── dataclasses/  | │ └── risk_v40.py # ALL v4.0 dataclasses — 68 tests passing ├── tests/ # 138 tests passing on clean install  | └── scripts/  |  ├── daily_run.py # entry point  |  └── backtest_runner.py # validation target: Oct 10 2025
+
+[TABLE 27]
+NEW SECTION || WHAT IT SHOWS || ACTION TRIGGER
+Factor Exposure Status || Concentration by factor (AI Capex, Taiwan,  BTC Beta) with NORMAL/WATCH/ALERT  badges || ALERT badge → mandatory PM  review within 24h
+
+[TABLE 28]
+Drawdown Sentinel || Current NAV vs HWM, drawdown %, PDS  status, effective ceiling (min of ARAS and  PDS) || DELEVERAGE_1 or   | DELEVERAGE_2 → automatic  execution
+Tail Hedge Status || Current QQQ put positions (10–15% OTM),  size multiplier, next roll date, annual drag || Roll required when DTE ≤ 30
+Stress Scenario P&L || Table: all 8 scenarios × current portfolio. Gross  and net-of-hedge P&L. Worst scenario flagged. || Advisory — worst scenario shown  prominently
+Conviction Decay Flags || Positions with active decay factor — decay  level, days decaying, reset condition || Day 135 → mandatory fundamental  review
+
+[TABLE 29]
+CORRECTION SUMMARY — v4.0 FINAL vs prior drafts  | (1) PTRH strike corrected to 10–15% OTM (was 5–8% OTM in some drafts). (2) CAM (Coverage Adequacy Model)  removed from v4.0 scope entirely — not designed, not approved, references non-existent code. (3) CRASH PTRH  multiplier corrected to 1.50× hold-no-new-buys (was 2.0× CAM-autonomous in prior draft). (4) effective_ceiling removed  from DrawdownSentinelSignal dataclass — this computation belongs in master_engine.py, not in PDS, preserving the  independence principle.

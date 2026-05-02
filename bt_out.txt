@@ -1,0 +1,178 @@
+﻿.\.venv\Scripts\python.exe : <frozen runpy>:128: RuntimeWarning: 
+'simulation.replay_harness' found in sys.modules after import of package 
+'simulation', but prior to execution of 'simulation.replay_harness'; this may 
+result in unpredictable behaviour
+At line:1 char:118
++ ... PATH="src"; .\.venv\Scripts\python.exe -m simulation.replay_harness - ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (<frozen runpy>:...table behaviour 
+   :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+2026-05-01 15:18:08,299 [INFO] Replay harness: 2025-01-02 ΓåÆ 2025-12-31 | 
+$500,000,000
+2026-05-01 15:18:08,299 [INFO] Loading macro signals...
+2026-05-01 15:18:08,301 [WARNING] PCR GAP: CBOE Equity Put/Call Ratio is not 
+published to FRED. Backtest does not include PCR signal. Live-system PCR would 
+require a CBOE direct-feed or paid data subscription.
+2026-05-01 15:18:08,302 [INFO] FRED cache hit: VIXCLS
+2026-05-01 15:18:08,439 [INFO] FRED cache hit: DGS10
+2026-05-01 15:18:08,444 [INFO] FRED cache hit: BAMLH0A0HYM2
+2026-05-01 15:18:08,446 [INFO] FRED cache hit: T10Y2Y
+2026-05-01 15:18:08,448 [INFO] FRED cache hit: BOGZ1FL663067003Q
+2026-05-01 15:18:08,664 [INFO] Loading cached data: 
+backtest_data_2025-01-02_2025-12-31_7711c4da552a.parquet
+2026-05-01 15:18:08,672 [INFO] Macro: VIX from FRED VIXCLS (canonical)
+2026-05-01 15:18:08,673 [INFO] Macro: TNX from FRED DGS10 (canonical)
+2026-05-01 15:18:08,674 [INFO] Macro: HY spread from FRED BAMLH0A0HYM2 
+(canonical OAS)
+2026-05-01 15:18:08,675 [INFO] Macro: T10Y2Y from FRED (advisory yield-curve 
+signal)
+2026-05-01 15:18:08,678 [INFO] Macro: Margin Debt from FRED BOGZ1FL663067003Q 
+(advisory, quarterly)
+2026-05-01 15:18:08,679 [INFO] Macro: CBOE SKEW from yfinance ^SKEW (Addendum 
+7 ┬º3.3 Phase 1)
+2026-05-01 15:18:08,679 [INFO] Funding cache hit: BTCUSDT
+2026-05-01 15:18:08,683 [INFO] Macro: BTC funding rate from Deribit 
+BTC-PERPETUAL public API (Addendum 7 ┬º3.1)
+2026-05-01 15:18:08,683 [INFO] CryptoCompare OI cache hit
+2026-05-01 15:18:08,687 [INFO] Macro: BTC OI from CryptoCompare aggregate 
+(Binance+OKX+Bybit USDT-perp, Addendum 7 ┬º3.2)
+2026-05-01 15:18:08,691 [INFO] Loading benchmark prices...
+2026-05-01 15:18:08,691 [INFO] Loading cached data: 
+backtest_data_2025-01-02_2025-12-31_9a410b644902.parquet
+2026-05-01 15:18:08,694 [INFO] Loading 12 equity prices...
+2026-05-01 15:18:08,694 [INFO] Loading cached data: 
+backtest_data_2025-01-02_2025-12-31_3f2593041591.parquet
+2026-05-01 15:18:08,698 [INFO] Loading cached volume: 
+volume_2025-01-02_2025-12-31_045c03d0c45e.parquet
+2026-05-01 15:18:08,701 [INFO] Loading defensive sleeve prices...
+2026-05-01 15:18:08,701 [INFO] Loading cached data: 
+backtest_data_2025-01-02_2025-12-31_20deae19b02d.parquet
+2026-05-01 15:18:08,704 [INFO] Loading crypto prices...
+2026-05-01 15:18:08,704 [INFO] Loading cached data: 
+backtest_data_2025-01-02_2025-12-31_fc116a13e06d.parquet
+2026-05-01 15:18:08,710 [INFO] Data loaded: 249 trading days, 19 tickers, 
+2025-01-02 ΓåÆ 2025-12-31
+[LLMWrapper] Initialized with provider: OPENAI, model: gpt-5.5
+--- ARMS JPVI: Weekly Job Posting Velocity Sweep ---
+[JPVI] Analyzing job posting velocity for Microsoft...
+[JPVI] Adzuna API credentials not configured. Set ADZUNA_APP_ID and ADZUNA_APP_KEY.
+[JPVI] Adzuna API credentials not configured. Set ADZUNA_APP_ID and ADZUNA_APP_KEY.
+[JPVI] Adzuna API credentials not configured. Set ADZUNA_APP_ID and ADZUNA_APP_KEY.
+[JPVI] Adzuna API credentials not configured. Set ADZUNA_APP_ID and ADZUNA_APP_KEY.
+[JPVI] Microsoft: 4 categories scanned, 0 total postings, 0 material signals.
+[JPVI] Analyzing job posting velocity for Google...
+[JPVI] Adzuna API credentials not configured. Set ADZUNA_APP_ID and ADZUNA_APP_KEY.
+[JPVI] Adzuna API credentials not configured. Set ADZUNA_APP_ID and ADZUNA_APP_KEY.
+[JPVI] Adzuna API credentials not configured. Set ADZUNA_APP_ID and ADZUNA_APP_KEY.
+[JPVI] Adzuna API credentials not configured. Set ADZUNA_APP_ID and ADZUNA_APP_KEY.
+[JPVI] Google: 4 categories scanned, 0 total postings, 0 material signals.
+[JPVI] Analyzing job posting velocity for Amazon...
+[JPVI] Adzuna API credentials not configured. Set ADZUNA_APP_ID and ADZUNA_APP_KEY.
+[JPVI] Adzuna API credentials not configured. Set ADZUNA_APP_ID and ADZUNA_APP_KEY.
+[JPVI] Adzuna API credentials not configured. Set ADZUNA_APP_ID and ADZUNA_APP_KEY.
+[JPVI] Adzuna API credentials not configured. Set ADZUNA_APP_ID and ADZUNA_APP_KEY.
+[JPVI] Amazon: 4 categories scanned, 0 total postings, 0 material signals.
+[JPVI] Analyzing job posting velocity for Meta...
+[JPVI] Adzuna API credentials not configured. Set ADZUNA_APP_ID and ADZUNA_APP_KEY.
+[JPVI] Adzuna API credentials not configured. Set ADZUNA_APP_ID and ADZUNA_APP_KEY.
+[JPVI] Adzuna API credentials not configured. Set ADZUNA_APP_ID and ADZUNA_APP_KEY.
+[JPVI] Adzuna API credentials not configured. Set ADZUNA_APP_ID and ADZUNA_APP_KEY.
+[JPVI] Meta: 4 categories scanned, 0 total postings, 0 material signals.
+[JPVI] Analyzing job posting velocity for Oracle...
+[JPVI] Adzuna API credentials not configured. Set ADZUNA_APP_ID and ADZUNA_APP_KEY.
+[JPVI] Adzuna API credentials not configured. Set ADZUNA_APP_ID and ADZUNA_APP_KEY.
+[JPVI] Oracle: 2 categories scanned, 0 total postings, 0 material signals.
+--- JPVI Sweep Complete. 5 entities, 0 material signals. ---
+--- ARMS SCCR: Weekly Supply Chain Cross-Reference Sweep ---
+[SCCR] Scanning TSMC shipping activity pattern...
+[SCCR] Scanning Microsoft server equipment import pattern...
+[SCCR] Scanning Google server equipment import pattern...
+[SCCR] Scanning Amazon server equipment import pattern...
+[SCCR] Scanning Meta server equipment import pattern...
+--- SCCR Sweep Complete. 5 patterns, 5 signals, 0 material. ---
+--- ARMS PFVT: Monthly Patent Filing Velocity Sweep ---
+[PFVT] Analyzing patent filing velocity for Google...
+[PFVT] USPTO PatentsView API error for Google LLC: HTTPSConnectionPool(host='search.patentsview.org', port=443): Max retries exceeded with url: /api/v1/patent/?q=%7B%22_and%22%3A+%5B%7B%22_or%22%3A+%5B%7B%22assignees.assignee_organization%22%3A+%22Google+LLC%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Google+Inc%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Alphabet+Inc%22%7D%5D%7D%2C+%7B%22_gte%22%3A+%7B%22patent_date%22%3A+%222026-01-31%22%7D%7D%2C+%7B%22_text_any%22%3A+%7B%22patent_abstract%22%3A+%22high+bandwidth+memory+OR+HBM+OR+advanced+memory+packaging%22%7D%7D%5D%7D&f=%5B%22patent_id%22%5D&o=%7B%22per_page%22%3A+1%7D (Caused by NameResolutionError("HTTPSConnection(host='search.patentsview.org', port=443): Failed to resolve 'search.patentsview.org' ([Errno 11001] getaddrinfo failed)"))
+[PFVT] USPTO PatentsView API error for Google LLC: HTTPSConnectionPool(host='search.patentsview.org', port=443): Max retries exceeded with url: /api/v1/patent/?q=%7B%22_and%22%3A+%5B%7B%22_or%22%3A+%5B%7B%22assignees.assignee_organization%22%3A+%22Google+LLC%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Google+Inc%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Alphabet+Inc%22%7D%5D%7D%2C+%7B%22_gte%22%3A+%7B%22patent_date%22%3A+%222026-01-31%22%7D%7D%2C+%7B%22_text_any%22%3A+%7B%22patent_abstract%22%3A+%22AI+accelerator+OR+inference+processor+OR+neural+network+processor%22%7D%7D%5D%7D&f=%5B%22patent_id%22%5D&o=%7B%22per_page%22%3A+1%7D (Caused by NameResolutionError("HTTPSConnection(host='search.patentsview.org', port=443): Failed to resolve 'search.patentsview.org' ([Errno 11001] getaddrinfo failed)"))
+[PFVT] USPTO PatentsView API error for Google LLC: HTTPSConnectionPool(host='search.patentsview.org', port=443): Max retries exceeded with url: /api/v1/patent/?q=%7B%22_and%22%3A+%5B%7B%22_or%22%3A+%5B%7B%22assignees.assignee_organization%22%3A+%22Google+LLC%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Google+Inc%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Alphabet+Inc%22%7D%5D%7D%2C+%7B%22_gte%22%3A+%7B%22patent_date%22%3A+%222026-01-31%22%7D%7D%2C+%7B%22_text_any%22%3A+%7B%22patent_abstract%22%3A+%22PCIe+Gen+6+OR+CXL+interconnect+OR+Compute+Express+Link%22%7D%7D%5D%7D&f=%5B%22patent_id%22%5D&o=%7B%22per_page%22%3A+1%7D (Caused by NameResolutionError("HTTPSConnection(host='search.patentsview.org', port=443): Failed to resolve 'search.patentsview.org' ([Errno 11001] getaddrinfo failed)"))
+[PFVT] USPTO PatentsView API error for Google LLC: HTTPSConnectionPool(host='search.patentsview.org', port=443): Max retries exceeded with url: /api/v1/patent/?q=%7B%22_and%22%3A+%5B%7B%22_or%22%3A+%5B%7B%22assignees.assignee_organization%22%3A+%22Google+LLC%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Google+Inc%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Alphabet+Inc%22%7D%5D%7D%2C+%7B%22_gte%22%3A+%7B%22patent_date%22%3A+%222026-01-31%22%7D%7D%2C+%7B%22_text_any%22%3A+%7B%22patent_abstract%22%3A+%22data+center+cooling+OR+liquid+cooling+server+OR+immersion+cooling%22%7D%7D%5D%7D&f=%5B%22patent_id%22%5D&o=%7B%22per_page%22%3A+1%7D (Caused by NameResolutionError("HTTPSConnection(host='search.patentsview.org', port=443): Failed to resolve 'search.patentsview.org' ([Errno 11001] getaddrinfo failed)"))
+[PFVT] USPTO PatentsView API error for Google LLC: HTTPSConnectionPool(host='search.patentsview.org', port=443): Max retries exceeded with url: /api/v1/patent/?q=%7B%22_and%22%3A+%5B%7B%22_or%22%3A+%5B%7B%22assignees.assignee_organization%22%3A+%22Google+LLC%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Google+Inc%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Alphabet+Inc%22%7D%5D%7D%2C+%7B%22_gte%22%3A+%7B%22patent_date%22%3A+%222026-01-31%22%7D%7D%2C+%7B%22_text_any%22%3A+%7B%22patent_abstract%22%3A+%22custom+network+chip+OR+network+ASIC+OR+AI+networking+silicon%22%7D%7D%5D%7D&f=%5B%22patent_id%22%5D&o=%7B%22per_page%22%3A+1%7D (Caused by NameResolutionError("HTTPSConnection(host='search.patentsview.org', port=443): Failed to resolve 'search.patentsview.org' ([Errno 11001] getaddrinfo failed)"))
+[PFVT] Google: 5 categories scanned, 0 total patents, 0 material signals.
+[PFVT] Analyzing patent filing velocity for Microsoft...
+[PFVT] USPTO PatentsView API error for Microsoft Corporation: HTTPSConnectionPool(host='search.patentsview.org', port=443): Max retries exceeded with url: /api/v1/patent/?q=%7B%22_and%22%3A+%5B%7B%22_or%22%3A+%5B%7B%22assignees.assignee_organization%22%3A+%22Microsoft+Corporation%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Microsoft+Technology+Licensing+LLC%22%7D%5D%7D%2C+%7B%22_gte%22%3A+%7B%22patent_date%22%3A+%222026-01-31%22%7D%7D%2C+%7B%22_text_any%22%3A+%7B%22patent_abstract%22%3A+%22high+bandwidth+memory+OR+HBM+OR+advanced+memory+packaging%22%7D%7D%5D%7D&f=%5B%22patent_id%22%5D&o=%7B%22per_page%22%3A+1%7D (Caused by NameResolutionError("HTTPSConnection(host='search.patentsview.org', port=443): Failed to resolve 'search.patentsview.org' ([Errno 11001] getaddrinfo failed)"))
+[PFVT] USPTO PatentsView API error for Microsoft Corporation: HTTPSConnectionPool(host='search.patentsview.org', port=443): Max retries exceeded with url: /api/v1/patent/?q=%7B%22_and%22%3A+%5B%7B%22_or%22%3A+%5B%7B%22assignees.assignee_organization%22%3A+%22Microsoft+Corporation%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Microsoft+Technology+Licensing+LLC%22%7D%5D%7D%2C+%7B%22_gte%22%3A+%7B%22patent_date%22%3A+%222026-01-31%22%7D%7D%2C+%7B%22_text_any%22%3A+%7B%22patent_abstract%22%3A+%22AI+accelerator+OR+inference+processor+OR+neural+network+processor%22%7D%7D%5D%7D&f=%5B%22patent_id%22%5D&o=%7B%22per_page%22%3A+1%7D (Caused by NameResolutionError("HTTPSConnection(host='search.patentsview.org', port=443): Failed to resolve 'search.patentsview.org' ([Errno 11001] getaddrinfo failed)"))
+[PFVT] USPTO PatentsView API error for Microsoft Corporation: HTTPSConnectionPool(host='search.patentsview.org', port=443): Max retries exceeded with url: /api/v1/patent/?q=%7B%22_and%22%3A+%5B%7B%22_or%22%3A+%5B%7B%22assignees.assignee_organization%22%3A+%22Microsoft+Corporation%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Microsoft+Technology+Licensing+LLC%22%7D%5D%7D%2C+%7B%22_gte%22%3A+%7B%22patent_date%22%3A+%222026-01-31%22%7D%7D%2C+%7B%22_text_any%22%3A+%7B%22patent_abstract%22%3A+%22PCIe+Gen+6+OR+CXL+interconnect+OR+Compute+Express+Link%22%7D%7D%5D%7D&f=%5B%22patent_id%22%5D&o=%7B%22per_page%22%3A+1%7D (Caused by NameResolutionError("HTTPSConnection(host='search.patentsview.org', port=443): Failed to resolve 'search.patentsview.org' ([Errno 11001] getaddrinfo failed)"))
+[PFVT] USPTO PatentsView API error for Microsoft Corporation: HTTPSConnectionPool(host='search.patentsview.org', port=443): Max retries exceeded with url: /api/v1/patent/?q=%7B%22_and%22%3A+%5B%7B%22_or%22%3A+%5B%7B%22assignees.assignee_organization%22%3A+%22Microsoft+Corporation%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Microsoft+Technology+Licensing+LLC%22%7D%5D%7D%2C+%7B%22_gte%22%3A+%7B%22patent_date%22%3A+%222026-01-31%22%7D%7D%2C+%7B%22_text_any%22%3A+%7B%22patent_abstract%22%3A+%22data+center+cooling+OR+liquid+cooling+server+OR+immersion+cooling%22%7D%7D%5D%7D&f=%5B%22patent_id%22%5D&o=%7B%22per_page%22%3A+1%7D (Caused by NameResolutionError("HTTPSConnection(host='search.patentsview.org', port=443): Failed to resolve 'search.patentsview.org' ([Errno 11001] getaddrinfo failed)"))
+[PFVT] USPTO PatentsView API error for Microsoft Corporation: HTTPSConnectionPool(host='search.patentsview.org', port=443): Max retries exceeded with url: /api/v1/patent/?q=%7B%22_and%22%3A+%5B%7B%22_or%22%3A+%5B%7B%22assignees.assignee_organization%22%3A+%22Microsoft+Corporation%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Microsoft+Technology+Licensing+LLC%22%7D%5D%7D%2C+%7B%22_gte%22%3A+%7B%22patent_date%22%3A+%222026-01-31%22%7D%7D%2C+%7B%22_text_any%22%3A+%7B%22patent_abstract%22%3A+%22custom+network+chip+OR+network+ASIC+OR+AI+networking+silicon%22%7D%7D%5D%7D&f=%5B%22patent_id%22%5D&o=%7B%22per_page%22%3A+1%7D (Caused by NameResolutionError("HTTPSConnection(host='search.patentsview.org', port=443): Failed to resolve 'search.patentsview.org' ([Errno 11001] getaddrinfo failed)"))
+[PFVT] Microsoft: 5 categories scanned, 0 total patents, 0 material signals.
+[PFVT] Analyzing patent filing velocity for Amazon...
+[PFVT] USPTO PatentsView API error for Amazon Technologies Inc: HTTPSConnectionPool(host='search.patentsview.org', port=443): Max retries exceeded with url: /api/v1/patent/?q=%7B%22_and%22%3A+%5B%7B%22_or%22%3A+%5B%7B%22assignees.assignee_organization%22%3A+%22Amazon+Technologies+Inc%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Amazon.com+Inc%22%7D%5D%7D%2C+%7B%22_gte%22%3A+%7B%22patent_date%22%3A+%222026-01-31%22%7D%7D%2C+%7B%22_text_any%22%3A+%7B%22patent_abstract%22%3A+%22high+bandwidth+memory+OR+HBM+OR+advanced+memory+packaging%22%7D%7D%5D%7D&f=%5B%22patent_id%22%5D&o=%7B%22per_page%22%3A+1%7D (Caused by NameResolutionError("HTTPSConnection(host='search.patentsview.org', port=443): Failed to resolve 'search.patentsview.org' ([Errno 11001] getaddrinfo failed)"))
+[PFVT] USPTO PatentsView API error for Amazon Technologies Inc: HTTPSConnectionPool(host='search.patentsview.org', port=443): Max retries exceeded with url: /api/v1/patent/?q=%7B%22_and%22%3A+%5B%7B%22_or%22%3A+%5B%7B%22assignees.assignee_organization%22%3A+%22Amazon+Technologies+Inc%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Amazon.com+Inc%22%7D%5D%7D%2C+%7B%22_gte%22%3A+%7B%22patent_date%22%3A+%222026-01-31%22%7D%7D%2C+%7B%22_text_any%22%3A+%7B%22patent_abstract%22%3A+%22AI+accelerator+OR+inference+processor+OR+neural+network+processor%22%7D%7D%5D%7D&f=%5B%22patent_id%22%5D&o=%7B%22per_page%22%3A+1%7D (Caused by NameResolutionError("HTTPSConnection(host='search.patentsview.org', port=443): Failed to resolve 'search.patentsview.org' ([Errno 11001] getaddrinfo failed)"))
+[PFVT] USPTO PatentsView API error for Amazon Technologies Inc: HTTPSConnectionPool(host='search.patentsview.org', port=443): Max retries exceeded with url: /api/v1/patent/?q=%7B%22_and%22%3A+%5B%7B%22_or%22%3A+%5B%7B%22assignees.assignee_organization%22%3A+%22Amazon+Technologies+Inc%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Amazon.com+Inc%22%7D%5D%7D%2C+%7B%22_gte%22%3A+%7B%22patent_date%22%3A+%222026-01-31%22%7D%7D%2C+%7B%22_text_any%22%3A+%7B%22patent_abstract%22%3A+%22PCIe+Gen+6+OR+CXL+interconnect+OR+Compute+Express+Link%22%7D%7D%5D%7D&f=%5B%22patent_id%22%5D&o=%7B%22per_page%22%3A+1%7D (Caused by NameResolutionError("HTTPSConnection(host='search.patentsview.org', port=443): Failed to resolve 'search.patentsview.org' ([Errno 11001] getaddrinfo failed)"))
+[PFVT] USPTO PatentsView API error for Amazon Technologies Inc: HTTPSConnectionPool(host='search.patentsview.org', port=443): Max retries exceeded with url: /api/v1/patent/?q=%7B%22_and%22%3A+%5B%7B%22_or%22%3A+%5B%7B%22assignees.assignee_organization%22%3A+%22Amazon+Technologies+Inc%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Amazon.com+Inc%22%7D%5D%7D%2C+%7B%22_gte%22%3A+%7B%22patent_date%22%3A+%222026-01-31%22%7D%7D%2C+%7B%22_text_any%22%3A+%7B%22patent_abstract%22%3A+%22data+center+cooling+OR+liquid+cooling+server+OR+immersion+cooling%22%7D%7D%5D%7D&f=%5B%22patent_id%22%5D&o=%7B%22per_page%22%3A+1%7D (Caused by NameResolutionError("HTTPSConnection(host='search.patentsview.org', port=443): Failed to resolve 'search.patentsview.org' ([Errno 11001] getaddrinfo failed)"))
+[PFVT] USPTO PatentsView API error for Amazon Technologies Inc: HTTPSConnectionPool(host='search.patentsview.org', port=443): Max retries exceeded with url: /api/v1/patent/?q=%7B%22_and%22%3A+%5B%7B%22_or%22%3A+%5B%7B%22assignees.assignee_organization%22%3A+%22Amazon+Technologies+Inc%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Amazon.com+Inc%22%7D%5D%7D%2C+%7B%22_gte%22%3A+%7B%22patent_date%22%3A+%222026-01-31%22%7D%7D%2C+%7B%22_text_any%22%3A+%7B%22patent_abstract%22%3A+%22custom+network+chip+OR+network+ASIC+OR+AI+networking+silicon%22%7D%7D%5D%7D&f=%5B%22patent_id%22%5D&o=%7B%22per_page%22%3A+1%7D (Caused by NameResolutionError("HTTPSConnection(host='search.patentsview.org', port=443): Failed to resolve 'search.patentsview.org' ([Errno 11001] getaddrinfo failed)"))
+[PFVT] Amazon: 5 categories scanned, 0 total patents, 0 material signals.
+[PFVT] Analyzing patent filing velocity for Meta...
+[PFVT] USPTO PatentsView API error for Meta Platforms Inc: HTTPSConnectionPool(host='search.patentsview.org', port=443): Max retries exceeded with url: /api/v1/patent/?q=%7B%22_and%22%3A+%5B%7B%22_or%22%3A+%5B%7B%22assignees.assignee_organization%22%3A+%22Meta+Platforms+Inc%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Meta+Platforms+Technologies+LLC%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Facebook+Inc%22%7D%5D%7D%2C+%7B%22_gte%22%3A+%7B%22patent_date%22%3A+%222026-01-31%22%7D%7D%2C+%7B%22_text_any%22%3A+%7B%22patent_abstract%22%3A+%22high+bandwidth+memory+OR+HBM+OR+advanced+memory+packaging%22%7D%7D%5D%7D&f=%5B%22patent_id%22%5D&o=%7B%22per_page%22%3A+1%7D (Caused by NameResolutionError("HTTPSConnection(host='search.patentsview.org', port=443): Failed to resolve 'search.patentsview.org' ([Errno 11001] getaddrinfo failed)"))
+2026-05-01 15:18:14,674 [INFO] HTTP Request: POST 
+https://api.openai.com/v1/embeddings "HTTP/1.1 429 Too Many Requests"
+2026-05-01 15:18:14,674 [INFO] Retrying request to /embeddings in 0.382249 
+seconds
+2026-05-01 15:18:16,087 [INFO] HTTP Request: POST 
+https://api.openai.com/v1/embeddings "HTTP/1.1 429 Too Many Requests"
+2026-05-01 15:18:16,087 [INFO] Retrying request to /embeddings in 0.998003 
+seconds
+2026-05-01 15:18:17,142 [INFO] HTTP Request: POST 
+https://api.openai.com/v1/embeddings "HTTP/1.1 429 Too Many Requests"
+2026-05-01 15:18:17,143 [WARNING] [KB] Embedding API failed, using fallback: 
+Error code: 429 - {'error': {'message': 'You exceeded your current quota, 
+please check your plan and billing details. For more information on this 
+error, read the docs: 
+https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 
+'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2026-05-01 15:18:17,546 [INFO] HTTP Request: POST 
+https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-01 15:18:17,546 [INFO] Retrying request to /chat/completions in 
+0.409896 seconds
+2026-05-01 15:18:19,229 [INFO] HTTP Request: POST 
+https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-01 15:18:19,229 [INFO] Retrying request to /chat/completions in 
+0.869677 seconds
+2026-05-01 15:18:20,488 [INFO] HTTP Request: POST 
+https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-01 15:18:20,488 [INFO] Phase 2 intelligence disabled after 2025-01-06: 
+RateLimitError: Error code: 429 - {'error': {'message': 'You exceeded your 
+current quota, please check your plan and billing details. For more 
+information on this error, read the docs: 
+https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 
+'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2026-05-01 15:18:28,049 [INFO] Replay complete: 249 days | Return: +23.43% | 
+Sharpe: 0.99 | Max DD: -22.27% | Trades: 332
+2026-05-01 15:18:28,049 [INFO] LAEP fill audit: 271 orders | 0 ADV-capped | 
+full-fill rate 100.0% (target ΓëÑ80%) ΓÇö OK
+[PFVT] USPTO PatentsView API error for Meta Platforms Inc: HTTPSConnectionPool(host='search.patentsview.org', port=443): Max retries exceeded with url: /api/v1/patent/?q=%7B%22_and%22%3A+%5B%7B%22_or%22%3A+%5B%7B%22assignees.assignee_organization%22%3A+%22Meta+Platforms+Inc%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Meta+Platforms+Technologies+LLC%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Facebook+Inc%22%7D%5D%7D%2C+%7B%22_gte%22%3A+%7B%22patent_date%22%3A+%222026-01-31%22%7D%7D%2C+%7B%22_text_any%22%3A+%7B%22patent_abstract%22%3A+%22AI+accelerator+OR+inference+processor+OR+neural+network+processor%22%7D%7D%5D%7D&f=%5B%22patent_id%22%5D&o=%7B%22per_page%22%3A+1%7D (Caused by NameResolutionError("HTTPSConnection(host='search.patentsview.org', port=443): Failed to resolve 'search.patentsview.org' ([Errno 11001] getaddrinfo failed)"))
+[PFVT] USPTO PatentsView API error for Meta Platforms Inc: HTTPSConnectionPool(host='search.patentsview.org', port=443): Max retries exceeded with url: /api/v1/patent/?q=%7B%22_and%22%3A+%5B%7B%22_or%22%3A+%5B%7B%22assignees.assignee_organization%22%3A+%22Meta+Platforms+Inc%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Meta+Platforms+Technologies+LLC%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Facebook+Inc%22%7D%5D%7D%2C+%7B%22_gte%22%3A+%7B%22patent_date%22%3A+%222026-01-31%22%7D%7D%2C+%7B%22_text_any%22%3A+%7B%22patent_abstract%22%3A+%22PCIe+Gen+6+OR+CXL+interconnect+OR+Compute+Express+Link%22%7D%7D%5D%7D&f=%5B%22patent_id%22%5D&o=%7B%22per_page%22%3A+1%7D (Caused by NameResolutionError("HTTPSConnection(host='search.patentsview.org', port=443): Failed to resolve 'search.patentsview.org' ([Errno 11001] getaddrinfo failed)"))
+[PFVT] USPTO PatentsView API error for Meta Platforms Inc: HTTPSConnectionPool(host='search.patentsview.org', port=443): Max retries exceeded with url: /api/v1/patent/?q=%7B%22_and%22%3A+%5B%7B%22_or%22%3A+%5B%7B%22assignees.assignee_organization%22%3A+%22Meta+Platforms+Inc%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Meta+Platforms+Technologies+LLC%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Facebook+Inc%22%7D%5D%7D%2C+%7B%22_gte%22%3A+%7B%22patent_date%22%3A+%222026-01-31%22%7D%7D%2C+%7B%22_text_any%22%3A+%7B%22patent_abstract%22%3A+%22data+center+cooling+OR+liquid+cooling+server+OR+immersion+cooling%22%7D%7D%5D%7D&f=%5B%22patent_id%22%5D&o=%7B%22per_page%22%3A+1%7D (Caused by NameResolutionError("HTTPSConnection(host='search.patentsview.org', port=443): Failed to resolve 'search.patentsview.org' ([Errno 11001] getaddrinfo failed)"))
+[PFVT] USPTO PatentsView API error for Meta Platforms Inc: HTTPSConnectionPool(host='search.patentsview.org', port=443): Max retries exceeded with url: /api/v1/patent/?q=%7B%22_and%22%3A+%5B%7B%22_or%22%3A+%5B%7B%22assignees.assignee_organization%22%3A+%22Meta+Platforms+Inc%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Meta+Platforms+Technologies+LLC%22%7D%2C+%7B%22assignees.assignee_organization%22%3A+%22Facebook+Inc%22%7D%5D%7D%2C+%7B%22_gte%22%3A+%7B%22patent_date%22%3A+%222026-01-31%22%7D%7D%2C+%7B%22_text_any%22%3A+%7B%22patent_abstract%22%3A+%22custom+network+chip+OR+network+ASIC+OR+AI+networking+silicon%22%7D%7D%5D%7D&f=%5B%22patent_id%22%5D&o=%7B%22per_page%22%3A+1%7D (Caused by NameResolutionError("HTTPSConnection(host='search.patentsview.org', port=443): Failed to resolve 'search.patentsview.org' ([Errno 11001] getaddrinfo failed)"))
+[PFVT] Meta: 5 categories scanned, 0 total patents, 0 material signals.
+[PFVT] Analyzing patent filing velocity for Samsung...
+[PFVT] USPTO PatentsView API error for Samsung Electronics Co Ltd: HTTPSConnectionPool(host='search.patentsview.org', port=443): Max retries exceeded with url: /api/v1/patent/?q=%7B%22_and%22%3A+%5B%7B%22_or%22%3A+%5B%7B%22assignees.assignee_organization%22%3A+%22Samsung+Electronics+Co+Ltd%22%7D%5D%7D%2C+%7B%22_gte%22%3A+%7B%22patent_date%22%3A+%222026-01-31%22%7D%7D%2C+%7B%22_text_any%22%3A+%7B%22patent_abstract%22%3A+%22high+bandwidth+memory+OR+HBM+OR+advanced+memory+packaging%22%7D%7D%5D%7D&f=%5B%22patent_id%22%5D&o=%7B%22per_page%22%3A+1%7D (Caused by NameResolutionError("HTTPSConnection(host='search.patentsview.org', port=443): Failed to resolve 'search.patentsview.org' ([Errno 11001] getaddrinfo failed)"))
+[PFVT] Samsung: 1 categories scanned, 0 total patents, 0 material signals.
+[PFVT] Analyzing patent filing velocity for SK Hynix...
+[PFVT] USPTO PatentsView API error for SK Hynix Inc: HTTPSConnectionPool(host='search.patentsview.org', port=443): Max retries exceeded with url: /api/v1/patent/?q=%7B%22_and%22%3A+%5B%7B%22_or%22%3A+%5B%7B%22assignees.assignee_organization%22%3A+%22SK+Hynix+Inc%22%7D%5D%7D%2C+%7B%22_gte%22%3A+%7B%22patent_date%22%3A+%222026-01-31%22%7D%7D%2C+%7B%22_text_any%22%3A+%7B%22patent_abstract%22%3A+%22high+bandwidth+memory+OR+HBM+OR+advanced+memory+packaging%22%7D%7D%5D%7D&f=%5B%22patent_id%22%5D&o=%7B%22per_page%22%3A+1%7D (Caused by NameResolutionError("HTTPSConnection(host='search.patentsview.org', port=443): Failed to resolve 'search.patentsview.org' ([Errno 11001] getaddrinfo failed)"))
+[PFVT] SK Hynix: 1 categories scanned, 0 total patents, 0 material signals.
+[PFVT] Analyzing patent filing velocity for Intel...
+[PFVT] USPTO PatentsView API error for Intel Corporation: HTTPSConnectionPool(host='search.patentsview.org', port=443): Max retries exceeded with url: /api/v1/patent/?q=%7B%22_and%22%3A+%5B%7B%22_or%22%3A+%5B%7B%22assignees.assignee_organization%22%3A+%22Intel+Corporation%22%7D%5D%7D%2C+%7B%22_gte%22%3A+%7B%22patent_date%22%3A+%222026-01-31%22%7D%7D%2C+%7B%22_text_any%22%3A+%7B%22patent_abstract%22%3A+%22AI+accelerator+OR+inference+processor+OR+neural+network+processor%22%7D%7D%5D%7D&f=%5B%22patent_id%22%5D&o=%7B%22per_page%22%3A+1%7D (Caused by NameResolutionError("HTTPSConnection(host='search.patentsview.org', port=443): Failed to resolve 'search.patentsview.org' ([Errno 11001] getaddrinfo failed)"))
+[PFVT] USPTO PatentsView API error for Intel Corporation: HTTPSConnectionPool(host='search.patentsview.org', port=443): Max retries exceeded with url: /api/v1/patent/?q=%7B%22_and%22%3A+%5B%7B%22_or%22%3A+%5B%7B%22assignees.assignee_organization%22%3A+%22Intel+Corporation%22%7D%5D%7D%2C+%7B%22_gte%22%3A+%7B%22patent_date%22%3A+%222026-01-31%22%7D%7D%2C+%7B%22_text_any%22%3A+%7B%22patent_abstract%22%3A+%22PCIe+Gen+6+OR+CXL+interconnect+OR+Compute+Express+Link%22%7D%7D%5D%7D&f=%5B%22patent_id%22%5D&o=%7B%22per_page%22%3A+1%7D (Caused by NameResolutionError("HTTPSConnection(host='search.patentsview.org', port=443): Failed to resolve 'search.patentsview.org' ([Errno 11001] getaddrinfo failed)"))
+[PFVT] Intel: 2 categories scanned, 0 total patents, 0 material signals.
+--- PFVT Sweep Complete. 7 entities, 0 material signals. ---
+--- ARMS ELVT: Quarterly Earnings Language Velocity Sweep ---
+[ELVT] Analyzing earnings language velocity for Microsoft (MSFT)...
+[SEC_EDGAR] Fetching EDGAR submissions for MSFT (CIK 0000789019)...
+[LLMWrapper] Submitting elvt_analysis task to gpt-5.5...
+
+Final NAV: $617,172,017
+Total return: +23.43%
+Trades: 332

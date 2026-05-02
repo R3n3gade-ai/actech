@@ -1,0 +1,170 @@
+ARMS Blueprint Correction Memo · For Josh Paul · March 28, 2026 · CONFIDENTIAL 
+ACHELION TECHNOLOGY LLC 
+ARMS Blueprint Correction Memo 
+For: Josh Paul — Lead Developer 
+From: MJ Pence — Architect 
+Date: March 28, 2026 
+Re: Corrections to Blueprint Document Before Phase 0 Code Begins 
+Your blueprint demonstrates strong architectural instincts and genuine engagement  with the problem. The async-first AWS approach, IBKR integration, VWAP execution,  and PostgreSQL audit log are all correct. However, the corrections below must be  applied before a single line of Phase 0 production code is written. 
+The root cause of most of these issues is the same: your blueprint references earlier ARMS  specifications that have been superseded. The canonical document suite was updated, reviewed,  and finalized on March 28, 2026. All documents in your Dropbox as of today are the correct  versions. Going forward, the only documents you should reference are the ones listed in Section  5 of this memo. 
+Corrections are classified into two severity levels: 
+• CRITICAL — Architectural violations. Building these as described would produce an  incorrect system. Must be corrected before Phase 0 begins. 
+• SIGNIFICANT — Material deviations from spec. Build-order or module omissions that  will create rework if not addressed now. 
+AWS over Mac Mini was agreed between you and the PM on March 28 and is not in dispute. That  infrastructure decision stands. Everything else in this memo requires correction. 
+Section 1 — Critical Corrections 
+The following five errors are architectural violations. They will produce an incorrect system if built  as described in your blueprint.
+Achelion Technology LLC · Internal · Not for distribution 1 
+ARMS Blueprint Correction Memo · For Josh Paul · March 28, 2026 · CONFIDENTIAL 
+Achelion Technology LLC · Internal · Not for distribution 2
+ARMS Blueprint Correction Memo · For Josh Paul · March 28, 2026 · CONFIDENTIAL 
+Section 2 — Significant Corrections 
+The following corrections are material deviations from the canonical spec. They will create rework  if not addressed before the relevant phase begins.
+Achelion Technology LLC · Internal · Not for distribution 3 
+ARMS Blueprint Correction Memo · For Josh Paul · March 28, 2026 · CONFIDENTIAL 
+Achelion Technology LLC · Internal · Not for distribution 4
+ARMS Blueprint Correction Memo · For Josh Paul · March 28, 2026 · CONFIDENTIAL 
+Achelion Technology LLC · Internal · Not for distribution 5
+ARMS Blueprint Correction Memo · For Josh Paul · March 28, 2026 · CONFIDENTIAL 
+Section 3 — Items Requiring PM Review Before Building 
+The following items in your blueprint do not appear in any canonical ARMS document. They may  be valid additions, but they require PM review and explicit approval before being built. Do not  implement them as part of the current phase roadmap. 
+Section 4 — Confirmed Correct in Your Blueprint 
+The following architectural decisions in your blueprint are correct and confirmed.  Build on these with confidence.
+Achelion Technology LLC · Internal · Not for distribution 6 
+ARMS Blueprint Correction Memo · For Josh Paul · March 28, 2026 · CONFIDENTIAL 
+Section 5 — Canonical Document Reference 
+IMPORTANT: The documents below — as they exist in your Dropbox as of March 28,  2026 — are the ONLY authoritative references for ARMS. Do not reference any prior  version of any document. If a document in your Dropbox contradicts something in  your existing notes or prior files, the Dropbox version wins.
+Achelion Technology LLC · Internal · Not for distribution 7 
+ARMS Blueprint Correction Memo · For Josh Paul · March 28, 2026 · CONFIDENTIAL 
+Closing — The Standard 
+"The PM needs to be at the lunch. The system needs to be running the portfolio."
+Achelion Technology LLC · Internal · Not for distribution 8 
+ARMS Blueprint Correction Memo · For Josh Paul · March 28, 2026 · CONFIDENTIAL 
+Every correction in this document exists to protect that principle. The MICS formula must be  correct so conviction scores are trustworthy. The defensive sleeve must contain the right  instruments so capital is preserved in exactly the conditions that matter. The LAEP crisis reversal  must be coded explicitly so the kill chain executes correctly when vol is highest. The Addenda  modules must be Phase 1 priorities so the PM is never watching a monitor waiting to make a  decision the system should already be making. 
+The architecture is right. The corrections are straightforward. Fix these before Phase 0 code is  written and the foundation will be solid. You have everything you need in the Dropbox. Start with  the updated CLAUDE.md — read it in full before writing the first line. 
+The blade is being sharpened. Let's build. 
+MJ Pence — Architect, Achelion Capital Management LLC 
+March 28, 2026
+Achelion Technology LLC · Internal · Not for distribution 9 
+
+[TABLE 0]
+CRITICAL #1 — MICS is a 5-gate formula || CRITICAL #1 — MICS is a 5-gate formula
+Blueprint   | states || Blueprint describes MICS as a '5-gate SENTINEL math formula.'
+
+[TABLE 1]
+Canonical   | spec || MICS uses exactly 4 gate inputs with defined weights: Gate 3 (0.40), Gate 6  (0.30), Gate 4 (0.15), Gate 5 (0.15). Gates 1 and 2 are binary pass/fail gates — they do not produce scores and do not feed into the MICS formula. Building  a 5-gate scoring model will produce incorrect conviction scores.
+Canonical   | doc || ARMS FSD v1.1 — Section 11.1 — Full MICS formula specification with all four  component weights, source score table, FEM impact table, and regime entry score  table. Build mics.py from this section exclusively.
+
+[TABLE 2]
+CRITICAL #2 — Defense sleeve includes TLT || CRITICAL #2 — Defense sleeve includes TLT
+Blueprint   | states || Blueprint lists TLT (long-duration Treasury ETF) as a defense exempt asset.
+Canonical   | spec || TLT is NOT in Architecture AB. The canonical defensive sleeve is: SGOV 3%  (T-bill ETF), SGOL 2% (gold), DBMF 5% (managed futures), STRC 4%  (structured credit, 11.5% yield). STRC is the yield instrument — not TLT. In  the current CRASH regime with rate hike probability at 52%, TLT is actively  losing value. Remove TLT from all config files immediately.
+Canonical   | doc || ARMS FSD v1.1 + ACHELION THB v4.0 (UPDATED) — Architecture AB  canonical allocation table. STRC is the 4th sleeve instrument — not TLT. This error  must be corrected in every config file before Phase 0 infrastructure is provisioned.
+
+[TABLE 3]
+CRITICAL #3 — 16 core positions || CRITICAL #3 — 16 core positions
+Blueprint   | states || Blueprint states '16 core assets including TSLA, NVDA, IBIT, and TLT.'
+Canonical   | spec || Architecture AB has exactly 12 equity positions. The canonical book is:  TSLA, NVDA, AMD, PLTR, ALAB, MU, ANET, AVGO, MRVL, ARM, VRT, ETN  — plus the crypto sleeve (IBIT, ETHB, BSOL). Adding positions beyond the  canonical 12 requires PM approval through a full SENTINEL protocol run.  No positions may be added via config change. TLT is not a position at all — see Correction #2.
+Canonical   | doc || CLAUDE.md (updated March 28, 2026) — Portfolio Allocation section —  Canonical equity book with all 12 tickers and their current conviction weights listed  explicitly. Use this as the authoritative position list.
+
+[TABLE 4]
+CRITICAL #4 — PTRH strike: 15–20% OTM || CRITICAL #4 — PTRH strike: 15–20% OTM
+Blueprint   | states || Blueprint specifies PTRH puts at 15–20% out-of-the-money with delta -0.15 to - 0.25.
+Canonical   | spec || PTRH uses ATM (at-the-money) puts exclusively. The canonical spec states:  'ATM strike at time of execution. No discretion. No optimization attempt.'  This is Tier 0 — no PM input on strike selection. Deep OTM puts provide
+
+[TABLE 5]
+ || significantly less protection in a moderate drawdown and are materially  cheaper for a reason. The CAM auto-correction logic in cam.py also  assumes ATM for its notional calculations.
+Canonical   | doc || ARMS Addendum 1 (PTRH Automation) — Section 1.1 Strike Selection row  — Strike selection rule: 'ATM strike at time of execution.' Also confirmed in  Addendum 4 (CAM) Section 3.4 auto-correction pseudocode.
+
+[TABLE 6]
+CRITICAL #5 — 22% max single position / 3% minimum position size || CRITICAL #5 — 22% max single position / 3% minimum position size
+Blueprint   | states || Blueprint specifies 22% maximum single position exposure and 3% minimum  position size as Kevlar hard limits.
+Canonical   | spec || Neither of these values appears in the canonical ARMS specification.  Critically, a 3% minimum position floor directly contradicts the MICS  conviction-squared weighting model — it artificially inflates low-conviction  positions and breaks the mathematical integrity of the sizing formula. The  canonical design uses pure conviction-squared weighting with a dynamic  denominator and no minimum floor. The 22% maximum needs a specific  FSD citation or must be removed. Do not implement either limit until they  are formally specified by the PM.
+Canonical   | doc || ARMS FSD v1.1 — Section 11.1 (MICS formula) — MICS formula uses dynamic  denominator — no floor. Kevlar position limit specification is in ACHELION THB v4.0  (UPDATED). Check the THB for any canonical Kevlar maximums before coding.
+
+[TABLE 7]
+SIGNIFICANT #6 — Claude model: Claude 3.5 || SIGNIFICANT #6 — Claude model: Claude 3.5
+Blueprint   | states || Blueprint specifies 'Anthropic Claude 3.5' as the AI layer model.
+Canonical   | spec || The canonical model is claude-sonnet-4-6. Update every config reference,  the ARMS system prompt loader, and the claude_wrapper.py model  constant to this value before any API integration work begins.
+Canonical   | doc || CLAUDE.md (updated March 28, 2026) — Claude API wrapper section —  Model constant: MODEL = 'claude-sonnet-4-6'. This is the only approved model for  ARMS intelligence tasks.
+
+[TABLE 8]
+SIGNIFICANT #7 — FEM alert threshold only — WATCH threshold missing || SIGNIFICANT #7 — FEM alert threshold only — WATCH threshold missing
+Blueprint   | states || Blueprint states FEM triggers alerts 'if factor exposure exceeds 80%.' No WATCH  threshold is mentioned.
+Canonical   | spec || FEM has two canonical thresholds: WATCH at >65% single factor exposure,  and ALERT at >80%. The WATCH signal is the early warning that gives the  PM time to respond before an ALERT forces a paired trim. Omitting WATCH  means the system has no intermediate signal — it goes from clean to  ALERT with no warning. Both thresholds must be implemented in  factor_exposure.py.
+Canonical   | doc || CLAUDE.md (updated March 28, 2026) — KEY THRESHOLDS section —  FEM_WATCH_THRESHOLD = 0.65, FEM_ALERT_THRESHOLD = 0.80. Both are  required.
+
+[TABLE 9]
+SIGNIFICANT #8 — Cash tiers: 1.2% + 3.8% + 2.0% = 7% || SIGNIFICANT #8 — Cash tiers: 1.2% + 3.8% + 2.0% = 7%
+Blueprint   | states || Blueprint specifies 1.2% core hedge, 3.8% operational buffer, 2.0% regime  escalation reserve — totaling 7%, with the reserve and ops buffer values  transposed.
+Canonical   | spec || Canonical cash structure totals 8%: 1.2% core hedge (QQQ puts baseline,  always deployed), 2.0% regime reserve held in STRC earning 11.5% yield  (locked until NEUTRAL regime), 4.8% ops buffer (money market). The  regime reserve is STRC — a specific instrument, not a cash bucket. This  distinction matters for return calculations and for the DSHP harvest routing.
+Canonical   | doc || CLAUDE.md (updated March 28, 2026) — Portfolio Allocation section —  Cash sleeve: 1.2% core hedge + 2.0% Regime Reserve (STRC, 11.50% yield) + 4.8%  ops buffer = 8.0% total.
+
+[TABLE 10]
+SIGNIFICANT #9 — LAEP: only two modes specified (Normal and Elevated/Crisis) || SIGNIFICANT #9 — LAEP: only two modes specified (Normal and Elevated/Crisis)
+Blueprint   | states || Blueprint specifies VWAP for VIX above 25 with no distinction between Elevated  and Crisis. Crisis mode details and the execution priority reversal are absent.
+Canonical   | spec || LAEP has three distinct modes: NORMAL (VIX <25), ELEVATED (VIX 25–45),  CRISIS (VIX >45). CRISIS mode has a mandatory execution priority reversal  — least liquid positions execute FIRST: BSOL → ETHB → IBIT → equities.  This is the OPPOSITE of normal priority and must be explicitly coded and  tested. The reversal exists to ensure the most illiquid positions are reduced  while markets still have volume.
+Canonical   | doc || CLAUDE.md (updated March 28, 2026) — KEY THRESHOLDS section +  Critical Design Rule #6 — LAEP_NORMAL_VIX_MAX = 25,   | LAEP_ELEVATED_VIX_MAX = 45. CRISIS = VIX >45. Design Rule #6: 'In
+
+[TABLE 11]
+ || LiquidityMode.CRISIS, execution order is BSOL → ETHB → IBIT → equity.  OPPOSITE of normal. Test explicitly.'
+
+[TABLE 12]
+SIGNIFICANT #10 — Addenda 1–4 modules absent from roadmap || SIGNIFICANT #10 — Addenda 1–4 modules absent from roadmap
+Blueprint   | states || Blueprint roadmap does not include CDM, TDC, DSHP, or CAM anywhere across  the five phases.
+Canonical   | spec || CDM and TDC are Phase 1 build priorities — not Phase 3 resilience items.  CAM is Phase 1 because without it PTRH sizing has a human touchpoint  that violates the Governing Principle. DSHP is Phase 1 completion. All four  modules have stub files, full specifications, and test cases already in your  Dropbox. The build priority sequence is: (1) MICS, (2) CDM + TDC, (3) CAM,  (4) Daily monitor + EOD Snapshot, (5) IBKR paper connection, (6) DSHP.
+Canonical   | doc || CLAUDE.md (updated March 28, 2026) — CURRENT BUILD STATUS table +  Build priority sequence — Stub files for all four modules are in the updated  skeleton zip. Specs are in Addendum 1 (DSHP), Addendum 2 (CDM+TDC),  Addendum 4 (CAM).
+
+[TABLE 13]
+SIGNIFICANT #11 — EOD Snapshot not in roadmap || SIGNIFICANT #11 — EOD Snapshot not in roadmap
+Blueprint   | states || The End-of-Day Snapshot is not mentioned anywhere in the blueprint.
+Canonical   | spec || The EOD Snapshot is a Phase 1 deliverable. It is a five-field closing status  check generated at 1450 CT and delivered at 1455 CT to PM and GPs  simultaneously. It has a complete specification document in your Dropbox.  It shares the same data pipeline as the daily monitor and is built as a  companion file — not a separate project. Add it to your Phase 2 deliverables  alongside the daily monitor.
+Canonical   | doc || ARMS EOD Snapshot Specification v1.0 — Full spec including five field  definitions, one-page constraint, Claude API overnight watch statement, named  specificity validation, Prefect cron schedule, and delivery config. File:  src/reporting/eod_snapshot.py (stub already in skeleton).
+
+[TABLE 14]
+SIGNIFICANT #12 — Vector DB: Pinecone / AWS OpenSearch || SIGNIFICANT #12 — Vector DB: Pinecone / AWS OpenSearch
+Blueprint   | states || Blueprint proposes Pinecone or AWS OpenSearch for transcript embeddings and  SEC filings.
+Canonical   | spec || The canonical vector database is Chroma DB — open source, free, runs  locally on your build machine with no external API dependency. Pinecone  introduces a paid external service that can be rate-limited or blocked. The  knowledge_base.py stub in your skeleton is already written for Chroma. Use  chromadb (pip install chromadb). The five canonical collections are:
+
+[TABLE 15]
+ || arms_documents, sentinel_analyses, session_log, monitor_outputs,  thesis_seeds.
+Canonical   | doc || ARMS Infrastructure Specification v1.0 — Section 5 Component 1 —  Technology: Chroma DB. Installation: pip install chromadb. Storage:  ~/achelion/knowledge_base/. This is already in your updated requirements.txt.
+
+[TABLE 16]
+Item || Why PM review is required
+PM Incapacitation   | Protocol (4h/24h/72h  fallback) || Not in any canonical ARMS document. Introduces GP authority  assumptions and legal governance implications that must be explicitly  agreed before encoding. Requires PM + GP discussion.
+SpotGamma +   | VandaTrack feeds || Neither is in the canonical free signal feed specification (FSD v1.1  Section 11.2). Both are paid institutional data providers. Cost and  integration spec must be reviewed before procurement. Do not purchase  until PM confirms.
+MC-RSS Retail   | Sentiment signal || Does not appear in any canonical ARMS document. New signals must  be reviewed against the SENTINEL framework before being added to  the intelligence layer. PM review required.
+
+[TABLE 17]
+Item || Confirmation
+AWS cloud infrastructure || Agreed with PM on March 28, 2026. Correct decision for security and  reliability at this stage.
+
+[TABLE 18]
+Python 3.11+ / FastAPI  async-first || Matches Infrastructure Spec. Correct stack choice.
+Prefect for task   | scheduling || Canonical scheduler per Infrastructure Spec Section 5 Component 2  and updated requirements.txt.
+PostgreSQL for   | immutable audit log || Canonical database per Infrastructure Spec. All session log entries  must write to PostgreSQL.
+IBKR via ib_insync || Canonical broker API per Infrastructure Spec and FSD v1.1 Section  8.2. broker_api.py stub is in your skeleton.
+VWAP execution in   | elevated vol || Correct. LAEP ELEVATED mode uses VWAP. Confirmed in THB v4.0  and FSD v1.1.
+30-day paper trading   | before live || Canonical requirement. Services Agreement Section 2.5.4 requires  minimum 2 consecutive weeks of successful paper trading — 30 days  is conservative and correct.
+Beta-prioritized kill chain  sequence || Correct priority order: SLOF first, then high-beta equities, then crypto,  then pro-rata equities. Defense exempt assets are never sold in  deleverage.
+PDS -12% / -18% HWM  thresholds || Correct canonical values. -12% = 60% ceiling, -18% = 30% ceiling.  Confirmed in CLAUDE.md thresholds.
+MICS output range 1–10 || Correct. MICS produces an integer conviction score 1–10 via  round(MICS_raw) with max(1, min(10, ...)) bounds.
+CDF decay at 45d (0.80x)  and 90d (0.60x) || Correct canonical values. Confirmed in CLAUDE.md KEY  THRESHOLDS section.
+SEC EDGAR for earnings  transcripts and Form 4 || Correct free data source for SENTINEL scan engine and CDM Form 4  monitoring.
+
+[TABLE 19]
+Document || Location || What to use it for
+CLAUDE.md || In updated   | skeleton   | zip || Primary day-to-day reference. Read at the start of every  session. Contains canonical thresholds, file structure, build
+
+[TABLE 20]
+ ||  || status, and the Governing Principle. Updated March 28, 2026  — supersedes all prior versions.
+ARMS FSD v1.1 || Dropbox   | root || Master build document. MICS formula (Section 11.1),  SENTINEL gates, four-tier autonomy framework, phase  roadmap. Start here for any architecture question.
+ACHELION THB v4.0  UPDATED || Dropbox   | root || Technical handbook. Authority hierarchy, all seven pillars, v4.0  module specs, kill chain, PTRH regime table. UPDATED  version contains Addendum 4 supersession notice on CRASH  PTRH behavior.
+ACHELION PM   | Playbook v4.0 || Dropbox   | root || Operational playbook. Daily protocol, complete regime  reference table, FEM response protocol, PDS override rules.
+ARMS Infrastructure  Spec v1.0 || Dropbox   | root || Monitor layout spec, software stack, scheduler master  schedule, security architecture, Day 1–5 setup sequence.
+ARMS Addendum 1   | (PTRH+DSHP) || Dropbox   | root || PTRH Tier 0 automation spec (Module A) and Defensive  Sleeve Harvest Protocol (Module B). PTRH strike = ATM.  DSHP thresholds and Tier 1 veto logic.
+ARMS Addendum 2   | (CDM+TDC) || Dropbox   | root || Customer Dependency Map (Module C) and Thesis  Dependency Checker (Module D). Phase 1 priority build.  Google-MU case study. Form 4 insider sale spec.
+ARMS Addendum 3   | (Intelligence) || Dropbox   | root || Intelligence Architecture Phase 2 & 3. ELVT, JPVI, PFVT,  SCCR specs. Full execution autonomy table. The Governing  Principle in full.
+ARMS Addendum 4   | (CAM) || Dropbox   | root || Coverage Adequacy Model. Four-multiplier formula. Worked  example (March 27, 2026 live conditions). Auto-correction  logic. PM never asked about PTRH sizing after CAM is live.
+ARMS EOD Snapshot  Spec v1.0 || Dropbox   | root || Five-field EOD snapshot. 1450 CT generation, 1455 CT  delivery. One-page constraint. Claude API overnight watch  statement spec.
+ARMS_v4_0_skeleton  UPDATED.zip || Dropbox   | root || Updated codebase skeleton. Contains corrected CLAUDE.md,  updated requirements.txt, and stub files for all Addenda 1-4  modules including cam.py, cdm.py, tdc.py, dshp.py,  claude_wrapper.py, and all intelligence/reporting/execution  stubs.

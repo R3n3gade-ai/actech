@@ -60,23 +60,32 @@ class DeleveragingRisk:
         if rate is None:
             return 0.0
 
-        # Check for collapse first (Warning/Critical override Normal/Elevated)
-        if rate_delta is not None and rate_delta < -0.04:
-            # Rate collapsed >0.04% in single 8h window
-            return 0.65 if rate >= 0 else 0.90
-
-        # Rate went negative — longs being liquidated at scale
+        # Critical override: rate goes negative — longs being liquidated at scale
+        # (Spec §4 Table 11: "Critical || Rate goes negative || 0.8 – 1.0")
         if rate < 0:
             return 0.90
 
-        # Elevated: annualized rate above 20%
-        if rate >= 30:
-            return 0.50
-        if rate >= 20:
-            return 0.35
+        # Warning override: 8h funding collapse > 0.04%
+        # (Spec §4 Table 11: "Warning || Rate collapses >0.04% in single 8h window || 0.5 – 0.7")
+        if rate_delta is not None and rate_delta < -0.04:
+            return 0.65
 
-        # Normal: 0-20% annualized
-        return min(0.20, rate / 100.0)
+        # Calibration anchored to Spec Table 14 (the canonical Oct 10 2025 reference):
+        #   17–22% sustained → ~0.45 sub-score
+        #   30% sustained    → ~0.75 sub-score  ← Spec §6 recalibration: 30% → 25%
+        # Applying the §6 recalibration knob with linear interpolation:
+        #   rate ≤ 0    → 0.0
+        #   0–10%       → 0.0 → 0.20    (Normal band, Table 11)
+        #   10–20%      → 0.20 → 0.45   (Elevated low — building leverage)
+        #   20–25%      → 0.45 → 0.75   (Elevated peak per recalibration)
+        #   ≥25%        → 0.75          (capped — collapse-trigger handled above)
+        if rate >= 25.0:
+            return 0.75
+        if rate >= 20.0:
+            return 0.45 + (rate - 20.0) / 5.0 * 0.30   # 0.45 → 0.75
+        if rate >= 10.0:
+            return 0.20 + (rate - 10.0) / 10.0 * 0.25  # 0.20 → 0.45
+        return max(0.0, rate / 10.0 * 0.20)            # 0.00 → 0.20
 
     # ── Signal Layer 2: Open Interest Fragility ──────────────────────
     # Input: btc_oi_current, btc_oi_30d_high, btc_oi_24h_change_pct, btc_price_24h_change_pct
@@ -86,26 +95,33 @@ class DeleveragingRisk:
         oi_30d_high = data.get('btc_oi_30d_high')
         oi_24h_change = data.get('btc_oi_24h_change_pct', 0.0)
         price_24h_change = data.get('btc_price_24h_change_pct', 0.0)
-        funding_rate_ann = data.get('btc_funding_rate_ann', 0.0)
+        funding_rate_ann = data.get('btc_funding_rate_ann') or 0.0
 
         if oi_current is None:
             return 0.0
 
-        # Critical: OI drops >15% in 24h — forced liquidation at scale
+        # Spec §3.2 + §4: Forced liquidation — OI drops >15% in 24h
         if oi_24h_change < -15.0:
             return 0.90
 
-        # Warning: OI drops >8% in 24h while price flat or rising (stealth unwinding)
+        # Spec §3.2: Stealth unwinding — OI drops >8% while price flat or rising
         if oi_24h_change < -8.0 and price_24h_change >= -1.0:
             return 0.70
 
-        # Peak fragility: OI at 30-day high while funding rate elevated
+        # Spec §4 table: "Peak fragility — OI at 30-day high while funding rate
+        # above 20% ann. || 0.4 – 0.6". Gradient based on (a) closeness to 30d high
+        # and (b) magnitude of funding rate above the 20% threshold.
         if oi_30d_high is not None and oi_30d_high > 0:
             oi_ratio = oi_current / oi_30d_high
             if oi_ratio >= 0.95 and funding_rate_ann >= 20:
-                return 0.50
+                # Map ratio 0.95 → 1.00 to a 0.40 → 0.50 baseline, plus a funding
+                # cofactor: each percentage point of funding above 20% adds 0.01,
+                # capped at the spec band ceiling of 0.60 (5 pts above 20%).
+                ratio_term = 0.40 + min(0.10, (oi_ratio - 0.95) / 0.05 * 0.10)
+                fund_term = min(0.10, max(0.0, (funding_rate_ann - 20.0) / 5.0 * 0.10))
+                return min(0.60, ratio_term + fund_term)
 
-        # Normal: OI within 5% of 30-day average
+        # Normal: OI well below 30-day high or funding rate not elevated
         return 0.10
 
     # ── Signal Layer 3: Options Skew / Dealer Gamma ──────────────────
@@ -178,6 +194,9 @@ class DeleveragingRisk:
         """
         Returns float 0.0-1.0. Higher = more deleveraging risk.
         Weights calibrated against Oct 10 2025 event.
+
+        Canonical Addendum 7 §4 weighted sum. None inputs yield sub-score 0.0
+        (live system MUST provide all 5 layers for spec-compliant operation).
         """
         s1 = self._funding_rate_score(market_data)
         s2 = self._oi_fragility_score(market_data)
@@ -202,13 +221,7 @@ class DeleveragingRisk:
         s4 = self._margin_debt_score(market_data)
         s5 = self._correlation_score(market_data)
 
-        composite = max(0.0, min(1.0,
-            s1 * self.W_FUNDING +
-            s2 * self.W_OI +
-            s3 * self.W_SKEW +
-            s4 * self.W_MARGIN +
-            s5 * self.W_CORR
-        ))
+        composite = self.score(market_data)
 
         if composite >= 0.65:
             status = "CRITICAL"

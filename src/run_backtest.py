@@ -24,7 +24,7 @@ logging.basicConfig(
 )
 
 from simulation.historical_engine_phase1 import run_simulation_phase1
-from simulation.historical_engine_phase2 import run_simulation_phase2
+from simulation.replay_harness import run_backtest as run_simulation_phase2
 from simulation.tearsheet import generate_tearsheet
 
 

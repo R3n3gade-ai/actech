@@ -1,0 +1,215 @@
+ARMS End-of-Day Snapshot Specification | Addendum to Infrastructure Spec v1.0 | CONFIDENTIAL 
+ACHELION CAPITAL MANAGEMENT, LLC 
+ARMS End-of-Day Snapshot Specification — Addendum to Infrastructure Specification v1.0 
+For: Josh Paul — Lead Developer 
+Version: 1.0 — March 26, 2026 
+Classification: CONFIDENTIAL — GP and Development Use Only 
+The morning monitor is the regime and thesis instrument — read at 0800 CT before the  market opens. The End-of-Day Snapshot is the execution and positioning instrument — read  at 1455 CT before the close. Two different purposes. Two different templates. Same pipeline. 
+"Read clean before the open. Confirm clean before the close."
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 1 
+ARMS End-of-Day Snapshot Specification | Addendum to Infrastructure Spec v1.0 | CONFIDENTIAL 
+0. Purpose and Design Philosophy 
+The daily ARMS monitor is generated at 0530 CT from the overnight data snapshot and delivered at  0600 CT. The PM reads it at 0800 CT — 90 minutes before market open. At that point the monitor  reflects pre-market conditions and everything the system has assessed overnight. It is the right  instrument for its purpose: regime orientation, thesis status, module health, and the decision queue  entering the day. 
+But markets move during the session. Earnings calls happen at 0900. Regulatory announcements drop  at 1000. CDM signals fire throughout the day. Tier 1 veto windows open and close. LAEP executes  orders. By 1455 CT — five minutes before the close — the portfolio may be in a materially different  state than the morning monitor described. 
+The End-of-Day Snapshot addresses this. It is not a second full monitor. It is a focused five-field closing  status check that tells the PM and GPs exactly what changed during the session, what executed, what  is still pending, and what the regime looks like entering the overnight period. It reads in under two  minutes. It requires no action in most sessions. When it does require action it surfaces a single specific  item — not a general alert. 
+The morning monitor sets the day. The End-of-Day Snapshot closes it. Together they  constitute a complete daily information architecture with no gap between the open and the  close.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 2 
+ARMS End-of-Day Snapshot Specification | Addendum to Infrastructure Spec v1.0 | CONFIDENTIAL 1. Schedule and Delivery 
+2. The Five Fields — Complete Specification 
+The End-of-Day Snapshot contains exactly five fields. No more. The discipline of five fields is  intentional — if a sixth field is ever proposed, the correct response is to ask whether the morning  monitor should be updated instead. The EOD Snapshot is a closing confirmation instrument, not a  second full monitor. 
+Field 1 — Regime Score Delta 
+Has the regime score moved materially since 0800 CT? If yes, what drove it?
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 3 
+ARMS End-of-Day Snapshot Specification | Addendum to Infrastructure Spec v1.0 | CONFIDENTIAL 
+Field 2 — Pending Tier 1 Windows 
+Are any Tier 1 veto windows still open that expire at or after market close?
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 4 
+ARMS End-of-Day Snapshot Specification | Addendum to Infrastructure Spec v1.0 | CONFIDENTIAL Field 3 — Intraday CDM and TDC Signals 
+Did any new cross-sector signals or thesis integrity events fire during the session that were  not in the morning monitor? 
+Field 4 — Session Execution Summary 
+What did ARMS execute during the session? What is the current portfolio composition  versus the target?
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 5 
+ARMS End-of-Day Snapshot Specification | Addendum to Infrastructure Spec v1.0 | CONFIDENTIAL 
+Field 5 — Overnight Risk Assessment 
+What is the most important thing to watch between now and the 0800 CT morning review?
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 6 
+ARMS End-of-Day Snapshot Specification | Addendum to Infrastructure Spec v1.0 | CONFIDENTIAL 
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 7
+ARMS End-of-Day Snapshot Specification | Addendum to Infrastructure Spec v1.0 | CONFIDENTIAL 
+3. Visual Layout Specification 
+The EOD Snapshot uses the same CSS design system and color variables as the morning monitor.  The layout is a single vertical column — five cards stacked top to bottom, each self-contained. No  tables, no multi-column layout. The PM reads top to bottom in under two minutes. 
+Header: identical to morning monitor but with session date, generation time (1450 CT), and a distinct  badge: 'END-OF-DAY SNAPSHOT — 1455 CT'. Footer: identical to morning monitor. 
+CRITICAL DESIGN RULE: The EOD Snapshot must never expand to more than one printed page  when rendered as PDF. If any field generates content that would push the layout beyond one page, the  content is truncated with a 'Full detail in session log' reference. The one-page constraint is enforced at  the template level, not at the data level. The PM reads a one-page closing confirmation, not a second  full monitor.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 8 
+ARMS End-of-Day Snapshot Specification | Addendum to Infrastructure Spec v1.0 | CONFIDENTIAL 
+4. Implementation Specification 
+4.1 New File 
+# src/reporting/eod_snapshot.py 
+# Generates the ARMS End-of-Day Snapshot 
+# Called by Prefect scheduler at 1450 CT M-F 
+# Outputs: HTML (web dashboard refresh) + PDF (email delivery) 
+def generate_eod_snapshot() -> EODSnapshotOutput: 
+ # Field 1 — Regime Score Delta 
+ morning_score = db.get_morning_monitor_score(today) 
+ current_score = aras.get_current_composite_score() 
+ delta = current_score - morning_score 
+ narrative = generate_delta_narrative(delta) if abs(delta) >= 0.03 else None 
+ # Field 2 — Pending Tier 1 Windows 
+ pending_items = confirmation_queue.get_open_items() 
+ # Field 3 — Intraday CDM/TDC Signals 
+ intraday_signals = db.get_cdm_tdc_events( 
+ since=morning_monitor_generation_time, 
+ severity=['CRITICAL', 'HIGH', 'MEDIUM'] 
+ ) 
+ # Field 4 — Session Execution Summary 
+ session_orders = broker_api.get_session_orders(today) 
+ weight_drift = master_engine.get_weight_drift() 
+ laep_status = laep.get_session_summary() 
+ # Field 5 — Overnight Risk Assessment 
+ watch_statement = claude_wrapper.call( 
+ task_type='overnight_watch', 
+ context={ 
+ 'regime_score': current_score, 
+ 'score_delta': delta, 
+ 'pending_items': pending_items, 
+ 'intraday_signals': intraday_signals, 
+ 'ptrh_status': tail_hedge.get_status() 
+ } 
+ )
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 9 
+ARMS End-of-Day Snapshot Specification | Addendum to Infrastructure Spec v1.0 | CONFIDENTIAL 
+ # Validate overnight watch statement for named specificity 
+ if not contains_named_entity(watch_statement): 
+ watch_statement = claude_wrapper.call(task_type='overnight_watch_strict', ...) 
+ # Assemble and render 
+ snapshot = EODSnapshotOutput( 
+ regime_delta=RegimeDelta(morning_score, current_score, delta, narrative),  pending_tier1=pending_items, 
+ intraday_signals=intraday_signals, 
+ execution_summary=ExecutionSummary(session_orders, weight_drift, laep_status),  overnight_watch=watch_statement, 
+ generated_at=datetime.now(CT).isoformat() 
+ ) 
+ html = render_eod_template(snapshot) # one-page constraint enforced here  pdf = weasyprint.HTML(string=html).write_pdf() 
+ deliver_eod_snapshot(html, pdf, RECIPIENTS) 
+ db.log_eod_snapshot(snapshot) 
+ return snapshot 
+4.2 Scheduler Entry 
+# Add to Prefect scheduler configuration 
+@flow(name='eod_snapshot_daily') 
+def eod_snapshot_flow(): 
+ if not is_market_day(today): # skip weekends + US holidays 
+ return 
+ generate_eod_snapshot() 
+# Schedule: 1450 CT Monday through Friday 
+# Cron: '50 14 * * 1-5' (UTC: '50 20 * * 1-5') 
+4.3 Delivery Configuration 
+# Add EOD recipients alongside morning monitor recipients 
+EOD_RECIPIENTS = [ 
+ 'mj@achelion.com', # PM — MJ Pence 
+ 'brandon@achelion.com' # GP — Brandon [Last Name] 
+ # Add Crystal and James when they join as active GPs 
+] 
+EOD_EMAIL_SUBJECT = 'ARMS End-of-Day Snapshot — {date} — {regime} {score}' # Example: 'ARMS End-of-Day Snapshot — March 26, 2026 — DEFENSIVE 0.76'
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 10 
+ARMS End-of-Day Snapshot Specification | Addendum to Infrastructure Spec v1.0 | CONFIDENTIAL 4.4 Updated Files 
+5. The Complete Daily Information Architecture 
+After both the morning monitor and the EOD Snapshot are live, this is the PM's complete  daily information schedule.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 11 
+ARMS End-of-Day Snapshot Specification | Addendum to Infrastructure Spec v1.0 | CONFIDENTIAL 
+Total PM time required on a normal day: approximately 12 minutes. Eight minutes reading the morning  monitor at 0800. Two minutes reading the EOD Snapshot at 1455. Two minutes for any Category A  response if the system surfaced one. On most days, the PM does nothing between 0802 and 1453. The  system runs the portfolio. The PM runs Achelion. 
+Morning monitor: regime and thesis. EOD Snapshot: execution and confirmation. Together:  a complete daily information architecture with zero gaps and zero redundancy. 
+"Read clean before the open. Confirm clean before the close." 
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction.
+Achelion Capital Management, LLC · Flow. Illumination. Discipline. Conviction. 12 
+
+[TABLE 0]
+Generation time || 1450 CT — 10 minutes before close. Captures full session  activity including final hour moves.
+Delivery time || 1455 CT — 5 minutes before close. Both PM and GPs receive  simultaneously.
+Recipients || MJ Pence (PM) · Brandon [Last Name] (GP) · additional GPs  added via config as they join
+Format || Same dual-format as morning monitor: web dashboard refresh +  PDF email delivery via SendGrid or Gmail SMTP
+Scheduler entry || Prefect flow: eod_snapshot_flow() scheduled at 1450 CT  Monday through Friday. Skips US market holidays automatically  via trading calendar check.
+File || src/reporting/eod_snapshot.py — new file. Separate template  from daily_monitor.py. Shares the same data pipeline and  module outputs.
+Session log || Every EOD Snapshot generation logged with timestamp, regime  score at generation, and delta from morning monitor score.
+
+[TABLE 1]
+Content || Current regime label + current score · Morning score (from 0600  CT monitor) · Delta (current minus morning) · Direction arrow ·  One-sentence narrative if delta exceeds threshold
+Materiality threshold || Delta of ±0.03 or greater triggers a narrative. Below ±0.03  displays as 'Stable — no material movement during session.'
+
+[TABLE 2]
+Color coding || Green if score improved (moved toward RISK_ON) · Red if score  worsened (moved toward CRASH) · Grey if stable
+CRASH boundary alert || If current score is within 0.05 of the CRASH boundary (0.80), this  field displays a RED border regardless of delta direction — proximity to boundary is always surfaced
+Data source || ARAS module output at 1450 CT generation time
+Example — stable || DEFENSIVE · Score: 0.76 · Morning: 0.76 · Delta: 0.00 → Stable  — no material movement during session.
+Example — worsening || DEFENSIVE · Score: 0.79 · Morning: 0.76 · Delta: +0.03 ↑ · Iran  formally enacted Hormuz toll legislation at 1115 CT. CRASH  boundary now 1 point away.
+Example — improving || DEFENSIVE · Score: 0.71 · Morning: 0.76 · Delta: −0.05 ↓ ·  Peace talks confirmed via Pakistani mediators. Brent fell 4%.  RPE: NEUTRAL probability rising.
+
+[TABLE 3]
+Content || List of all open Tier 1 confirmation queue items with their action  type, time queued, time remaining in veto window, and current  status
+If none pending || Single green line: 'No Tier 1 actions pending. Decision queue  clear.'
+If items pending || Each item listed with: action type · position or module · time  queued · time remaining · response options reminder
+Urgency flag || Any item with less than 60 minutes remaining in its veto window  displays in RED with a countdown. This is the only case where  the EOD Snapshot may require immediate PM action.
+Silence reminder || Each pending item includes: 'No response by [expiry time] CT =  system executes at MICS-implied sizing.'
+Data source || src/execution/confirmation_queue.py — open items query at  1450 CT
+Example || PERM — VRT covered call evaluation · Queued: 1023 CT ·  Window expires: 1423 CT · STATUS: EXPIRED — system  executed at 1423 CT. No action required.
+Example — urgent || TDC thesis review — ALAB · Queued: 1318 CT · Window  expires: 1718 CT · 2h 23m remaining · Response options: [No  new info — execute] [New info — hold] [Veto with rationale]
+
+[TABLE 4]
+Content || Any CDM named entity alerts or TDC thesis reviews triggered  between 0600 CT monitor generation and 1450 CT EOD  generation
+If none || Single green line: 'No new CDM or TDC signals during session.'
+If signals present || Each signal listed with: signal type · named entity · affected  positions · severity · TIS score if TDC ran · recommended action
+Severity threshold || CRITICAL and HIGH signals always displayed. MEDIUM signals  displayed only if they affect a position currently flagged WATCH  or above.
+Data source || src/engine/cdm.py and src/engine/tdc.py session logs — events  between 0600 and 1450 CT
+Example || CDM HIGH: Microsoft announced 15% reduction in Azure AI  capex guidance in earnings call at 0932 CT. Affected positions:  NVDA, MU, ALAB, ANET, MRVL. TDC thesis reviews queued  and completed for all 5 positions. Results: NVDA INTACT (8.4) ·  MU WATCH (6.8) · ALAB IMPAIRED (4.9) · ANET INTACT (7.9)  · MRVL WATCH (6.5). ALAB IMPAIRED: PM review queued — see Field 2.
+
+[TABLE 5]
+Content || Summary of all order executions during the session · Any  execution failures · Current portfolio weights versus Architecture  AB targets · Any weight drift above 0.5pp from target
+If no executions || Single line: 'No orders executed during session. Portfolio weights  within tolerance.'
+Execution summary format || [Time CT] [Module] [Action] [Ticker] [Size] [Price] [Status:  FILLED / PARTIAL / FAILED]
+Weight drift || Any position where current weight deviates more than 0.5pp  from target weight is flagged. Not an action item — an  information item. The system will correct at next regime cycle.
+Execution failures || Any FAILED execution is displayed in RED with the error reason.  This is the one execution field that may require PM attention — a  failed order means a target allocation is not yet achieved.
+
+[TABLE 6]
+LAEP mode || Current LAEP execution mode displayed: NORMAL /  ELEVATED / CRISIS. If mode changed during session, shows:  'LAEP mode changed: ELEVATED → NORMAL at 1134 CT (VIX  crossed below 25).'
+Data source || src/execution/broker_api.py order log ·   | src/engine/master_engine.py current weights · LAEP module  output
+Example — clean session || No orders executed during session. Portfolio weights within  tolerance. LAEP: ELEVATED throughout session. No execution  failures.
+Example — active session || 1023 CT · PERM · SELL CALL · VRT · 100 contracts · $4.20  premium · FILLED. 1245 CT · ARAS · REGIME RESIZE · QQQ  PUTS · Notional +$12,400 · FILLED. Portfolio weights: all within  0.3pp of target.
+
+[TABLE 7]
+Content || A single AI-generated two to three sentence overnight watch  statement. Not a list. Not a general market summary. One  specific, actionable statement about the highest-priority risk or  opportunity entering the overnight period.
+Generation || Claude API call via claude_wrapper.py. Input: current regime  score + delta + any open CDM/TDC signals + PTRH status +  any pending Tier 1 items. Output: two to three sentence watch  statement.
+Scope constraint || The watch statement must reference a specific named signal,  entity, or threshold. Generic statements ('markets remain  volatile') are rejected by a validation step that checks for named  specificity. If the Claude API returns a generic statement, the  system retries once with a stricter prompt before falling back to a  rule-based statement.
+Prompt structure || System: You are the ARMS risk assessment engine. Generate a  two to three sentence overnight watch statement for the PM and  GPs. Be specific — name the entity, signal, or threshold that  matters most. Do not summarize the session. Identify the single  most important thing to watch between now and 0800 CT  tomorrow. Current state: [regime + delta + signals + pending  items].
+Data source || Claude API · all module outputs at 1450 CT generation
+Example — war scenario || Watch: Iran's response to Trump's 1400 CT ultimatum is  expected via state media overnight. If Iran formally announces  Hormuz toll rates above $500,000 per vessel, the regime score  will likely cross 0.80 at the CRASH boundary. Confirm PTRH  dual-risk coverage before tomorrow's open.
+
+[TABLE 8]
+Example — stable session || Watch: Regime score held stable at 0.71 through the full  session. The primary overnight catalyst is NVDA's earnings call  scheduled for 1700 CT — capex commitment language in the  hyperscaler discussion will update MU and ALAB TIS scores  before tomorrow's morning monitor. No action required tonight.
+Example — earnings watch || Watch: Microsoft reports earnings at 1600 CT today. ELVT will  process the transcript overnight and update language velocity  scores for MU, NVDA, ALAB, ANET, and MRVL. Any material   | capex language shift will be reflected in tomorrow's morning  monitor. JPVI Microsoft Azure infrastructure hiring trend will be  cross-referenced automatically.
+
+[TABLE 9]
+Position || Field || Card style || Height || Normal-session read time
+1 || Regime Score   | Delta || Full-width card.  Score bar. Delta  indicator. Color  coded   | green/red/grey. || Compact —  | 80px || 5 seconds
+2 || Pending Tier 1   | Windows || Full-width card.  Green if clear.   | Amber/red if   | items pending   | with countdown. || Compact if   | clear ·   | Expanded if   | items present || 5 seconds if clear · 20   | seconds if items present
+3 || Intraday   | CDM/TDC   | Signals || Full-width card.  Green if clean.  Amber/red with  signal details if  signals fired. || Compact if   | clean ·   | Expanded if   | signals   | present || 5 seconds if clean · 30   | seconds if signals present
+4 || Session   | Execution   | Summary || Full-width card.  Green if no   | executions or   | clean   | executions. Red  border if any   | FAILED orders. || Medium —  | execution list  if orders   | present || 10 seconds
+5 || Overnight Risk   | Assessment || Full-width card.  Gold left border.  Two to three   | sentence watch  statement.   | Always present. || Fixed —  | 100px || 10 seconds
+
+[TABLE 10]
+src/reporting/eod_snapshot.py || NEW — full EOD Snapshot generation logic as specified  above
+src/reporting/daily_monitor.py || UNCHANGED — morning monitor is a separate template  and schedule. No changes required.
+src/config/delivery_config.py || UPDATED — add EOD_RECIPIENTS list and   | EOD_EMAIL_SUBJECT template
+src/scheduling/prefect_flows.py || UPDATED — add eod_snapshot_flow() at 1450 CT cron  schedule
+src/intelligence/claude_wrapper.py || UPDATED — add 'overnight_watch' and   | 'overnight_watch_strict' task types with associated prompt  templates
+
+[TABLE 11]
+Time CT || Event || Instrument || What it tells you
+0600 || Daily monitor  delivered || Full morning monitor || Complete regime assessment. All   | positions. All module status. Decision  queue. Overnight developments   | processed. Pre-market picture.
+0800 || PM reads   | morning   | monitor || Full morning monitor || Regime orientation. Thesis status. Module  health. Decision queue for the day. 90  minutes before open — time to think  without execution pressure.
+0930 || Market opens || System autonomous || ARMS is running. LAEP in ELEVATED or  NORMAL mode. CDM and TDC monitoring  continuously. No PM involvement unless a  Category A question surfaces.
+All   | session || Continuous   | monitoring || System autonomous || CDM/TDC signals propagate in real time.  PTRH rolls execute if triggered. PERM  executes if triggered. Regime re-scores  every 5 minutes. PM not involved.
+1450 || EOD   | Snapshot   | generated || 5-field closing check || Regime delta. Pending Tier 1 windows.  Intraday signals. Execution summary.  Overnight watch statement.
+
+[TABLE 12]
+1455 || PM reads   | EOD   | Snapshot || 5-field closing check || What changed during the session. What  executed. What is still pending. What to  watch overnight. Two minutes to read.
+1600 || Market closes || System autonomous || Session closes. ARMS continues   | monitoring overnight data. Regime scoring  continues on overseas markets and macro  feeds.
+2000 CT || Knowledge   | base nightly   | ingest || Background process || All session data embedded into Chroma  DB. Tomorrow's morning monitor will have  full context.
+0530 || Morning   | monitor   | generated || Full morning monitor || Next day's cycle begins. Overnight   | developments assessed. Regime scored.  All modules run. Monitor assembled.
